@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site, telHref } from '../data/site';
+import { engagement } from '../data/engagement';
 
 /**
  * Structured so this page can later be exported as a capability statement.
@@ -83,7 +84,7 @@ const sections = [
     letter: 'F',
     title: 'How to engage RobustWorx',
     intro:
-      'Short and direct. Send enough information for the job to be assessed and you will get a straight answer on whether it can be covered.',
+      'Two routes, depending on whether you are hiring capability into your crew or handing over a scope. Either way, send enough information for the job to be assessed and you will get a straight answer on whether it can be covered.',
     points: [
       '1. Send the job — location, dates, scope, site requirements and a contact',
       '2. Scott reviews it and comes back on capability, timing and what is required',
@@ -172,6 +173,19 @@ const assess = [
                 ))}
               </ul>
               {s.note && <p class="cap__note">{s.note}</p>}
+
+              {s.id === 'how-to-engage' && (
+                <div class="cap__modes">
+                  {engagement.map((m) => (
+                    <div class={`cap__mode cap__mode--${m.accent}`}>
+                      <p class="cap__mode-key">Route {m.key}</p>
+                      <h3 class="cap__mode-title">{m.title}</h3>
+                      <p class="cap__mode-pitch">{m.pitch}</p>
+                      <p class="cap__mode-send">{m.send}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </section>
           ))
         }
@@ -379,6 +393,57 @@ const assess = [
     font-size: var(--t-small);
     line-height: 1.6;
     max-width: 72ch;
+  }
+
+  .cap__modes {
+    display: grid;
+    gap: var(--s-4);
+    margin-top: 1.75rem;
+  }
+  @media (min-width: 720px) {
+    .cap__modes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .cap__mode {
+    padding: 1.25rem 1.4rem;
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    border-left: 4px solid var(--mode-accent);
+  }
+  .cap__mode--lime {
+    --mode-accent: var(--c-lime);
+  }
+  .cap__mode--orange {
+    --mode-accent: var(--c-orange);
+  }
+  .cap__mode-key {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mode-accent);
+  }
+  .cap__mode-title {
+    margin-top: 0.5rem;
+    font-size: 1.35rem;
+  }
+  .cap__mode-pitch {
+    margin-top: 0.6rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+  }
+  .cap__mode-send {
+    margin-top: 0.9rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--c-line);
+    font-family: var(--f-display);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--c-light);
   }
 
   .cap__assess {

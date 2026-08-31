@@ -88,6 +88,12 @@ const contours = [0, 1, 2, 3, 4].map(
       </a>
     </div>
 
+    <p class="hero__owner">
+      <span class="hero__owner-mark" aria-hidden="true"></span>
+      <strong>{site.contactName}</strong> owns and operates RobustWorx. He scopes the job, does the work
+      and answers the phone — <a href={telHref()}>{site.phoneDisplay}</a>.
+    </p>
+
     <ul class="hero__strip">
       <li>Traffic &amp; workzone support</li>
       <li>Plant operation</li>
@@ -224,8 +230,39 @@ const contours = [0, 1, 2, 3, 4].map(
     }
   }
 
+  .hero__owner {
+    position: relative;
+    margin-top: 1.9rem;
+    padding: 1.4rem 0 0 1.6rem;
+    border-top: 1px solid var(--c-line);
+    max-width: 60ch;
+    font-size: var(--t-small);
+    line-height: 1.6;
+    color: var(--c-muted);
+  }
+  .hero__owner::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.65rem;
+    width: 12px;
+    height: 12px;
+    background: var(--c-orange);
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 58% 100%, 0 100%);
+  }
+  .hero__owner strong {
+    color: var(--c-light);
+    font-weight: 600;
+  }
+  .hero__owner a {
+    color: var(--c-lime);
+    font-weight: 600;
+    white-space: nowrap;
+    text-underline-offset: 3px;
+  }
+
   .hero__strip {
-    margin-top: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+    margin-top: clamp(1.75rem, 1.2rem + 2.5vw, 3rem);
     padding-top: 1.15rem;
     border-top: 1px solid var(--c-line);
     list-style: none;

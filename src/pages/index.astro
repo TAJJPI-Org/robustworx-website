@@ -8,6 +8,7 @@ import CtaBand from '../components/CtaBand.astro';
 import { services } from '../data/services';
 import { equipment } from '../data/equipment';
 import { fieldSituations } from '../data/field';
+import { engagement } from '../data/engagement';
 import { site, telHref } from '../data/site';
 
 const supports = [
@@ -54,6 +55,53 @@ const featured = fieldSituations.slice(0, 3);
   description="RobustWorx supports civil, traffic, plant and maintenance work across regional South Australia. Traffic and workzone support, plant operation, small earthworks, site support and grounds maintenance. Call Scott on 0458 958 995."
 >
   <Hero />
+
+  <!-- How you engage RobustWorx -->
+  <section class="section engage" aria-labelledby="engage-title">
+    <div class="wrap">
+      <div class="engage__head">
+        <div>
+          <p class="label label--orange">Two ways to use it</p>
+          <h2 id="engage-title" class="engage__title">Hire the capability, or hand over the job</h2>
+        </div>
+        <p class="engage__lead">
+          Most enquiries are one of these. Knowing which one yours is makes the first phone call
+          about two minutes long.
+        </p>
+      </div>
+
+      <div class="engage__grid">
+        {
+          engagement.map((m) => (
+            <article class={`mode mode--${m.accent}`}>
+              <div class="mode__top">
+                <span class="mode__key" aria-hidden="true">
+                  {m.key}
+                </span>
+                <h3 class="mode__title">{m.title}</h3>
+              </div>
+              <p class="mode__pitch">{m.pitch}</p>
+              <h4 class="mode__sub">Suits</h4>
+              <ul class="mode__list">
+                {m.suits.map((x) => (
+                  <li>{x}</li>
+                ))}
+              </ul>
+              <p class="mode__send">{m.send}</p>
+              <a class="btn btn--block mode__cta" href="/contact">
+                Send job details
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <p class="engage__foot">
+        Not sure which one it is? Plenty of jobs start as one and turn into the other.
+        <a href={telHref()}>Call Scott</a> and describe it.
+      </p>
+    </div>
+  </section>
 
   <!-- Services -->
   <section class="section linework" aria-labelledby="svc-title">
@@ -142,7 +190,7 @@ const featured = fieldSituations.slice(0, 3);
     <div class="wrap">
       <SectionHeader
         eyebrow="Work in the field"
-        title="The kind of work this looks like"
+        title="What the work actually looks like"
         lead="Field situations RobustWorx is set up for, described plainly. Job records and site photos are published on the Work page as they are documented."
         align="split"
       />
@@ -238,6 +286,154 @@ const featured = fieldSituations.slice(0, 3);
 </BaseLayout>
 
 <style>
+  /* Engagement modes */
+  .engage {
+    border-top: 1px solid var(--c-line);
+    background: var(--c-asphalt);
+  }
+  .engage__head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  }
+  @media (min-width: 900px) {
+    .engage__head {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 3rem;
+      align-items: end;
+    }
+  }
+  .engage__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+  }
+  .engage__lead {
+    color: var(--c-muted);
+    max-width: 46ch;
+  }
+
+  .engage__grid {
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 860px) {
+    .engage__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .mode {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.35rem, 1rem + 1.6vw, 2.25rem);
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    border-top: 5px solid var(--mode-accent);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+  }
+  .mode--lime {
+    --mode-accent: var(--c-lime);
+  }
+  .mode--orange {
+    --mode-accent: var(--c-orange);
+  }
+
+  .mode__top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .mode__key {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    background: var(--mode-accent);
+    color: var(--c-black);
+    font-family: var(--f-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .mode__title {
+    font-size: clamp(1.4rem, 1.1rem + 1.1vw, 1.95rem);
+  }
+  .mode__pitch {
+    margin-top: 1.1rem;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: #d5d5cf;
+  }
+  .mode__sub {
+    margin-top: 1.6rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--c-line);
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mode-accent);
+  }
+  .mode__list {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    flex: 1;
+    align-content: start;
+  }
+  .mode__list li {
+    display: flex;
+    gap: 0.7rem;
+    font-size: var(--t-small);
+    line-height: 1.55;
+    color: #c6c6c1;
+  }
+  .mode__list li::before {
+    content: '';
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-top: 0.42em;
+    background: var(--mode-accent);
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 58% 100%, 0 100%);
+  }
+  .mode__send {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--c-line);
+    font-family: var(--f-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--c-light);
+  }
+  .mode__cta {
+    margin-top: 1rem;
+  }
+  .mode--orange .mode__cta {
+    --btn-bg: var(--c-orange);
+    --btn-bd: var(--c-orange);
+    --btn-fg: #170c02;
+  }
+  .mode--orange .mode__cta:hover {
+    --btn-bg: #ff8038;
+    --btn-bd: #ff8038;
+  }
+
+  .engage__foot {
+    margin-top: 1.75rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+  }
+  .engage__foot a {
+    color: var(--c-lime);
+    font-weight: 600;
+  }
+
   /* Services */
   .svc-grid {
     display: grid;
