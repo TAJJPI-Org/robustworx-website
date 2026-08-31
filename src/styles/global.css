@@ -1,0 +1,570 @@
+/* ==========================================================================
+   RobustWorx design system
+   Field / civil / workzone visual language: asphalt ground, hi-vis accents,
+   survey linework, condensed signage typography, angular cut geometry.
+   ========================================================================== */
+
+:root {
+  /* --- Colour ------------------------------------------------------------ */
+  --c-black: #0c0c0e;
+  --c-asphalt: #131316;
+  --c-surface: #17171a;
+  --c-surface-2: #1f1f24;
+  --c-line: #2c2c33;
+  --c-line-strong: #3d3d46;
+  --c-light: #f2f2ee;
+  --c-muted: #a3a3a0;
+  --c-muted-dim: #8b8b89;
+
+  --c-plum: #35145c;
+  --c-plum-deep: #240e3f;
+  --c-purple: #7b2fd1;
+  --c-orange: #ff6a13;
+  --c-orange-deep: #d4520a;
+  --c-lime: #c6f000;
+
+  --c-bg: var(--c-black);
+  --c-fg: var(--c-light);
+
+  /* --- Type -------------------------------------------------------------- */
+  --f-display: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --f-body: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --t-hero: clamp(2.75rem, 1.6rem + 5.6vw, 6rem);
+  --t-h1: clamp(2.25rem, 1.45rem + 3.6vw, 4.25rem);
+  --t-h2: clamp(1.75rem, 1.25rem + 2.2vw, 3rem);
+  --t-h3: clamp(1.3rem, 1.1rem + 0.9vw, 1.85rem);
+  --t-h4: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+  --t-body: clamp(1rem, 0.97rem + 0.14vw, 1.0625rem);
+  --t-lead: clamp(1.06rem, 0.99rem + 0.4vw, 1.3rem);
+  --t-small: 0.875rem;
+  --t-label: 0.75rem;
+
+  /* --- Space ------------------------------------------------------------- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-10: 8rem;
+  --section-y: clamp(3.5rem, 2rem + 6vw, 7rem);
+
+  /* --- Layout ------------------------------------------------------------ */
+  --w-max: 1360px;
+  --w-content: 1120px;
+  --w-text: 68ch;
+  --gutter: clamp(1.15rem, 0.7rem + 2vw, 3rem);
+  --header-h: 68px;
+
+  /* --- Misc -------------------------------------------------------------- */
+  --cut: 12px; /* angular corner cut, echoes the mark's slash geometry */
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --focus: 0 0 0 3px var(--c-black), 0 0 0 6px var(--c-lime);
+}
+
+/* --- Reset --------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+}
+body {
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+img {
+  height: auto;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+p,
+li {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+:target {
+  scroll-margin-top: calc(var(--header-h) + 2rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Focus --------------------------------------------------------------- */
+:focus-visible {
+  outline: 3px solid var(--c-lime);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  transform: translateY(-120%);
+  padding: 0.85rem 1.25rem;
+  background: var(--c-lime);
+  color: var(--c-black);
+  font-family: var(--f-display);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: transform 0.15s var(--ease);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* --- Typography ---------------------------------------------------------- */
+.display,
+h1,
+h2,
+h3 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+h1 {
+  font-size: var(--t-h1);
+}
+h2 {
+  font-size: var(--t-h2);
+}
+h3 {
+  font-size: var(--t-h3);
+  letter-spacing: 0;
+}
+h4 {
+  font-family: var(--f-body);
+  font-size: var(--t-h4);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.lead {
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: #d8d8d2;
+  max-width: 58ch;
+}
+.prose {
+  max-width: var(--w-text);
+}
+.prose p + p,
+.prose p + ul,
+.prose ul + p {
+  margin-top: 1rem;
+}
+.prose h2 {
+  margin-top: 2.75rem;
+  margin-bottom: 0.9rem;
+}
+.prose h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+}
+.prose ul {
+  padding-left: 1.1rem;
+}
+.prose li + li {
+  margin-top: 0.4rem;
+}
+.prose a {
+  color: var(--c-lime);
+}
+.muted {
+  color: var(--c-muted);
+}
+
+/* Eyebrow / signage label */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--f-display);
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-lime);
+  line-height: 1;
+}
+.label::before {
+  content: '';
+  width: 26px;
+  height: 3px;
+  background: var(--c-lime);
+  flex: none;
+}
+.label--orange {
+  color: var(--c-orange);
+}
+.label--orange::before {
+  background: var(--c-orange);
+}
+
+/* Index number used as site-signage plate marker */
+.plate-no {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--c-orange);
+  letter-spacing: -0.03em;
+}
+
+/* --- Layout -------------------------------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: var(--w-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.wrap--content {
+  max-width: var(--w-content);
+}
+.section {
+  padding-block: var(--section-y);
+  position: relative;
+}
+.section--tight {
+  padding-block: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
+}
+.section--asphalt {
+  background: var(--c-asphalt);
+}
+.section--surface {
+  background: var(--c-surface);
+}
+.grid {
+  display: grid;
+  gap: var(--s-5);
+}
+.grid > * {
+  min-width: 0;
+}
+@media (min-width: 640px) {
+  .grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 900px) {
+  .grid--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .grid--2-lg {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- Field motifs -------------------------------------------------------- */
+
+/* Hazard striping — hi-vis workzone bar */
+.hazard {
+  height: 8px;
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--c-orange) 0 14px,
+    var(--c-black) 14px 28px
+  );
+}
+.hazard--lime {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--c-lime) 0 14px,
+    var(--c-black) 14px 28px
+  );
+}
+.hazard--thin {
+  height: 5px;
+}
+
+/* Road centre line */
+.centre-line {
+  height: 3px;
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--c-line-strong) 0 34px,
+    transparent 34px 60px
+  );
+}
+
+/* Survey grid + asphalt grain, applied to dark bands */
+.linework {
+  position: relative;
+  isolation: isolate;
+}
+.linework::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 20%, transparent 78%);
+}
+
+/* Angular cut corner — the one repeated brand geometry */
+.cut {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%
+  );
+}
+.cut-tl {
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%, 0 var(--cut));
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.btn {
+  --btn-bg: var(--c-lime);
+  --btn-fg: var(--c-black);
+  --btn-bd: var(--c-lime);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0.85rem 1.5rem;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 2px solid var(--btn-bd);
+  font-family: var(--f-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  transition:
+    background-color 0.16s var(--ease),
+    color 0.16s var(--ease),
+    transform 0.16s var(--ease);
+}
+.btn:hover {
+  --btn-bg: #d9ff2b;
+  --btn-bd: #d9ff2b;
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn:focus-visible {
+  outline: 3px solid var(--c-light);
+  outline-offset: 3px;
+}
+.btn--orange {
+  --btn-bg: var(--c-orange);
+  --btn-bd: var(--c-orange);
+  --btn-fg: #170c02;
+}
+.btn--orange:hover {
+  --btn-bg: #ff8038;
+  --btn-bd: #ff8038;
+}
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--c-light);
+  --btn-bd: var(--c-line-strong);
+}
+.btn--ghost:hover {
+  --btn-bg: transparent;
+  --btn-fg: var(--c-lime);
+  --btn-bd: var(--c-lime);
+}
+.btn--dark {
+  --btn-bg: var(--c-black);
+  --btn-fg: var(--c-light);
+  --btn-bd: var(--c-black);
+}
+.btn--dark:hover {
+  --btn-bg: #26262c;
+  --btn-bd: #26262c;
+}
+.btn--block {
+  width: 100%;
+}
+.btn--sm {
+  min-height: 44px;
+  padding: 0.6rem 1.05rem;
+  font-size: 0.9375rem;
+}
+
+/* Text link with underline offset */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--c-lime);
+  text-decoration: none;
+  padding-block: 0.62rem;
+}
+.link-arrow svg {
+  transition: transform 0.18s var(--ease);
+  flex: none;
+}
+.link-arrow:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.link-arrow:hover svg {
+  transform: translateX(4px);
+}
+
+/* --- Panels -------------------------------------------------------------- */
+.panel {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  padding: clamp(1.25rem, 1rem + 1vw, 2rem);
+}
+.panel--flat {
+  background: transparent;
+}
+
+/* Spec list — used for "what to send" style data */
+.spec {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--c-line);
+}
+.spec li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--c-line);
+  font-size: var(--t-small);
+  color: #ccccc7;
+}
+.spec li::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--c-orange);
+  transform: translateY(-1px);
+}
+
+/* --- Utilities ----------------------------------------------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.stack > * + * {
+  margin-top: var(--s-4);
+}
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+}
+.mt-5 {
+  margin-top: var(--s-5);
+}
+.mt-6 {
+  margin-top: var(--s-6);
+}
+.mt-7 {
+  margin-top: var(--s-7);
+}
+
+/* Subtle entrance — one shared, cheap animation */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: reveal-in 0.6s var(--ease) forwards;
+    animation-timeline: view();
+    animation-range: entry 0% cover 24%;
+  }
+  @supports not (animation-timeline: view()) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+}
+@keyframes reveal-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

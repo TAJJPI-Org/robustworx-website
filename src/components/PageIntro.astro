@@ -1,0 +1,108 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  /** Accent + background motif. Keeps pages related but not identical. */
+  variant?: 'lime' | 'orange' | 'plum';
+  motif?: 'grid' | 'centreline' | 'chevron';
+}
+const { eyebrow, title, lead, variant = 'lime', motif = 'grid' } = Astro.props;
+---
+
+<section class={`pi pi--${variant} pi--${motif}`}>
+  <div class="wrap pi__inner">
+    <p class="label">{eyebrow}</p>
+    <h1 class="pi__title">{title}</h1>
+    {lead && <p class="lead pi__lead">{lead}</p>}
+    <slot />
+  </div>
+  <div class="pi__rule" aria-hidden="true"></div>
+</section>
+
+<style>
+  .pi {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(2.75rem, 1.5rem + 5vw, 5.5rem) clamp(2rem, 1.2rem + 3vw, 3.5rem);
+    background: var(--c-black);
+  }
+  .pi__inner {
+    position: relative;
+    z-index: 1;
+  }
+  .pi__title {
+    margin-top: 1rem;
+    font-size: var(--t-h1);
+    max-width: 20ch;
+  }
+  .pi__lead {
+    margin-top: 1.1rem;
+  }
+  .pi__rule {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 4px;
+  }
+
+  /* Accent */
+  .pi--lime .label {
+    color: var(--c-lime);
+  }
+  .pi--lime .label::before {
+    background: var(--c-lime);
+  }
+  .pi--lime .pi__rule {
+    background: linear-gradient(90deg, var(--c-lime) 0 22%, var(--c-line) 22% 100%);
+  }
+
+  .pi--orange .label {
+    color: var(--c-orange);
+  }
+  .pi--orange .label::before {
+    background: var(--c-orange);
+  }
+  .pi--orange .pi__rule {
+    background: linear-gradient(90deg, var(--c-orange) 0 22%, var(--c-line) 22% 100%);
+  }
+
+  .pi--plum {
+    background: linear-gradient(180deg, var(--c-plum-deep) 0%, var(--c-black) 78%);
+  }
+  .pi--plum .pi__rule {
+    background: linear-gradient(90deg, var(--c-purple) 0 22%, var(--c-line) 22% 100%);
+  }
+
+  /* Motif */
+  .pi--grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 76px 76px;
+    mask-image: linear-gradient(120deg, #000 0%, transparent 62%);
+  }
+  .pi--centreline::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: min(46%, 520px);
+    background-image: repeating-linear-gradient(-68deg, var(--c-line) 0 3px, transparent 3px 46px);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 70%);
+  }
+  .pi--chevron::before {
+    content: '';
+    position: absolute;
+    inset: auto 0 -20px auto;
+    width: min(52%, 620px);
+    height: 190px;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(255, 106, 19, 0.28) 0 16px,
+      transparent 16px 32px
+    );
+    mask-image: linear-gradient(90deg, transparent 0%, #000 85%);
+  }
+</style>

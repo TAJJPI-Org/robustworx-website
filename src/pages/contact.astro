@@ -1,0 +1,337 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site, telHref, smsHref, defaultSmsBody } from '../data/site';
+---
+
+<BaseLayout
+  title="Contact — send RobustWorx the job details"
+  description="Tell RobustWorx what the job needs. Send the location, timing and scope, or call Scott Mumford on 0458 958 995. Regional South Australia."
+>
+  <section class="ct-hero">
+    <div class="hazard hazard--lime hazard--thin" aria-hidden="true"></div>
+    <div class="wrap ct-hero__inner">
+      <div class="ct-hero__text">
+        <p class="label label--orange">Contact</p>
+        <h1 class="ct-hero__title">Tell us what the job needs.</h1>
+        <p class="lead ct-hero__lead">
+          Send the location, timing and what the work involves, and Scott will come back on what it
+          needs and whether RobustWorx can cover it. If it is easier to talk it through, call.
+        </p>
+      </div>
+
+      <div class="ct-card">
+        <p class="ct-card__label">Speak to</p>
+        <p class="ct-card__name">{site.contactName}</p>
+        <p class="ct-card__biz">{site.name} &middot; {site.region}</p>
+        <a class="ct-card__phone" href={telHref()}>{site.phoneDisplay}</a>
+        <div class="ct-card__actions">
+          <a class="btn btn--block" href={telHref()}>Call Scott</a>
+          <a class="btn btn--ghost btn--block" href={smsHref(defaultSmsBody)}>Text the job</a>
+        </div>
+        <p class="ct-card__note">
+          Calling usually gets a faster answer than anything else on this page.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ct-form" aria-labelledby="form-title">
+    <div class="wrap ct-form__inner">
+      <div class="ct-form__aside">
+        <h2 id="form-title" class="ct-form__title">Job intake</h2>
+        <p class="ct-form__lead">
+          Four short groups. Only name, phone, location and a description are needed — fill in the
+          rest if you have it and the answer comes back faster.
+        </p>
+        <ol class="ct-steps">
+          <li><span>01</span> About you</li>
+          <li><span>02</span> About the job</li>
+          <li><span>03</span> What is needed</li>
+          <li><span>04</span> Contact preference</li>
+        </ol>
+        <div class="ct-speed">
+          <h3>What speeds up the answer</h3>
+          <ul>
+            <li>A pin or address, not just a town name</li>
+            <li>The date the work has to be finished by</li>
+            <li>Access constraints — width, gradient, gates, services</li>
+            <li>Whether you are supplying any plant</li>
+          </ul>
+        </div>
+
+        <div class="ct-note">
+          <h3>How this reaches Scott</h3>
+          <p>
+            This form does not email from the website. It builds a structured job summary and hands
+            it to your phone's messaging app, or copies it so you can send it however you prefer.
+            Your details are not stored by this site.
+          </p>
+          <p class="ct-note__call">
+            Prefer to talk? <a href={telHref()}>{site.phoneDisplay}</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="ct-form__panel">
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+
+  <section class="ct-strip" aria-labelledby="strip-title">
+    <div class="wrap ct-strip__inner">
+      <h2 id="strip-title" class="ct-strip__title">Urgent job?</h2>
+      <p class="ct-strip__text">
+        Call Scott directly on <a href={telHref()}>{site.phoneDisplay}</a>. If the phone goes to
+        message bank he is likely on a machine — leave the location and what you need and he will
+        call back.
+      </p>
+      <a class="btn btn--dark ct-strip__btn" href={telHref()}>Call {site.phoneDisplay}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ct-hero {
+    position: relative;
+    background: linear-gradient(155deg, var(--c-plum-deep) 0%, var(--c-black) 62%);
+    padding-block: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .ct-hero .hazard {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .ct-hero__inner {
+    display: grid;
+    gap: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+    align-items: start;
+  }
+  @media (min-width: 920px) {
+    .ct-hero__inner {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      gap: 4rem;
+    }
+  }
+  .ct-hero__title {
+    margin-top: 1rem;
+    font-size: var(--t-h1);
+    max-width: 14ch;
+  }
+  .ct-hero__lead {
+    margin-top: 1.15rem;
+    color: #d3cddc;
+  }
+
+  .ct-card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    border-top: 5px solid var(--c-lime);
+    padding: clamp(1.35rem, 1rem + 1.4vw, 2rem);
+  }
+  .ct-card__label {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+  }
+  .ct-card__name {
+    margin-top: 0.7rem;
+    font-family: var(--f-display);
+    font-size: clamp(2rem, 1.5rem + 1.6vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .ct-card__biz {
+    margin-top: 0.3rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+  }
+  .ct-card__phone {
+    display: inline-block;
+    margin-top: 0.9rem;
+    font-family: var(--f-display);
+    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--c-lime);
+    text-decoration: none;
+    line-height: 1.15;
+    padding-block: 0.4rem;
+  }
+  .ct-card__phone:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .ct-card__actions {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.35rem;
+  }
+  .ct-card__note {
+    margin-top: 1rem;
+    color: var(--c-muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .ct-form__inner {
+    display: grid;
+    gap: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+    align-items: start;
+  }
+  @media (min-width: 1000px) {
+    .ct-form__inner {
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+      gap: 4rem;
+    }
+    .ct-form__aside {
+      position: sticky;
+      top: calc(var(--header-h) + 1.75rem);
+    }
+  }
+  .ct-form__title {
+    font-size: var(--t-h2);
+  }
+  .ct-form__lead {
+    margin-top: 0.9rem;
+    color: var(--c-muted);
+    max-width: 46ch;
+  }
+  .ct-steps {
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--c-line);
+  }
+  .ct-steps li {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--c-line);
+    font-family: var(--f-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #cbcbc6;
+  }
+  .ct-steps span {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    color: var(--c-orange);
+  }
+
+  .ct-speed {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--c-line);
+  }
+  .ct-speed h3 {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+    margin-bottom: 0.85rem;
+  }
+  .ct-speed ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .ct-speed li {
+    display: flex;
+    gap: 0.7rem;
+    font-size: var(--t-small);
+    line-height: 1.5;
+    color: #c6c6c1;
+  }
+  .ct-speed li::before {
+    content: '';
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-top: 0.42em;
+    background: var(--c-orange);
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 58% 100%, 0 100%);
+  }
+
+  .ct-note {
+    margin-top: 1.5rem;
+    padding: 1.15rem 1.25rem;
+    background: var(--c-surface);
+    border-left: 4px solid var(--c-orange);
+  }
+  .ct-note h3 {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-orange);
+    margin-bottom: 0.6rem;
+  }
+  .ct-note p {
+    color: var(--c-muted);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  .ct-note__call {
+    margin-top: 0.7rem;
+  }
+  .ct-note__call a {
+    color: var(--c-lime);
+    font-weight: 600;
+  }
+
+  .ct-form__panel {
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    padding: clamp(1.25rem, 0.9rem + 1.8vw, 2.5rem);
+  }
+
+  .ct-strip {
+    background: var(--c-lime);
+    color: var(--c-black);
+    padding-block: clamp(2rem, 1.4rem + 2.5vw, 3rem);
+  }
+  .ct-strip__inner {
+    display: grid;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  @media (min-width: 860px) {
+    .ct-strip__inner {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 2rem;
+    }
+  }
+  .ct-strip__title {
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.25rem);
+  }
+  .ct-strip__text {
+    font-size: var(--t-small);
+    line-height: 1.55;
+    max-width: 60ch;
+  }
+  .ct-strip__text a {
+    color: var(--c-black);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
+  .ct-strip__btn {
+    justify-self: start;
+  }
+  .ct-strip :global(.btn:focus-visible) {
+    outline-color: var(--c-black);
+  }
+</style>

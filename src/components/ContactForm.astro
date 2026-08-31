@@ -1,0 +1,557 @@
+---
+import { services } from '../data/services';
+import { site } from '../data/site';
+
+/**
+ * Job intake form.
+ *
+ * There is no verified email address or mail backend for RobustWorx, so the
+ * form does NOT pretend to send email. It builds a structured job summary and
+ * hands it off through channels that are verified to work:
+ *   1. Text the job to Scott (sms: with a pre-filled body) — primary on mobile
+ *   2. Copy the job summary — for desktop, to paste into an email or message
+ *   3. Call Scott — always available
+ *
+ * If a form endpoint is configured (PUBLIC_FORM_ENDPOINT), the form posts to it
+ * and reports the real result. See README > Contact form behaviour.
+ */
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+---
+
+<form class="jf" id="job-form" novalidate data-endpoint={endpoint} data-phone={site.phoneLink}>
+  <fieldset class="jf__set">
+    <legend class="jf__legend"><span>01</span> About you</legend>
+    <div class="jf__grid">
+      <p class="jf__field">
+        <label for="f-name">Name <span class="jf__req">required</span></label>
+        <input id="f-name" name="name" type="text" autocomplete="name" required />
+        <span class="jf__err" id="f-name-err" hidden>Enter your name.</span>
+      </p>
+      <p class="jf__field">
+        <label for="f-business">Business or organisation</label>
+        <input id="f-business" name="business" type="text" autocomplete="organization" />
+      </p>
+      <p class="jf__field">
+        <label for="f-phone">Phone <span class="jf__req">required</span></label>
+        <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required />
+        <span class="jf__err" id="f-phone-err" hidden
+          >Enter a phone number Scott can call back on.</span
+        >
+      </p>
+      <p class="jf__field">
+        <label for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" />
+        <span class="jf__err" id="f-email-err" hidden>Check the email address.</span>
+      </p>
+    </div>
+  </fieldset>
+
+  <fieldset class="jf__set">
+    <legend class="jf__legend"><span>02</span> About the job</legend>
+    <div class="jf__grid">
+      <p class="jf__field">
+        <label for="f-location">Job location <span class="jf__req">required</span></label>
+        <input
+          id="f-location"
+          name="location"
+          type="text"
+          placeholder="Address, nearest town or a map pin"
+          required
+        />
+        <span class="jf__err" id="f-location-err" hidden>Enter where the job is.</span>
+      </p>
+      <p class="jf__field">
+        <label for="f-service">Service required</label>
+        <select id="f-service" name="service">
+          <option value="">Not sure yet</option>
+          {services.map((s) => <option value={s.title}>{s.title}</option>)}
+          <option value="Something else">Something else</option>
+        </select>
+      </p>
+      <p class="jf__field">
+        <label for="f-timing">Preferred timing or date</label>
+        <input id="f-timing" name="timing" type="text" placeholder="e.g. week of 14th, or ASAP" />
+      </p>
+      <p class="jf__field">
+        <label for="f-duration">Expected duration</label>
+        <input id="f-duration" name="duration" type="text" placeholder="e.g. 2 days" />
+      </p>
+      <p class="jf__field jf__field--wide">
+        <label for="f-description"
+          >Description of the job <span class="jf__req">required</span></label
+        >
+        <textarea
+          id="f-description"
+          name="description"
+          rows="4"
+          required
+          placeholder="What the work involves and what it needs to end up like."></textarea>
+        <span class="jf__err" id="f-description-err" hidden>Describe what the job involves.</span>
+      </p>
+    </div>
+  </fieldset>
+
+  <fieldset class="jf__set">
+    <legend class="jf__legend"><span>03</span> What is needed</legend>
+    <div class="jf__grid">
+      <p class="jf__field jf__field--wide">
+        <label for="f-equipment">Plant or equipment required</label>
+        <textarea
+          id="f-equipment"
+          name="equipment"
+          rows="2"
+          placeholder="Machine, vehicle or gear needed — and anything you are supplying."
+        ></textarea>
+      </p>
+      <p class="jf__field jf__field--wide">
+        <label for="f-conditions">Site conditions and access</label>
+        <textarea
+          id="f-conditions"
+          name="conditions"
+          rows="2"
+          placeholder="Ground type, access constraints, services located, stock, site hazards."
+        ></textarea>
+      </p>
+      <p class="jf__field jf__field--wide">
+        <label for="f-requirements">Other requirements</label>
+        <textarea
+          id="f-requirements"
+          name="requirements"
+          rows="2"
+          placeholder="Inductions, site procedures, documentation, site contact on the day."
+        ></textarea>
+      </p>
+    </div>
+  </fieldset>
+
+  <fieldset class="jf__set jf__set--last">
+    <legend class="jf__legend"><span>04</span> Contact preference</legend>
+    <div class="jf__radios" role="group" aria-label="Preferred contact method">
+      <label class="jf__radio">
+        <input type="radio" name="preferred" value="Phone call" checked />
+        <span>Phone call</span>
+      </label>
+      <label class="jf__radio">
+        <input type="radio" name="preferred" value="Text message" />
+        <span>Text message</span>
+      </label>
+      <label class="jf__radio">
+        <input type="radio" name="preferred" value="Email" />
+        <span>Email</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="jf__actions">
+    <button class="btn btn--block" type="submit" data-submit>
+      {endpoint ? 'Send job details' : 'Text the job to Scott'}
+    </button>
+    <button class="btn btn--ghost btn--block" type="button" data-copy> Copy job summary </button>
+    <p class="jf__hint" data-hint>
+      {
+        endpoint
+          ? 'Your details are sent straight to Scott.'
+          : 'Opens your messaging app with the job details filled in — you send it. Nothing is submitted from this page.'
+      }
+    </p>
+  </div>
+
+  <p class="jf__status" role="status" aria-live="polite" data-status></p>
+
+  <div class="jf__errsum" role="alert" data-errsum hidden>
+    <p>Some details are still needed:</p>
+    <ul data-errlist></ul>
+  </div>
+</form>
+
+<style>
+  .jf__set {
+    border: 0;
+    border-top: 1px solid var(--c-line);
+    padding: 0;
+    margin: 0;
+    padding-block: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+  }
+  .jf__set:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .jf__legend {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0;
+    margin-bottom: 1.25rem;
+    font-family: var(--f-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-light);
+  }
+  .jf__legend span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    background: var(--c-lime);
+    color: var(--c-black);
+    font-size: 0.875rem;
+    letter-spacing: 0.04em;
+  }
+
+  .jf__grid {
+    display: grid;
+    gap: 1.1rem;
+  }
+  @media (min-width: 620px) {
+    .jf__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .jf__field--wide {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .jf__field {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+  }
+  .jf__field label {
+    font-family: var(--f-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #d5d5d0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+  .jf__req {
+    font-family: var(--f-body);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--c-orange);
+    text-transform: uppercase;
+  }
+
+  .jf input,
+  .jf select,
+  .jf textarea {
+    width: 100%;
+    min-height: 50px;
+    padding: 0.7rem 0.85rem;
+    background: var(--c-black);
+    border: 1px solid var(--c-line-strong);
+    color: var(--c-light);
+    font-size: 1rem;
+    line-height: 1.45;
+    border-radius: 0;
+    transition: border-color 0.15s var(--ease);
+  }
+  .jf textarea {
+    min-height: 88px;
+    resize: vertical;
+  }
+  .jf select {
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--c-lime) 50%),
+      linear-gradient(135deg, var(--c-lime) 50%, transparent 50%);
+    background-position:
+      calc(100% - 20px) calc(50% + 2px),
+      calc(100% - 14px) calc(50% + 2px);
+    background-size: 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+  }
+  .jf input::placeholder,
+  .jf textarea::placeholder {
+    color: #6e6e6c;
+  }
+  .jf input:hover,
+  .jf select:hover,
+  .jf textarea:hover {
+    border-color: #4d4d57;
+  }
+  .jf input:focus-visible,
+  .jf select:focus-visible,
+  .jf textarea:focus-visible {
+    outline: 3px solid var(--c-lime);
+    outline-offset: 1px;
+    border-color: var(--c-lime);
+  }
+  .jf [aria-invalid='true'] {
+    border-color: #ff7a6a;
+    background: rgba(255, 90, 70, 0.06);
+  }
+  .jf__err {
+    font-size: 0.8125rem;
+    color: #ff9d90;
+  }
+  .jf__err[hidden] {
+    display: none;
+  }
+
+  .jf__radios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .jf__radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 48px;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--c-line-strong);
+    background: var(--c-black);
+    cursor: pointer;
+    font-size: var(--t-small);
+  }
+  .jf__radio input {
+    width: 18px;
+    height: 18px;
+    min-height: 0;
+    padding: 0;
+    accent-color: var(--c-lime);
+    flex: none;
+  }
+  .jf__radio:has(input:checked) {
+    border-color: var(--c-lime);
+    background: rgba(198, 240, 0, 0.07);
+  }
+  .jf__radio:has(input:focus-visible) {
+    outline: 3px solid var(--c-lime);
+    outline-offset: 2px;
+  }
+
+  .jf__set--last {
+    padding-bottom: 1.5rem;
+  }
+
+  .jf__actions {
+    display: grid;
+    gap: 0.7rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--c-line);
+  }
+  @media (min-width: 620px) {
+    .jf__actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .jf__hint {
+      grid-column: 1 / -1;
+    }
+  }
+  .jf__hint {
+    color: var(--c-muted);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .jf__status {
+    margin-top: 1rem;
+    font-size: var(--t-small);
+    color: var(--c-lime);
+  }
+  .jf__status:empty {
+    display: none;
+  }
+  .jf__status[data-tone='error'] {
+    color: #ff9d90;
+  }
+
+  .jf__errsum {
+    margin-top: 1.25rem;
+    padding: 1rem 1.15rem;
+    border-left: 4px solid #ff7a6a;
+    background: rgba(255, 90, 70, 0.08);
+    font-size: var(--t-small);
+  }
+  .jf__errsum[hidden] {
+    display: none;
+  }
+  .jf__errsum ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .jf__errsum a {
+    color: #ffb3a8;
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#job-form');
+  if (form) {
+    const endpoint = form.dataset.endpoint || '';
+    const phone = form.dataset.phone || '';
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const errSum = form.querySelector<HTMLElement>('[data-errsum]')!;
+    const errList = form.querySelector<HTMLElement>('[data-errlist]')!;
+    const submitBtn = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const copyBtn = form.querySelector<HTMLButtonElement>('[data-copy]')!;
+
+    const required = ['name', 'phone', 'location', 'description'];
+
+    const field = (n: string) =>
+      form.elements.namedItem(n) as HTMLInputElement | HTMLTextAreaElement | null;
+
+    const val = (n: string) => field(n)?.value.trim() ?? '';
+
+    /** Pre-select the service when arriving from /services?service=<id>. */
+    const wanted = new URLSearchParams(window.location.search).get('service');
+    if (wanted) {
+      const select = form.elements.namedItem('service') as HTMLSelectElement | null;
+      const slug = (s: string) =>
+        s
+          .toLowerCase()
+          .replace(/[^a-z]+/g, '-')
+          .replace(/^-|-$/g, '');
+      const match = select
+        ? Array.from(select.options).find((o) => o.value && slug(o.value) === wanted)
+        : undefined;
+      if (select && match) select.value = match.value;
+    }
+
+    const setError = (name: string, on: boolean) => {
+      const el = field(name);
+      const msg = document.getElementById(`f-${name}-err`);
+      if (!el) return;
+      el.setAttribute('aria-invalid', String(on));
+      if (on) el.setAttribute('aria-describedby', `f-${name}-err`);
+      else el.removeAttribute('aria-describedby');
+      if (msg) msg.hidden = !on;
+    };
+
+    const validate = (): string[] => {
+      const missing: string[] = [];
+      for (const n of required) {
+        const empty = val(n) === '';
+        setError(n, empty);
+        if (empty) missing.push(n);
+      }
+      const email = val('email');
+      const badEmail = email !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      setError('email', badEmail);
+      if (badEmail) missing.push('email');
+      return missing;
+    };
+
+    const showErrors = (missing: string[]) => {
+      if (!missing.length) {
+        errSum.hidden = true;
+        return;
+      }
+      errList.innerHTML = '';
+      for (const n of missing) {
+        const label = form.querySelector(`label[for="f-${n}"]`);
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `#f-${n}`;
+        a.textContent = (label?.childNodes[0]?.textContent ?? n).trim();
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          field(n)?.focus();
+        });
+        li.appendChild(a);
+        errList.appendChild(li);
+      }
+      errSum.hidden = false;
+      errSum.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    };
+
+    const preferred = () =>
+      (form.querySelector('input[name="preferred"]:checked') as HTMLInputElement | null)?.value ??
+      '';
+
+    const summary = () => {
+      const rows: [string, string][] = [
+        ['Name', val('name')],
+        ['Business', val('business')],
+        ['Phone', val('phone')],
+        ['Email', val('email')],
+        ['Location', val('location')],
+        ['Work required', (field('service') as unknown as HTMLSelectElement)?.value ?? ''],
+        ['Timing', val('timing')],
+        ['Duration', val('duration')],
+        ['Details', val('description')],
+        ['Equipment', val('equipment')],
+        ['Site conditions', val('conditions')],
+        ['Other requirements', val('requirements')],
+        ['Preferred contact', preferred()],
+      ];
+      const body = rows
+        .filter(([, v]) => v !== '')
+        .map(([k, v]) => `${k}: ${v}`)
+        .join('\n');
+      return `Hi Scott, I'm enquiring about a RobustWorx job.\n\n${body}`;
+    };
+
+    const say = (text: string, tone: 'ok' | 'error' = 'ok') => {
+      status.textContent = text;
+      status.dataset.tone = tone;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const missing = validate();
+      showErrors(missing);
+      if (missing.length) {
+        say('');
+        field(missing[0])?.focus();
+        return;
+      }
+
+      if (!endpoint) {
+        window.location.href = `sms:${phone}?&body=${encodeURIComponent(summary())}`;
+        say('Your messaging app should open with the job details filled in. Send it to Scott.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const original = submitBtn.textContent;
+      submitBtn.textContent = 'Sending…';
+      say('');
+      try {
+        const data = Object.fromEntries(new FormData(form).entries());
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        say('Sent. Scott will be in touch — call 0458 958 995 if it is urgent.');
+      } catch {
+        say(
+          'That did not send. Call Scott on 0458 958 995, or use "Copy job summary" and send it through directly.',
+          'error',
+        );
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = original;
+      }
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      const text = summary();
+      try {
+        await navigator.clipboard.writeText(text);
+        say('Job summary copied. Paste it into an email or message to Scott.');
+      } catch {
+        say('Could not copy automatically. Text the job to Scott, or call 0458 958 995.', 'error');
+      }
+    });
+
+    for (const n of [...required, 'email']) {
+      field(n)?.addEventListener('blur', () => {
+        if (field(n)?.getAttribute('aria-invalid') === 'true') validate();
+      });
+    }
+  }
+</script>

@@ -1,0 +1,239 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Silhouette from '../components/Silhouette.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { equipment } from '../data/equipment';
+import { site, telHref } from '../data/site';
+---
+
+<BaseLayout
+  title="Fleet & Equipment — plant, vehicles and field gear"
+  description="RobustWorx equipment by category: compact excavation plant, workzone support vehicles, traffic and roadside equipment, transport and site support gear, and field tools. Call Scott to confirm availability."
+>
+  <PageIntro
+    eyebrow="Fleet & equipment"
+    title="Equipment described by what it does"
+    lead="Plant, vehicles and field gear grouped by how they get used on a job. Availability changes week to week — confirm the specific machine or setup with Scott before you plan around it."
+    variant="orange"
+    motif="chevron"
+  >
+    <div class="cluster mt-6">
+      <a class="btn btn--orange" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+      <a class="btn btn--ghost" href="/contact">Send job details</a>
+    </div>
+  </PageIntro>
+
+  <div class="hazard" aria-hidden="true"></div>
+
+  {
+    equipment.map((e, i) => (
+      <section class={`fleet ${i % 2 === 1 ? 'fleet--alt' : ''}`} aria-labelledby={`${e.id}-title`}>
+        <div class="wrap fleet__inner">
+          <div class="fleet__art">
+            <span class="fleet__no" aria-hidden="true">
+              {e.no}
+            </span>
+            <Silhouette name={e.glyph} />
+            <span class="fleet__ground" aria-hidden="true" />
+          </div>
+
+          <div class="fleet__body">
+            <h2 id={`${e.id}-title`} class="fleet__title">
+              {e.title}
+            </h2>
+            <p class="fleet__blurb">{e.blurb}</p>
+
+            <div class="fleet__cols">
+              <div>
+                <h3 class="fleet__sub">Used for</h3>
+                <ul class="fleet__list">
+                  {e.useFor.map((u) => (
+                    <li>{u}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 class="fleet__sub fleet__sub--ask">Confirm with Scott</h3>
+                <ul class="fleet__list fleet__list--ask">
+                  {e.confirm.map((c) => (
+                    <li>{c}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section section--asphalt specs" aria-labelledby="specs-title">
+    <div class="wrap wrap--content">
+      <div class="specs__panel">
+        <p class="label label--orange">Before you plan around it</p>
+        <h2 id="specs-title" class="specs__title">No catalogue, on purpose</h2>
+        <div class="specs__text stack">
+          <p>
+            Machine models, weights, capacities and attachment lists are not published here. A
+            published spec sheet goes stale, and a job planned around the wrong number costs
+            everyone a day.
+          </p>
+          <p>
+            Tell Scott what the machine has to do, where it has to do it and when you need it. He
+            will confirm what can actually be put on the job for your dates.
+          </p>
+        </div>
+        <div class="cluster mt-6">
+          <a class="btn" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+          <a class="btn btn--ghost" href="/contact">Send job details</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    variant="plum"
+    title="Need a specific machine or setup?"
+    body="Send the dates, the site and what the machine has to do. Scott will confirm availability before you commit to it."
+  />
+</BaseLayout>
+
+<style>
+  .fleet {
+    padding-block: clamp(2.75rem, 1.8rem + 4vw, 5rem);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .fleet--alt {
+    background: var(--c-asphalt);
+  }
+  .fleet__inner {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 3.5rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .fleet__inner {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+    .fleet--alt .fleet__art {
+      order: 2;
+    }
+  }
+
+  .fleet__art {
+    position: relative;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem) clamp(1rem, 0.6rem + 2vw, 2.5rem) 0;
+    background:
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(160deg, #101014 0%, #08080a 100%);
+    background-size:
+      54px 54px,
+      54px 54px,
+      auto;
+    border: 1px solid var(--c-line);
+    overflow: hidden;
+  }
+  .fleet__no {
+    position: absolute;
+    top: clamp(0.5rem, 0.2rem + 1vw, 1rem);
+    left: clamp(0.75rem, 0.4rem + 1vw, 1.25rem);
+    font-family: var(--f-display);
+    font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
+    font-weight: 700;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.09);
+  }
+  .fleet__ground {
+    display: block;
+    height: 10px;
+    margin: 0 -3rem;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--c-orange) 0 12px,
+      transparent 12px 24px
+    );
+    opacity: 0.5;
+  }
+
+  .fleet__title {
+    font-size: var(--t-h2);
+    max-width: 16ch;
+  }
+  .fleet__blurb {
+    margin-top: 1rem;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: #d5d5cf;
+    max-width: 50ch;
+  }
+  .fleet__cols {
+    margin-top: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    display: grid;
+    gap: 1.75rem;
+  }
+  @media (min-width: 560px) {
+    .fleet__cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
+  }
+  .fleet__sub {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+    padding-bottom: 0.65rem;
+    margin-bottom: 0.85rem;
+    border-bottom: 2px solid var(--c-line);
+  }
+  .fleet__sub--ask {
+    color: var(--c-orange);
+  }
+  .fleet__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .fleet__list li {
+    display: flex;
+    gap: 0.65rem;
+    font-size: var(--t-small);
+    line-height: 1.55;
+    color: #c6c6c1;
+  }
+  .fleet__list li::before {
+    content: '';
+    flex: none;
+    width: 9px;
+    height: 9px;
+    margin-top: 0.42em;
+    background: var(--c-lime);
+  }
+  .fleet__list--ask li::before {
+    background: transparent;
+    border: 2px solid var(--c-orange);
+  }
+
+  .specs__panel {
+    border: 1px solid var(--c-line);
+    border-left: 5px solid var(--c-orange);
+    background: var(--c-surface);
+    padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+  }
+  .specs__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+  }
+  .specs__text {
+    margin-top: 1.15rem;
+    color: var(--c-muted);
+    max-width: 60ch;
+  }
+</style>

@@ -1,0 +1,407 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { fieldSituations } from '../data/field';
+import { workRecords, recordImage } from '../data/workRecords';
+import { site, telHref } from '../data/site';
+
+const records = workRecords;
+---
+
+<BaseLayout
+  title="Work in the field — job types and site records"
+  description="The kind of field work RobustWorx is set up for across regional South Australia: roadside workzone setup, support alongside live road works, service trenching, access preparation, site upkeep and day-to-day coordination."
+>
+  <PageIntro
+    eyebrow="Work"
+    title="Work in the field"
+    lead="What the work actually looks like on the ground. Documented job records and site photos are published here as they are added — everything else on this page describes the kind of field situation RobustWorx is set up for, not a claim about a particular project."
+    variant="lime"
+    motif="centreline"
+  />
+
+  {
+    records.length > 0 && (
+      <section class="section records" aria-labelledby="records-title">
+        <div class="wrap">
+          <h2 id="records-title" class="records__title">
+            Field records
+          </h2>
+          <div class="records__grid">
+            {records.map((r) => {
+              const img = recordImage(r.image);
+              return (
+                <article class="rec">
+                  {img && (
+                    <Image
+                      class="rec__img"
+                      src={img}
+                      alt={r.imageAlt ?? r.summary}
+                      widths={[420, 720, 1040]}
+                      sizes="(min-width: 1100px) 34vw, (min-width: 700px) 48vw, 92vw"
+                      loading="lazy"
+                    />
+                  )}
+                  <div class="rec__body">
+                    <p class="rec__cat">{r.serviceLabel}</p>
+                    <h3 class="rec__name">{r.title}</h3>
+                    <p class="rec__text">{r.summary}</p>
+                    {(r.location || r.client) && (
+                      <dl class="rec__meta">
+                        {r.location && (
+                          <div>
+                            <dt>Location</dt>
+                            <dd>{r.location}</dd>
+                          </div>
+                        )}
+                        {r.client && (
+                          <div>
+                            <dt>Client</dt>
+                            <dd>{r.client}</dd>
+                          </div>
+                        )}
+                      </dl>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section situations" aria-labelledby="sit-title">
+    <div class="wrap">
+      <div class="situations__head">
+        <div>
+          <p class="label label--orange">Field situations</p>
+          <h2 id="sit-title" class="situations__title">Six jobs worth calling about</h2>
+        </div>
+        <p class="situations__lead">
+          Each of these is a normal week's work for a field operator. If your job reads like one of
+          them, send the details through.
+        </p>
+      </div>
+
+      <ol class="situations__list">
+        {
+          fieldSituations.map((f) => (
+            <li class="sit">
+              <div class="sit__plate" aria-hidden="true">
+                <span class="sit__no">{f.no}</span>
+                <svg
+                  viewBox="0 0 240 116"
+                  class="sit__marks"
+                  fill="none"
+                  preserveAspectRatio="none"
+                >
+                  <path d="M0 84h240" class="sit__marks-edge" />
+                  <path d="M0 100h240" class="sit__marks-dash" />
+                  <path
+                    d="M20 0v62M56 0v62M92 0v62M128 0v62M164 0v62M200 0v62"
+                    class="sit__marks-fine"
+                  />
+                </svg>
+              </div>
+              <div class="sit__body">
+                <a class="sit__cat" href={`/services#${f.service}`}>
+                  {f.serviceLabel}
+                </a>
+                <h3 class="sit__name">{f.title}</h3>
+                <p class="sit__text">{f.description}</p>
+                <h4 class="sit__sub">On site</h4>
+                <ul class="sit__list">
+                  {f.onSite.map((o) => (
+                    <li>{o}</li>
+                  ))}
+                </ul>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--asphalt evidence" aria-labelledby="ev-title">
+    <div class="wrap wrap--content">
+      <div class="evidence__panel">
+        <p class="label">Evidence, not marketing</p>
+        <h2 id="ev-title" class="evidence__title">
+          {
+            records.length > 0
+              ? 'Records are added as jobs are documented'
+              : 'Site photos are published here as jobs are documented'
+          }
+        </h2>
+        <div class="evidence__text stack">
+          <p>
+            This page carries photos and job notes from actual RobustWorx work — nothing sourced
+            from a stock library, and nothing described as a project unless it was one.
+          </p>
+          <p>
+            Where a client is named or a location given, it is because that has been confirmed.
+            Where it is not, the record describes the work and leaves it there.
+          </p>
+        </div>
+        <div class="cluster mt-6">
+          <a class="btn" href="/contact">Send job details</a>
+          <a class="btn btn--ghost" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    variant="dark"
+    title="Got a job that looks like one of these?"
+    body="Send the location, the dates and what the work involves. Scott will come back on what it needs and whether RobustWorx can cover it."
+    showSms
+  />
+</BaseLayout>
+
+<style>
+  /* Records */
+  .records__title {
+    font-size: var(--t-h2);
+    margin-bottom: 1.75rem;
+  }
+  .records__grid {
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 700px) {
+    .records__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1100px) {
+    .records__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .rec {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+  }
+  .rec__img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    object-position: center;
+    background: var(--c-black);
+  }
+  .rec__body {
+    padding: 1.25rem;
+  }
+  .rec__cat {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+  }
+  .rec__name {
+    margin-top: 0.4rem;
+    font-size: var(--t-h3);
+  }
+  .rec__text {
+    margin-top: 0.5rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+  }
+  .rec__meta {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--c-line);
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+  }
+  .rec__meta div {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .rec__meta dt {
+    color: var(--c-muted-dim);
+    min-width: 68px;
+  }
+  .rec__meta dd {
+    margin: 0;
+    color: #d0d0cb;
+  }
+
+  /* Situations */
+  .situations__head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(2rem, 1.2rem + 2vw, 3rem);
+  }
+  @media (min-width: 900px) {
+    .situations__head {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 3rem;
+      align-items: end;
+    }
+  }
+  .situations__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+  }
+  .situations__lead {
+    color: var(--c-muted);
+    max-width: 46ch;
+  }
+
+  .situations__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 820px) {
+    .situations__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .sit {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+  }
+  .sit__plate {
+    position: relative;
+    height: 116px;
+    background: linear-gradient(160deg, #101014 0%, #08080a 100%);
+    border-bottom: 1px solid var(--c-line);
+    overflow: hidden;
+  }
+  .sit__no {
+    position: absolute;
+    left: clamp(1rem, 0.6rem + 1vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-58%);
+    z-index: 1;
+    font-family: var(--f-display);
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--c-lime);
+  }
+  .sit__marks {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: min(62%, 300px);
+    height: 100%;
+  }
+  .sit__marks-edge {
+    stroke: var(--c-line-strong);
+    stroke-width: 2;
+  }
+  .sit__marks-dash {
+    stroke: var(--c-orange);
+    stroke-width: 3;
+    stroke-dasharray: 20 16;
+    opacity: 0.75;
+  }
+  .sit__marks-fine {
+    stroke: rgba(255, 255, 255, 0.07);
+    stroke-width: 2;
+  }
+
+  .sit__body {
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .sit__cat {
+    align-self: flex-start;
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+    text-decoration: none;
+    padding-block: 0.7rem;
+  }
+  .sit__cat:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .sit__name {
+    margin-top: 0.5rem;
+    font-size: var(--t-h3);
+  }
+  .sit__text {
+    margin-top: 0.6rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.65;
+  }
+  .sit__sub {
+    margin-top: 1.4rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 2px solid var(--c-line);
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-orange);
+  }
+  .sit__list {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .sit__list li {
+    display: flex;
+    gap: 0.65rem;
+    font-size: var(--t-small);
+    line-height: 1.5;
+    color: #c6c6c1;
+  }
+  .sit__list li::before {
+    content: '';
+    flex: none;
+    width: 10px;
+    height: 2px;
+    margin-top: 0.7em;
+    background: var(--c-line-strong);
+  }
+
+  /* Evidence note */
+  .evidence__panel {
+    border: 1px solid var(--c-line);
+    border-left: 5px solid var(--c-lime);
+    background: var(--c-surface);
+    padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+  }
+  .evidence__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+    max-width: 20ch;
+  }
+  .evidence__text {
+    margin-top: 1.15rem;
+    color: var(--c-muted);
+    max-width: 62ch;
+  }
+</style>

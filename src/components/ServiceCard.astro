@@ -1,0 +1,138 @@
+---
+import Glyph from './Glyph.astro';
+import type { Service } from '../data/services';
+
+interface Props {
+  service: Service;
+  feature?: boolean;
+}
+const { service, feature = false } = Astro.props;
+---
+
+<article class={`sc ${feature ? 'sc--feature' : ''}`}>
+  <a class="sc__link" href={`/services#${service.id}`}>
+    <span class="sr-only">{service.title}</span>
+  </a>
+  <div class="sc__top">
+    <span class="sc__no">{service.no}</span>
+    <Glyph name={service.glyph} size={feature ? 56 : 44} class="sc__glyph" />
+  </div>
+  <h3 class="sc__title">{service.title}</h3>
+  <p class="sc__text">{service.short}</p>
+  <span class="sc__cue" aria-hidden="true">
+    Service detail
+    <svg width="15" height="11" viewBox="0 0 16 12" fill="none"
+      ><path d="M0 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2"></path></svg
+    >
+  </span>
+</article>
+
+<style>
+  .sc {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.9rem);
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+    transition:
+      background-color 0.18s var(--ease),
+      border-color 0.18s var(--ease),
+      transform 0.18s var(--ease);
+  }
+  .sc::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 0;
+    background: var(--c-lime);
+    transition: height 0.22s var(--ease);
+  }
+  .sc:hover,
+  .sc:focus-within {
+    background: var(--c-surface-2);
+    border-color: var(--c-line-strong);
+    transform: translateY(-3px);
+  }
+  .sc:hover::after,
+  .sc:focus-within::after {
+    height: 100%;
+  }
+
+  .sc__link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .sc__link:focus-visible::before {
+    outline: 3px solid var(--c-lime);
+    outline-offset: -3px;
+  }
+
+  .sc__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.4rem;
+  }
+  .sc__no {
+    font-family: var(--f-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--c-orange);
+  }
+  .sc__glyph {
+    color: var(--c-line-strong);
+    transition: color 0.18s var(--ease);
+  }
+  .sc:hover .sc__glyph,
+  .sc:focus-within .sc__glyph {
+    color: var(--c-lime);
+  }
+
+  .sc__title {
+    font-size: var(--t-h3);
+  }
+  .sc__text {
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .sc__cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.35rem;
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+  }
+
+  .sc--feature {
+    background: linear-gradient(140deg, var(--c-plum-deep) 0%, var(--c-surface) 62%);
+  }
+  .sc--feature .sc__title {
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  }
+  .sc--feature .sc__text {
+    font-size: var(--t-body);
+    color: #cbc6d4;
+    max-width: 46ch;
+  }
+  @media (min-width: 900px) {
+    .sc--feature {
+      grid-column: span 2;
+    }
+  }
+</style>

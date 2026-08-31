@@ -1,0 +1,263 @@
+---
+import { site, telHref } from '../data/site';
+
+/**
+ * Hero backdrop is drawn, not photographed: a road in perspective with a
+ * dashed centre line, survey contours and a hi-vis chevron band.
+ * No stock photography and no fabricated job imagery — see README.
+ */
+/** Vanishing point sits right-of-centre so the type stays clear of the road. */
+const VP_X = 560;
+const VP_Y = 250;
+const BASE_Y = 640;
+
+// Centre-line dashes: each band shrinks toward the vanishing point, and each
+// dash covers just over half its band so the gaps stay open at speed.
+const bands: number[] = [];
+for (let y = BASE_Y; y > VP_Y + 22; y = VP_Y + (y - VP_Y) * 0.78) bands.push(y);
+
+const halfWidth = (y: number) => (40 * Math.pow((y - VP_Y) / (BASE_Y - VP_Y), 1.25)) / 2;
+const centreAt = (y: number) => VP_X + ((y - VP_Y) / (BASE_Y - VP_Y)) * 0;
+
+const dashes = bands.slice(0, -1).map((yNear, i) => {
+  const yFar = yNear - 0.55 * (yNear - bands[i + 1]);
+  const wN = halfWidth(yNear);
+  const wF = halfWidth(yFar);
+  const cN = centreAt(yNear);
+  const cF = centreAt(yFar);
+  return `M${cN - wN} ${yNear}L${cN + wN} ${yNear}L${cF + wF} ${yFar}L${cF - wF} ${yFar}Z`;
+});
+
+// Topographic contour lines above the horizon.
+const contours = [0, 1, 2, 3, 4].map(
+  (i) =>
+    `M-40 ${168 - i * 24}C120 ${142 - i * 22} 250 ${196 - i * 20} 400 ${172 - i * 23}S680 ${128 - i * 18} 840 ${156 - i * 22}`,
+);
+---
+
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <svg viewBox="0 0 800 620" preserveAspectRatio="xMaxYMax slice" class="hero__svg">
+      <defs>
+        <linearGradient id="rw-road" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#232329"></stop>
+          <stop offset="100%" stop-color="#0e0e11"></stop>
+        </linearGradient>
+        <linearGradient id="rw-fade" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#fff" stop-opacity="0"></stop>
+          <stop offset="42%" stop-color="#fff" stop-opacity="0.35"></stop>
+          <stop offset="100%" stop-color="#fff" stop-opacity="1"></stop>
+        </linearGradient>
+        <mask id="rw-mask">
+          <rect x="-200" y="0" width="1200" height="620" fill="url(#rw-fade)"></rect>
+        </mask>
+      </defs>
+
+      <g class="hero__road" mask="url(#rw-mask)">
+        <path d={`M180 ${BASE_Y} L${VP_X} ${VP_Y} L940 ${BASE_Y} Z`} fill="url(#rw-road)"></path>
+        <path d={`M180 ${BASE_Y} L${VP_X} ${VP_Y}`} class="hero__edge"></path>
+        <path d={`M940 ${BASE_Y} L${VP_X} ${VP_Y}`} class="hero__edge"></path>
+        <path d={`M262 ${BASE_Y} L${VP_X} ${VP_Y}`} class="hero__shoulder"></path>
+        <path d={`M858 ${BASE_Y} L${VP_X} ${VP_Y}`} class="hero__shoulder"></path>
+        {dashes.map((d) => <path d={d} class="hero__dash" />)}
+        <path d={`M300 ${VP_Y}h500`} class="hero__horizon"></path>
+      </g>
+      <g class="hero__contours" mask="url(#rw-mask)">{contours.map((d) => <path d={d} />)}</g>
+    </svg>
+    <span class="hero__grain"></span>
+    <span class="hero__chevron"></span>
+  </div>
+
+  <div class="wrap hero__inner">
+    <p class="label">{site.region}</p>
+
+    <h1 class="hero__title">
+      Practical capability <span class="hero__title-hi">where the job is.</span>
+    </h1>
+
+    <p class="hero__lead">
+      RobustWorx supports civil, traffic, plant and maintenance work across regional South
+      Australia. Extra plant, an operator, workzone support or someone on the ground — send the job
+      details and we'll work out what it needs.
+    </p>
+
+    <div class="hero__actions">
+      <a class="btn" href="/contact">Send job details</a>
+      <a class="btn btn--ghost hero__call" href={telHref()}>
+        Call Scott — {site.phoneDisplay}
+      </a>
+    </div>
+
+    <ul class="hero__strip">
+      <li>Traffic &amp; workzone support</li>
+      <li>Plant operation</li>
+      <li>Small earthworks</li>
+      <li>Site &amp; field support</li>
+      <li>Grounds &amp; maintenance</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--c-black);
+    padding-block: clamp(3rem, 1.5rem + 7vw, 7rem) clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .hero__svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+  }
+  .hero__edge {
+    fill: none;
+    stroke: #3a3a44;
+    stroke-width: 2;
+  }
+  .hero__shoulder {
+    fill: none;
+    stroke: #55555f;
+    stroke-width: 2.5;
+  }
+  .hero__dash {
+    fill: var(--c-lime);
+    opacity: 0.45;
+  }
+  .hero__contours path {
+    fill: none;
+    stroke: #ffffff;
+    stroke-opacity: 0.06;
+    stroke-width: 1.5;
+  }
+  .hero__horizon {
+    stroke: var(--c-orange);
+    stroke-opacity: 0.4;
+    stroke-width: 1.5;
+  }
+  .hero__grain {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.045) 1px,
+      transparent 0
+    );
+    background-size: 4px 4px;
+    mix-blend-mode: overlay;
+  }
+
+  /*
+   * On phones the road perspective runs straight through the body copy, so the
+   * road is dropped and the hero keeps the contour linework plus a hi-vis
+   * chevron along the foot of the section.
+   */
+  @media (max-width: 819px) {
+    .hero__road {
+      display: none;
+    }
+    .hero__contours path {
+      stroke-opacity: 0.09;
+    }
+  }
+  .hero__chevron {
+    display: none;
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 10px;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--c-orange) 0 14px,
+      transparent 14px 28px
+    );
+    opacity: 0.55;
+  }
+  @media (max-width: 819px) {
+    .hero__chevron {
+      display: block;
+    }
+  }
+
+  .hero__inner {
+    position: relative;
+  }
+  .hero__title {
+    margin-top: 1.15rem;
+    font-size: var(--t-hero);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+  }
+  .hero__title-hi {
+    display: block;
+    color: var(--c-lime);
+  }
+  .hero__lead {
+    margin-top: 1.4rem;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: #d5d5cf;
+    max-width: 56ch;
+  }
+
+  .hero__actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .hero__actions .btn {
+    flex: 1 1 260px;
+  }
+  @media (min-width: 620px) {
+    .hero__actions .btn {
+      flex: 0 0 auto;
+      min-width: 240px;
+    }
+  }
+
+  .hero__strip {
+    margin-top: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--c-line);
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .hero__strip li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--f-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+  }
+  .hero__strip li::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    flex: none;
+    background: var(--c-orange);
+  }
+
+  @media (min-width: 1100px) {
+    .hero__lead {
+      max-width: 52ch;
+    }
+    .hero__title {
+      max-width: 15ch;
+    }
+  }
+</style>

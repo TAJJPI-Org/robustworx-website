@@ -1,0 +1,212 @@
+---
+import Logo from './Logo.astro';
+import { site, nav, legalNav, telHref } from '../data/site';
+import { services } from '../data/services';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="ftr">
+  <div class="hazard hazard--thin" aria-hidden="true"></div>
+
+  <div class="ftr__main wrap">
+    <div class="ftr__brand">
+      <Logo height={38} />
+      <p class="ftr__blurb">
+        Field support, plant and civil work in regional South Australia. Send the job details or
+        call Scott directly.
+      </p>
+      <a class="btn btn--sm" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+    </div>
+
+    <nav class="ftr__col" aria-label="Services">
+      <h2 class="ftr__h">Services</h2>
+      <ul>
+        {
+          services.map((s) => (
+            <li>
+              <a href={`/services#${s.id}`}>{s.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="ftr__col" aria-label="Site">
+      <h2 class="ftr__h">Site</h2>
+      <ul>
+        <li><a href="/">Home</a></li>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="ftr__col">
+      <h2 class="ftr__h">Contact</h2>
+      <address class="ftr__addr">
+        <span class="ftr__name">{site.contactName}</span>
+        <span class="ftr__org">{site.name}</span>
+        <a class="ftr__phone" href={telHref()}>{site.phoneDisplay}</a>
+        <span class="ftr__region">{site.region}</span>
+      </address>
+      <a class="link-arrow" href="/contact">
+        Send job details
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"
+          ><path d="M0 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2"></path></svg
+        >
+      </a>
+    </div>
+  </div>
+
+  <div class="ftr__base">
+    <div class="wrap ftr__base-inner">
+      <p>&copy; {year} {site.name}. All rights reserved.</p>
+      <ul>
+        {
+          legalNav.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    background: var(--c-asphalt);
+    border-top: 1px solid var(--c-line);
+    margin-top: auto;
+  }
+  .ftr .hazard {
+    margin-top: -1px;
+  }
+  .ftr__main {
+    display: grid;
+    gap: clamp(2rem, 1rem + 3vw, 3rem);
+    padding-block: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+  }
+  .ftr__brand {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+  .ftr__blurb {
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    max-width: 34ch;
+  }
+  .ftr__h {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+    margin-bottom: 0.9rem;
+  }
+  .ftr__col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+  .ftr__col a {
+    display: inline-block;
+    padding: 0.6rem 0;
+    color: #cfcfca;
+    text-decoration: none;
+    font-size: var(--t-small);
+  }
+  .ftr__col a:hover {
+    color: var(--c-lime);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .ftr__addr {
+    font-style: normal;
+    display: grid;
+    gap: 0.15rem;
+    margin-bottom: 1rem;
+  }
+  .ftr__name {
+    font-family: var(--f-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  .ftr__org,
+  .ftr__region {
+    color: var(--c-muted);
+    font-size: var(--t-small);
+  }
+  .ftr__phone {
+    font-family: var(--f-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--c-lime);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    padding-block: 0.62rem;
+  }
+  .ftr__phone:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .ftr__base {
+    border-top: 1px solid var(--c-line);
+  }
+  .ftr__base-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.15rem;
+  }
+  .ftr__base p {
+    color: var(--c-muted-dim);
+    font-size: 0.8125rem;
+  }
+  .ftr__base ul {
+    display: flex;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .ftr__base a {
+    display: inline-block;
+    color: var(--c-muted);
+    font-size: 0.8125rem;
+    text-decoration: none;
+    padding-block: 0.62rem;
+  }
+  .ftr__base a:hover {
+    color: var(--c-lime);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (min-width: 700px) {
+    .ftr__main {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1020px) {
+    .ftr__main {
+      grid-template-columns: 1.5fr 1fr 0.8fr 1.2fr;
+    }
+  }
+</style>

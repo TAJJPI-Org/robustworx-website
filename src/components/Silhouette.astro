@@ -1,0 +1,166 @@
+---
+/**
+ * Equipment illustrations. Deliberately drawn as technical line diagrams —
+ * they are not photographs and are not presented as such. Ground line sits at
+ * y=140 in every drawing so the set reads as one family.
+ */
+interface Props {
+  name: 'excavator' | 'ute' | 'signage' | 'trailer' | 'tools';
+  class?: string;
+}
+const { name, class: className = '' } = Astro.props;
+---
+
+<svg
+  class={`sil ${className}`}
+  viewBox="0 0 320 152"
+  role="img"
+  aria-hidden="true"
+  focusable="false"
+  preserveAspectRatio="xMidYMax meet"
+>
+  {
+    name === 'excavator' && (
+      <g>
+        {/* boom and stick */}
+        <path d="M158 100 224 46l28 50" class="sil__arm" />
+        {/* bucket */}
+        <path d="M238 88l32 12-10 24-30-10z" class="sil__hi" />
+        <path d="M232 116h26" class="sil__hi" />
+        {/* house */}
+        <path d="M72 116V88q0-8 8-8h70l16 16v20z" class="sil__body" />
+        <path d="M64 92h8v20h-8z" class="sil__body" />
+        {/* cab */}
+        <path d="M88 80V56q0-6 6-6h26q6 0 6 6v24" class="sil__hi" />
+        <path d="M94 60h24v16H94z" class="sil__hi" />
+        {/* tracks */}
+        <path d="M56 120h128v8a12 12 0 0 1-12 12H68a12 12 0 0 1-12-12z" class="sil__body" />
+        <circle cx="76" cy="130" r="4.5" class="sil__body" />
+        <circle cx="104" cy="130" r="4.5" class="sil__body" />
+        <circle cx="136" cy="130" r="4.5" class="sil__body" />
+        <circle cx="164" cy="130" r="4.5" class="sil__body" />
+      </g>
+    )
+  }
+  {
+    name === 'ute' && (
+      <g>
+        {/* body */}
+        <path d="M38 114v-14l10-10h62l24-28h58v26h94v26" class="sil__body" />
+        <path d="M38 114h248" class="sil__body" />
+        {/* tray */}
+        <path d="M196 84h88v28h-88z" class="sil__hi" />
+        {/* cab glazing */}
+        <path d="M122 86l18-20h50v20z" class="sil__hi" />
+        {/* beacon */}
+        <path d="M152 66v-9h16v9" class="sil__hi" />
+        {/* bullbar */}
+        <path d="M38 96v18" class="sil__mid" />
+        {/* wheels */}
+        <circle cx="90" cy="125" r="16" class="sil__body" />
+        <circle cx="90" cy="125" r="6" class="sil__body" />
+        <circle cx="248" cy="125" r="16" class="sil__body" />
+        <circle cx="248" cy="125" r="6" class="sil__body" />
+      </g>
+    )
+  }
+  {
+    name === 'signage' && (
+      <g>
+        {/* diamond sign */}
+        <path d="m150 12 44 42-44 42-44-42z" class="sil__hi" />
+        <path d="m150 32 24 22-24 22-24-22z" class="sil__body" />
+        <path d="M150 96v44" class="sil__mid" />
+        <path d="M128 140h44" class="sil__body" />
+        {/* cones */}
+        <path d="m248 140 14-48 14 48z" class="sil__hi" />
+        <path d="M254 120h16" class="sil__body" />
+        <path d="M240 140h44" class="sil__body" />
+        <path d="m50 140 12-40 12 40z" class="sil__hi" />
+        <path d="M56 122h12" class="sil__body" />
+        <path d="M42 140h40" class="sil__body" />
+      </g>
+    )
+  }
+  {
+    name === 'trailer' && (
+      <g>
+        {/* load */}
+        <path d="M74 74h164v28H74z" class="sil__hi" />
+        {/* deck */}
+        <path d="M52 102h216v12H52z" class="sil__body" />
+        <path d="M52 74v28M268 74v28" class="sil__body" />
+        {/* drawbar and hitch */}
+        <path d="M268 108h28l16-10" class="sil__mid" />
+        {/* wheels */}
+        <circle cx="106" cy="126" r="14" class="sil__body" />
+        <circle cx="106" cy="126" r="5" class="sil__body" />
+        <circle cx="200" cy="126" r="14" class="sil__body" />
+        <circle cx="200" cy="126" r="5" class="sil__body" />
+        {/* jockey */}
+        <path d="M60 114v22h14" class="sil__body" />
+      </g>
+    )
+  }
+  {
+    name === 'tools' && (
+      <g>
+        {/* toolbox */}
+        <path d="M36 92h84v48H36z" class="sil__body" />
+        <path d="M36 108h84" class="sil__body" />
+        <path d="M64 92V80h28v12" class="sil__mid" />
+        <path d="M68 118h20v10H68z" class="sil__hi" />
+        {/* shovel */}
+        <path d="M158 140V44" class="sil__mid" />
+        <path d="M150 44h16v-14h-16z" class="sil__body" />
+        <path d="M146 108h24v22l-12 10-12-10z" class="sil__hi" />
+        {/* jerry can */}
+        <path d="M214 78h56v62h-56z" class="sil__body" />
+        <path d="M228 78V66h18v12" class="sil__hi" />
+        <path d="M222 96h40" class="sil__body" />
+      </g>
+    )
+  }
+  <path d="M0 141h320" class="sil__ground"></path>
+</svg>
+
+<style>
+  .sil {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .sil__body {
+    fill: none;
+    stroke: var(--c-line-strong);
+    stroke-width: 3;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+  }
+  .sil__hi {
+    fill: none;
+    stroke: var(--c-orange);
+    stroke-width: 3;
+    stroke-linejoin: miter;
+  }
+  .sil__arm {
+    fill: none;
+    stroke: var(--c-line-strong);
+    stroke-width: 11;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sil__mid {
+    fill: none;
+    stroke: var(--c-line-strong);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sil__ground {
+    fill: none;
+    stroke: var(--c-lime);
+    stroke-width: 3;
+    stroke-dasharray: 26 18;
+  }
+</style>

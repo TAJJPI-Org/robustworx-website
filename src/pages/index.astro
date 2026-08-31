@@ -1,0 +1,542 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import Silhouette from '../components/Silhouette.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services } from '../data/services';
+import { equipment } from '../data/equipment';
+import { fieldSituations } from '../data/field';
+import { site, telHref } from '../data/site';
+
+const supports = [
+  'An extra machine and operator for a works package',
+  'Workzone setup and pack-down around road works',
+  'Service trenching and small excavation',
+  'Access tracks, pads and site preparation',
+  'A person on the ground for the duration of a job',
+  'Material and gear shifted around site',
+  'Reinstatement after works are finished',
+  'Vegetation control around access and infrastructure',
+  'Site and yard clean-up between works',
+  'Regional jobs that are awkward to service from the city',
+];
+
+const reasons = [
+  {
+    no: '01',
+    title: 'Direct contact',
+    body: 'You discuss the requirement with Scott, who does the work. No call centre, no account manager relaying it back to site.',
+  },
+  {
+    no: '02',
+    title: 'Practical scope assessment',
+    body: 'Send the location, timing and what the work involves and the job gets assessed on what it actually needs — not on a rate card written before anyone looked at it.',
+  },
+  {
+    no: '03',
+    title: 'Field-focused capability',
+    body: 'RobustWorx is built around equipment and site support rather than office-heavy project delivery. The overhead stays off your job.',
+  },
+  {
+    no: '04',
+    title: 'Regional operating context',
+    body: 'Travel distance, site access, ground conditions and the fact that the nearest supplier is not around the corner are part of how the work is planned.',
+  },
+];
+
+const featured = fieldSituations.slice(0, 3);
+---
+
+<BaseLayout
+  title="RobustWorx — Field support, plant and civil work in regional South Australia"
+  description="RobustWorx supports civil, traffic, plant and maintenance work across regional South Australia. Traffic and workzone support, plant operation, small earthworks, site support and grounds maintenance. Call Scott on 0458 958 995."
+>
+  <Hero />
+
+  <!-- Services -->
+  <section class="section linework" aria-labelledby="svc-title">
+    <div class="wrap">
+      <SectionHeader
+        eyebrow="What we do"
+        title="Five things RobustWorx gets called for"
+        lead="Practical field categories, not a service menu written to fill a page. Each one links through to what it covers and what to send so the job can be assessed."
+        align="split"
+      />
+      <div class="svc-grid">
+        {services.map((s, i) => <ServiceCard service={s} feature={i === 0} />)}
+      </div>
+      <p class="svc-more">
+        <a class="link-arrow" href="/services">
+          See all services in detail
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"
+            ><path d="M0 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2"></path></svg
+          >
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Equipment -->
+  <section class="section section--surface eq" aria-labelledby="eq-title">
+    <div class="hazard hazard--thin eq__rule" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="eq__head">
+        <div>
+          <p class="label label--orange">On the ground</p>
+          <h2 id="eq-title" class="eq__title">The gear that turns up</h2>
+        </div>
+        <p class="eq__lead">
+          RobustWorx works by category rather than by catalogue. Machinery, vehicles, roadside
+          equipment and field gear are described by what they are used for — call Scott to confirm
+          what can be put on your job for your dates.
+        </p>
+      </div>
+
+      <ul class="eq__list">
+        {
+          equipment.slice(0, 3).map((e) => (
+            <li class="eq__item">
+              <div class="eq__art">
+                <Silhouette name={e.glyph} />
+              </div>
+              <div class="eq__body">
+                <span class="eq__no">{e.no}</span>
+                <h3 class="eq__name">{e.title}</h3>
+                <p class="eq__text">{e.blurb}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="eq__foot">
+        <a class="btn btn--ghost" href="/fleet">View fleet &amp; equipment</a>
+        <p class="eq__note">
+          Need a specific machine or setup? <a href={telHref()}>Call Scott</a> to confirm availability
+          before you plan around it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we can support -->
+  <section class="section supports" aria-labelledby="sup-title">
+    <div class="wrap">
+      <SectionHeader
+        eyebrow="Typical requests"
+        title="What RobustWorx can support"
+        accent="orange"
+        lead="If the job looks like one of these, it is worth a call. If it does not, it is still worth a call — the answer is either yes, no, or here is who does it."
+        align="split"
+      />
+      <ul class="supports__list">
+        {supports.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Field work -->
+  <section class="section section--asphalt work-t" aria-labelledby="work-title">
+    <div class="wrap">
+      <SectionHeader
+        eyebrow="Work in the field"
+        title="The kind of work this looks like"
+        lead="Field situations RobustWorx is set up for, described plainly. Job records and site photos are published on the Work page as they are documented."
+        align="split"
+      />
+      <ol class="work-t__list">
+        {
+          featured.map((f) => (
+            <li class="work-t__item">
+              <span class="plate-no">{f.no}</span>
+              <div>
+                <p class="work-t__cat">{f.serviceLabel}</p>
+                <h3 class="work-t__name">{f.title}</h3>
+                <p class="work-t__text">{f.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="mt-6">
+        <a class="link-arrow" href="/work">
+          See work in the field
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"
+            ><path d="M0 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2"></path></svg
+          >
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Why -->
+  <section class="section why" aria-labelledby="why-title">
+    <div class="wrap">
+      <h2 id="why-title" class="why__title">Why contractors use a business like this</h2>
+      <div class="why__grid">
+        {
+          reasons.map((r) => (
+            <article class="why__item">
+              <span class="why__no">{r.no}</span>
+              <h3 class="why__name">{r.title}</h3>
+              <p class="why__text">{r.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Regional -->
+  <section class="section region" aria-labelledby="region-title">
+    <div class="wrap region__inner">
+      <div>
+        <p class="label">Operating context</p>
+        <h2 id="region-title" class="region__title">Regional work has its own problems</h2>
+        <div class="region__text stack">
+          <p>
+            A job two hours from the depot is not the same job as one twenty minutes away. Getting
+            plant to site costs a day at each end. Ground conditions change between properties. A
+            part that is an hour away in the city is a half-day round trip here.
+          </p>
+          <p>
+            RobustWorx is based in regional South Australia and plans work around that. It is the
+            reason a local operator often makes more sense on a regional package than mobilising a
+            crew out from town for a few days of work.
+          </p>
+        </div>
+        <div class="cluster mt-6">
+          <a class="btn btn--orange" href="/capability">View capability</a>
+          <a class="btn btn--ghost" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+        </div>
+      </div>
+      <div class="region__art" aria-hidden="true">
+        <svg viewBox="0 0 400 320" fill="none">
+          <path d="M0 232h400" class="region__horizon"></path>
+          <path d="M0 232c46-30 78-8 118-36s70-44 116-22 74 62 166 34" class="region__ridge"></path>
+          <path d="M0 268c60-14 112 10 172-6s118-24 228 2" class="region__ridge2"></path>
+          {
+            [0, 1, 2, 3, 4, 5].map((i) => (
+              <path d={`M${-20 + i * 74} 320 L${168 + i * 12} 232`} class="region__field" />
+            ))
+          }
+          <path d="M0 300h400" class="region__road"></path>
+          <path d="M0 300h400" class="region__roadline"></path>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    variant="lime"
+    title="Tell us what the job needs."
+    body="Send the location, dates and what the work involves. If it is easier, call Scott and talk it through."
+    showSms
+  />
+</BaseLayout>
+
+<style>
+  /* Services */
+  .svc-grid {
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 640px) {
+    .svc-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 900px) {
+    .svc-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .svc-more {
+    margin-top: 1.75rem;
+  }
+
+  /* Equipment */
+  .eq {
+    position: relative;
+  }
+  .eq__rule {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .eq__head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(2rem, 1.2rem + 2.5vw, 3.25rem);
+  }
+  .eq__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+  }
+  .eq__lead {
+    color: var(--c-muted);
+    max-width: 52ch;
+  }
+  @media (min-width: 900px) {
+    .eq__head {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 3rem;
+      align-items: end;
+    }
+  }
+
+  .eq__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 800px) {
+    .eq__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .eq__item {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-black);
+    border: 1px solid var(--c-line);
+  }
+  .eq__art {
+    padding: 1.5rem 1.25rem 0;
+    background: linear-gradient(180deg, #0a0a0c 0%, var(--c-black) 100%);
+  }
+  .eq__body {
+    padding: 1.25rem;
+    border-top: 1px solid var(--c-line);
+  }
+  .eq__no {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--c-orange);
+  }
+  .eq__name {
+    margin-top: 0.35rem;
+    font-size: var(--t-h3);
+  }
+  .eq__text {
+    margin-top: 0.5rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+  }
+  .eq__foot {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+  }
+  .eq__note {
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    max-width: 44ch;
+  }
+  .eq__note a {
+    color: var(--c-lime);
+  }
+
+  /* Supports */
+  .supports__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 2px solid var(--c-line);
+  }
+  @media (min-width: 780px) {
+    .supports__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(2rem, 1rem + 3vw, 4rem);
+    }
+  }
+  .supports__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--c-line);
+    line-height: 1.45;
+  }
+  .supports__list li::before {
+    content: '';
+    flex: none;
+    width: 14px;
+    height: 14px;
+    margin-top: 0.34em;
+    background: var(--c-orange);
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);
+  }
+
+  /* Work teaser */
+  .work-t__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--c-line);
+  }
+  .work-t__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.1rem;
+    align-items: start;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  @media (min-width: 760px) {
+    .work-t__item {
+      grid-template-columns: 90px minmax(0, 1fr);
+      gap: 2rem;
+    }
+  }
+  .work-t__cat {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+  }
+  .work-t__name {
+    margin-top: 0.4rem;
+    font-size: var(--t-h3);
+  }
+  .work-t__text {
+    margin-top: 0.5rem;
+    color: var(--c-muted);
+    max-width: 62ch;
+    font-size: var(--t-small);
+    line-height: 1.65;
+  }
+
+  /* Why */
+  .why {
+    background: linear-gradient(180deg, var(--c-black) 0%, var(--c-black) 100%), var(--c-black);
+    border-top: 1px solid var(--c-line);
+  }
+  .why__title {
+    font-size: var(--t-h2);
+    max-width: 18ch;
+    margin-bottom: clamp(2rem, 1.2rem + 2vw, 3rem);
+  }
+  .why__grid {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--c-line);
+  }
+  @media (min-width: 700px) {
+    .why__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1100px) {
+    .why__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .why__item {
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  @media (min-width: 700px) {
+    .why__item {
+      padding: 1.9rem clamp(1rem, 0.4rem + 1.6vw, 2rem) 2rem 0;
+    }
+    .why__item + .why__item {
+      border-left: 1px solid var(--c-line);
+      padding-left: clamp(1rem, 0.4rem + 1.6vw, 2rem);
+    }
+  }
+  @media (min-width: 700px) and (max-width: 1099px) {
+    .why__item:nth-child(odd) {
+      border-left: none;
+      padding-left: 0;
+    }
+  }
+  .why__no {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--c-orange);
+  }
+  .why__name {
+    margin-top: 0.6rem;
+    font-size: 1.5rem;
+  }
+  .why__text {
+    margin-top: 0.6rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.65;
+  }
+
+  /* Region */
+  .region {
+    background: linear-gradient(150deg, var(--c-plum-deep) 0%, var(--c-black) 58%);
+    border-top: 1px solid var(--c-line);
+  }
+  .region__inner {
+    display: grid;
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 920px) {
+    .region__inner {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+  }
+  .region__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+    max-width: 16ch;
+  }
+  .region__text {
+    margin-top: 1.25rem;
+    color: #cec9d6;
+    max-width: 56ch;
+  }
+  .region__art svg {
+    width: 100%;
+    height: auto;
+  }
+  .region__horizon {
+    stroke: var(--c-line-strong);
+    stroke-width: 1.5;
+  }
+  .region__ridge {
+    stroke: rgba(255, 255, 255, 0.16);
+    stroke-width: 2;
+  }
+  .region__ridge2 {
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 2;
+  }
+  .region__field {
+    stroke: rgba(255, 255, 255, 0.06);
+    stroke-width: 1.5;
+  }
+  .region__road {
+    stroke: var(--c-line-strong);
+    stroke-width: 22;
+  }
+  .region__roadline {
+    stroke: var(--c-lime);
+    stroke-width: 2.5;
+    stroke-dasharray: 22 20;
+    opacity: 0.6;
+  }
+</style>
