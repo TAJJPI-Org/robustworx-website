@@ -14,7 +14,7 @@ import { site, telHref } from '../data/site';
 
 /** Real crops from the supplied photos, one per tile — no tile ships without an image. */
 const serviceCrop: Record<string, PhotoData> = {
-  'traffic-workzone-support': crops.stopBat,
+  'traffic-workzone-support': { ...photos.trafficControl, focus: '60% 18%' },
   'site-supervision-field-support': crops.clipboard,
   'plant-operation': crops.excavator,
   'small-earthworks': crops.trench,

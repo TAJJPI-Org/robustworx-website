@@ -180,7 +180,7 @@ export const crops = {
   },
   crew: {
     src: cropCrew,
-    alt: 'A worker in hi-vis standing in a trench in front of an excavator.',
+    alt: 'A worker in hi-vis standing in an open trench with an excavator and tipper truck working behind.',
     caption: 'Crew working in the trench.',
     service: 'site-supervision-field-support',
     serviceLabel: 'Site supervision & field support',

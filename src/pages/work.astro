@@ -13,8 +13,8 @@ const records = workRecords;
 
 /** One real crop per field situation, matched to the service it describes. */
 const situationCrop: PhotoData[] = [
-  crops.roadworksSigns,
-  crops.stopBat,
+  { ...photos.trafficControl, focus: '60% 18%' },
+  crops.vms,
   crops.trench,
   crops.tipper,
   crops.conesRoad,
@@ -132,7 +132,7 @@ const situationCrop: PhotoData[] = [
                 ratio="16 / 9"
                 tag={f.no}
                 class="sit__photo"
-                sizes="(min-width: 1100px) 31vw, (min-width: 700px) 48vw, 100vw"
+                sizes="(min-width: 820px) 46vw, 100vw"
               />
               <div class="sit__body">
                 <a class="sit__cat" href={`/services#${f.service}`}>
