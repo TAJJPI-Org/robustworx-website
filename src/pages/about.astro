@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import { photos } from '../data/photos';
 import { site, telHref } from '../data/site';
 
 const approach = [
@@ -42,6 +44,7 @@ const approach = [
     title="A field business, run by the person doing the work"
     variant="orange"
     motif="centreline"
+    photo={photos.trenchSite}
   />
 
   <section class="about" aria-labelledby="about-title">
@@ -73,7 +76,15 @@ const approach = [
       </div>
 
       <aside class="owner" aria-label="Contact details">
-        <div class="owner__card">
+        <div class="owner__card" data-reveal="right">
+          <Photo
+            photo={photos.coastalUte}
+            ratio="4 / 3"
+            focus="74% 42%"
+            tag="Owner"
+            class="owner__photo"
+            sizes="(min-width: 940px) 30vw, 100vw"
+          />
           <p class="owner__label">Owner &amp; operator</p>
           <p class="owner__name">{site.contactName}</p>
           <p class="owner__biz">{site.name}</p>
@@ -90,7 +101,7 @@ const approach = [
 
   <section class="section approach" aria-labelledby="approach-title">
     <div class="wrap">
-      <div class="approach__head">
+      <div class="approach__head" data-reveal>
         <p class="label">How a job runs</p>
         <h2 id="approach-title" class="approach__title">Five steps, in this order</h2>
         <p class="approach__lead">
@@ -98,7 +109,7 @@ const approach = [
           the questions get asked before anyone mobilises.
         </p>
       </div>
-      <ol class="approach__list">
+      <ol class="approach__list" data-reveal-group>
         {
           approach.map((a) => (
             <li class="approach__item">
@@ -186,10 +197,18 @@ const approach = [
   }
 
   .owner__card {
+    --pad: clamp(1.25rem, 1rem + 1.2vw, 1.9rem);
     background: var(--c-surface);
     border: 1px solid var(--c-line);
     border-top: 5px solid var(--c-orange);
-    padding: clamp(1.25rem, 1rem + 1.2vw, 1.9rem);
+    padding: var(--pad);
+  }
+  :global(.owner__photo) {
+    margin: calc(-1 * var(--pad)) calc(-1 * var(--pad)) 1.25rem;
+    border-bottom: 1px solid var(--c-line);
+  }
+  :global(.owner__photo .photo__frame) {
+    clip-path: none;
   }
   @media (min-width: 940px) {
     .owner__card {

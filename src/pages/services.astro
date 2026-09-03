@@ -3,8 +3,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import Glyph from '../components/Glyph.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import { photos, type Photo as PhotoData } from '../data/photos';
 import { services } from '../data/services';
 import { site, telHref } from '../data/site';
+
+/** Supplied photos, matched to the service each one actually shows. */
+const servicePhoto: Record<string, { photo: PhotoData; focus: string } | undefined> = {
+  'traffic-workzone-support': { photo: photos.coastalUte, focus: '62% 18%' },
+  'site-supervision-field-support': { photo: photos.trenchSite, focus: '40% 12%' },
+  'plant-operation': { photo: photos.excavatorSunset, focus: '50% 45%' },
+};
 ---
 
 <BaseLayout
@@ -42,6 +51,17 @@ import { site, telHref } from '../data/site';
         aria-labelledby={`${s.id}-title`}
       >
         <div class="wrap">
+          {servicePhoto[s.id] && (
+            <Photo
+              photo={servicePhoto[s.id]!.photo}
+              focus={servicePhoto[s.id]!.focus}
+              ratio="2 / 1"
+              tag={s.no}
+              caption
+              class="svc__photo"
+              sizes="(min-width: 1360px) 1300px, 100vw"
+            />
+          )}
           <div class="svc__head">
             <div class="svc__marker" aria-hidden="true">
               <span class="svc__no">{s.no}</span>
@@ -102,7 +122,8 @@ import { site, telHref } from '../data/site';
   }
 
   <CtaBand
-    variant="dark"
+    variant="photo"
+    photo={photos.trafficControl}
     title="Not sure which one it is?"
     body="Most jobs cross two or three of these. Describe the work and Scott will tell you what it needs — or who else to call if it is outside what RobustWorx does."
     showSms
@@ -161,6 +182,14 @@ import { site, telHref } from '../data/site';
     background: var(--c-asphalt);
   }
 
+  :global(.svc__photo) {
+    margin-bottom: clamp(1.75rem, 1.2rem + 2.5vw, 3.25rem);
+  }
+  @media (max-width: 699px) {
+    :global(.svc__photo .photo__frame) {
+      aspect-ratio: 16 / 10;
+    }
+  }
   .svc__head {
     display: grid;
     gap: 1.25rem;

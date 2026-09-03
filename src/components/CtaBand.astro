@@ -1,22 +1,44 @@
 ---
+import { Image } from 'astro:assets';
 import { site, telHref, smsHref, defaultSmsBody } from '../data/site';
+import type { Photo } from '../data/photos';
 
 interface Props {
   title?: string;
   body?: string;
-  variant?: 'dark' | 'lime' | 'plum';
+  variant?: 'dark' | 'lime' | 'plum' | 'photo';
   /** Show the "text the job" action as well as call + form. */
   showSms?: boolean;
+  /** Required for variant="photo": the supplied photo shown behind the band. */
+  photo?: Photo;
 }
 const {
   title = 'Tell us what the job needs.',
   body = 'Send the location, timing and what the work involves. If it is easier, call Scott and talk it through.',
   variant = 'dark',
   showSms = false,
+  photo,
 } = Astro.props;
 ---
 
 <section class={`cta cta--${variant}`} aria-labelledby="cta-title">
+  {
+    variant === 'photo' && photo && (
+      <div class="cta__photo" aria-hidden="true">
+        <Image
+          src={photo.src}
+          alt=""
+          widths={[720, 1080, 1600]}
+          sizes="100vw"
+          loading="lazy"
+          decoding="async"
+          class="cta__img"
+          style={`object-position:${photo.focus}`}
+        />
+        <span class="cta__shade" />
+      </div>
+    )
+  }
   <div class="wrap cta__inner">
     <div class="cta__text">
       <h2 id="cta-title" class="cta__title">{title}</h2>
@@ -70,6 +92,42 @@ const {
     font-size: var(--t-small);
     text-underline-offset: 3px;
     padding-block: 0.65rem;
+  }
+
+  /* Photo block — supplied photo behind a dark plate, copy stays on black. */
+  .cta--photo {
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--c-black);
+    padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem);
+  }
+  .cta__photo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .cta__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cta__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(12, 12, 14, 0.94) 0%,
+        rgba(12, 12, 14, 0.7) 55%,
+        rgba(12, 12, 14, 0.35) 100%
+      ),
+      linear-gradient(0deg, rgba(12, 12, 14, 0.5) 0%, rgba(12, 12, 14, 0) 60%);
+  }
+  .cta--photo .cta__body {
+    color: #d5d5cf;
+  }
+  .cta--photo .cta__sms {
+    color: #d5d5cf;
   }
 
   /* Lime block — used where the CTA should stop the page dead. */

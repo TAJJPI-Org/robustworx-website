@@ -77,6 +77,7 @@
 }
 html {
   -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-h) + 1rem);
 }
@@ -566,5 +567,58 @@ h4 {
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* --- Scroll reveal --------------------------------------------------------
+   Elements marked data-reveal step in as they enter the viewport. Only active
+   once the small script in BaseLayout has flagged the document as scripted,
+   so nothing is ever hidden without JavaScript, and never under reduced
+   motion. --------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s var(--ease),
+      transform 0.7s var(--ease);
+  }
+  @media (min-width: 1000px) {
+    html.js [data-reveal='left'] {
+      transform: translateX(-22px);
+    }
+    html.js [data-reveal='right'] {
+      transform: translateX(22px);
+    }
+  }
+  html.js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+  html.js [data-reveal-group] > * {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 0.65s var(--ease),
+      transform 0.65s var(--ease);
+  }
+  html.js [data-reveal-group].is-in > * {
+    opacity: 1;
+    transform: none;
+  }
+  html.js [data-reveal-group].is-in > :nth-child(2) {
+    transition-delay: 0.08s;
+  }
+  html.js [data-reveal-group].is-in > :nth-child(3) {
+    transition-delay: 0.16s;
+  }
+  html.js [data-reveal-group].is-in > :nth-child(4) {
+    transition-delay: 0.24s;
+  }
+  html.js [data-reveal-group].is-in > :nth-child(5) {
+    transition-delay: 0.32s;
+  }
+  html.js [data-reveal-group].is-in > :nth-child(n + 6) {
+    transition-delay: 0.4s;
   }
 }

@@ -69,10 +69,27 @@ before it is added.
 
 ## Deliberate design decisions that follow from the above
 
-1. **No photography.** No RobustWorx photos were supplied with this build, so
-   the site uses drawn technical illustrations and typographic composition
-   instead. There is no stock photography and no AI-generated imagery presented
-   as RobustWorx work. Real photos drop in via `src/assets/work/` — see README.
+1. **Photography is limited to the four supplied images.** RobustWorx
+   supplied four photographs (Scott on a trenching site; a traffic controller
+   with a stop/slow bat; an excavator loading a tipper; Scott with the ute and
+   a message sign on a coastal road). They are used across the site and on the
+   Work page as field records. Captions and alt text describe only what is in
+   the frame — no location, client, date or outcome is attached to any of them.
+   There is no stock photography. Drawn illustrations remain where no photo
+   covers the subject (two fleet categories, the home equipment overview).
+
+   Two things visible in the photos need a decision before launch:
+
+   - **The ute door in `scott-coastal-ute.jpg` shows the number 1300 726 995.**
+     The verified contact number for this build is 0458 958 995 and that is the
+     only number the site publishes. If 1300 726 995 is a live business line,
+     add it to `src/data/site.ts` and it will appear alongside the mobile; if it
+     is not, consider whether that photo should be cropped or replaced so the
+     site and the vehicle do not disagree.
+   - **The message sign reads "TRAFFIC MANAGEMENT".** The site continues to
+     describe the service as traffic and workzone _support_ and does not claim
+     licensed traffic management (see item 6). Confirm the licensing position
+     before the wording is changed.
 
 2. **No logo file supplied.** The RobustWorx logo was not provided with this
    build. `src/components/Logo.astro` renders a neutral typographic wordmark as

@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import type { Photo } from '../data/photos';
+
 interface Props {
   eyebrow: string;
   title: string;
@@ -6,11 +9,31 @@ interface Props {
   /** Accent + background motif. Keeps pages related but not identical. */
   variant?: 'lime' | 'orange' | 'plum';
   motif?: 'grid' | 'centreline' | 'chevron';
+  /** Supplied photo shown behind the right-hand side of the intro. */
+  photo?: Photo;
 }
-const { eyebrow, title, lead, variant = 'lime', motif = 'grid' } = Astro.props;
+const { eyebrow, title, lead, variant = 'lime', motif = 'grid', photo } = Astro.props;
 ---
 
-<section class={`pi pi--${variant} pi--${motif}`}>
+<section class={`pi pi--${variant} pi--${motif} ${photo ? 'pi--photo' : ''}`}>
+  {
+    photo && (
+      <div class="pi__photo" aria-hidden="true">
+        <Image
+          src={photo.src}
+          alt=""
+          widths={[720, 1080, 1440]}
+          sizes="(min-width: 1000px) 62vw, 100vw"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="pi__img"
+          style={`object-position:${photo.focus}`}
+        />
+        <span class="pi__shade" />
+      </div>
+    )
+  }
   <div class="wrap pi__inner">
     <p class="label">{eyebrow}</p>
     <h1 class="pi__title">{title}</h1>
@@ -43,6 +66,69 @@ const { eyebrow, title, lead, variant = 'lime', motif = 'grid' } = Astro.props;
     position: absolute;
     inset: auto 0 0 0;
     height: 4px;
+    z-index: 2;
+  }
+
+  /* Photo backdrop */
+  .pi__photo {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .pi__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+  }
+  .pi__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        90deg,
+        var(--c-black) 0%,
+        rgba(12, 12, 14, 0.92) 42%,
+        rgba(12, 12, 14, 0.45) 100%
+      ),
+      linear-gradient(0deg, var(--c-black) 0%, rgba(12, 12, 14, 0) 55%);
+  }
+  .pi--photo {
+    padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem) clamp(2.5rem, 1.5rem + 3.5vw, 4.5rem);
+  }
+  .pi--photo::before {
+    display: none;
+  }
+  .pi--photo .pi__lead {
+    color: #e2e2dc;
+  }
+  @media (max-width: 999px) {
+    .pi__shade {
+      background:
+        linear-gradient(
+          90deg,
+          var(--c-black) 0%,
+          rgba(12, 12, 14, 0.85) 60%,
+          rgba(12, 12, 14, 0.6) 100%
+        ),
+        linear-gradient(0deg, var(--c-black) 0%, rgba(12, 12, 14, 0) 55%);
+    }
+    .pi__img {
+      opacity: 0.45;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pi__img {
+      animation: pi-settle 8s var(--ease) both;
+    }
+  }
+  @keyframes pi-settle {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
   }
 
   /* Accent */

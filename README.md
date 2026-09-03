@@ -130,7 +130,8 @@ they are used — no component surgery needed.
 | `src/data/services.ts`    | The five service areas — summary, where each is useful, what it covers, what to send, scoping notes        |
 | `src/data/equipment.ts`   | Fleet categories — description, what it is used for, what to confirm with Scott                            |
 | `src/data/field.ts`       | Field situation briefs shown on the Work page                                                              |
-| `src/data/workRecords.ts` | Verified job records with photos (empty until real records are added)                                      |
+| `src/data/workRecords.ts` | Field records shown on the Work page — the four supplied photos, described factually                       |
+| `src/data/photos.ts`      | The supplied RobustWorx photography: source file, alt text, caption and crop focus for each image          |
 
 Page-specific copy that only appears once — the About narrative, the Capability
 sections, Privacy and Terms — lives in the page file itself under `src/pages/`.
@@ -193,7 +194,27 @@ code change. The logo renders at a fixed height with automatic width, so the
 layout does not shift whatever the aspect ratio.
 
 Also replace `public/favicon.svg`, `public/apple-touch-icon.png` (180×180) and
-`public/og-robustworx.png` (1200×630) with brand-correct versions at that point.
+`public/og-robustworx.jpg` (1200×630) with brand-correct versions at that point.
+
+### Photography
+
+Four photographs supplied by RobustWorx live in `src/assets/photos/` and are
+registered in `src/data/photos.ts` with alt text, a factual caption and a crop
+focus point. Every use goes through `src/components/Photo.astro` (fixed-ratio
+cover crop, responsive WebP `srcset`, optional tag and caption), or through the
+`photo` prop on `PageIntro` and `CtaBand` for backdrops. Where they appear:
+
+| Photo                      | Used on                                                                 |
+| -------------------------- | ----------------------------------------------------------------------- |
+| `scott-trench-site.jpg`    | Home hero; Services 02 banner; Fleet and About intros; Work record 01   |
+| `traffic-control-stop.jpg` | Home mosaic; Fleet 03; Capability intro; Services CTA; Work record 02   |
+| `excavator-sunset.jpg`     | Home mosaic; Services 03 banner; Fleet 01; Contact hero; Work record 03 |
+| `scott-coastal-ute.jpg`    | Home mosaic; Services 01 banner; Fleet 02; About owner card; Work 04    |
+
+To swap or add a photo: drop the original file in `src/assets/photos/`, add an
+entry to `photos.ts` (keep the alt text and caption to what is visible in the
+frame), and reference it from the page. Astro generates the compressed variants
+at build time — do not pre-shrink anything.
 
 ### Adding field photos to the Work page
 
@@ -218,8 +239,10 @@ export const workRecords: WorkRecord[] = [
 ];
 ```
 
-Records render at the top of `/work`, above the field situation briefs. The page
-renders correctly with the array empty, which is how it ships.
+Records render at the top of `/work`, above the field situation briefs, with the
+first record shown as a full-width feature. The page renders correctly with the
+array empty. It ships with four records drawn from the supplied photography;
+none carries a location, client or date because none has been confirmed.
 
 **Rules for what goes on this page:** genuine RobustWorx photos only — no stock
 imagery. Describe what the photo shows. Do not name a client or claim an outcome

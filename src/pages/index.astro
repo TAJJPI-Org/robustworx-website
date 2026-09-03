@@ -5,9 +5,10 @@ import SectionHeader from '../components/SectionHeader.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import Silhouette from '../components/Silhouette.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import { photos } from '../data/photos';
 import { services } from '../data/services';
 import { equipment } from '../data/equipment';
-import { fieldSituations } from '../data/field';
 import { engagement } from '../data/engagement';
 import { site, telHref } from '../data/site';
 
@@ -46,8 +47,6 @@ const reasons = [
     body: 'Travel distance, site access, ground conditions and the fact that the nearest supplier is not around the corner are part of how the work is planned.',
   },
 ];
-
-const featured = fieldSituations.slice(0, 3);
 ---
 
 <BaseLayout
@@ -70,7 +69,7 @@ const featured = fieldSituations.slice(0, 3);
         </p>
       </div>
 
-      <div class="engage__grid">
+      <div class="engage__grid" data-reveal-group>
         {
           engagement.map((m) => (
             <article class={`mode mode--${m.accent}`}>
@@ -112,7 +111,7 @@ const featured = fieldSituations.slice(0, 3);
         lead="Practical field categories, not a service menu written to fill a page. Each one links through to what it covers and what to send so the job can be assessed."
         align="split"
       />
-      <div class="svc-grid">
+      <div class="svc-grid" data-reveal-group>
         {services.map((s, i) => <ServiceCard service={s} feature={i === 0} />)}
       </div>
       <p class="svc-more">
@@ -142,7 +141,7 @@ const featured = fieldSituations.slice(0, 3);
         </p>
       </div>
 
-      <ul class="eq__list">
+      <ul class="eq__list" data-reveal-group>
         {
           equipment.slice(0, 3).map((e) => (
             <li class="eq__item">
@@ -191,23 +190,34 @@ const featured = fieldSituations.slice(0, 3);
       <SectionHeader
         eyebrow="Work in the field"
         title="What the work actually looks like"
-        lead="Field situations RobustWorx is set up for, described plainly. Job records and site photos are published on the Work page as they are documented."
+        lead="RobustWorx people, plant and vehicles on the job. Each photo is captioned by what it shows and nothing more — job records are published on the Work page as they are documented."
         align="split"
       />
-      <ol class="work-t__list">
-        {
-          featured.map((f) => (
-            <li class="work-t__item">
-              <span class="plate-no">{f.no}</span>
-              <div>
-                <p class="work-t__cat">{f.serviceLabel}</p>
-                <h3 class="work-t__name">{f.title}</h3>
-                <p class="work-t__text">{f.description}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ol>
+      <div class="work-t__mosaic" data-reveal-group>
+        <Photo
+          photo={photos.trafficControl}
+          ratio="3 / 4"
+          focus="56% 30%"
+          tag="Traffic & workzone"
+          caption
+          class="work-t__tall"
+          sizes="(min-width: 900px) 44vw, 100vw"
+        />
+        <Photo
+          photo={photos.excavatorSunset}
+          ratio="16 / 10"
+          tag="Plant operation"
+          caption
+          sizes="(min-width: 900px) 52vw, 100vw"
+        />
+        <Photo
+          photo={photos.coastalUte}
+          ratio="16 / 10"
+          tag="Workzone vehicles"
+          caption
+          sizes="(min-width: 900px) 52vw, 100vw"
+        />
+      </div>
       <p class="mt-6">
         <a class="link-arrow" href="/work">
           See work in the field
@@ -223,7 +233,7 @@ const featured = fieldSituations.slice(0, 3);
   <section class="section why" aria-labelledby="why-title">
     <div class="wrap">
       <h2 id="why-title" class="why__title">Why contractors use a business like this</h2>
-      <div class="why__grid">
+      <div class="why__grid" data-reveal-group>
         {
           reasons.map((r) => (
             <article class="why__item">
@@ -260,7 +270,7 @@ const featured = fieldSituations.slice(0, 3);
           <a class="btn btn--ghost" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
         </div>
       </div>
-      <div class="region__art" aria-hidden="true">
+      <div class="region__art" aria-hidden="true" data-reveal="right">
         <svg viewBox="0 0 400 320" fill="none">
           <path d="M0 232h400" class="region__horizon"></path>
           <path d="M0 232c46-30 78-8 118-36s70-44 116-22 74 62 166 34" class="region__ridge"></path>
@@ -575,47 +585,27 @@ const featured = fieldSituations.slice(0, 3);
     clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);
   }
 
-  /* Work teaser */
-  .work-t__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  /* Work teaser — photo mosaic */
+  .work-t__mosaic {
     display: grid;
-    gap: 0;
-    border-top: 1px solid var(--c-line);
+    gap: var(--s-4);
   }
-  .work-t__item {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 1.1rem;
-    align-items: start;
-    padding: 1.6rem 0;
-    border-bottom: 1px solid var(--c-line);
-  }
-  @media (min-width: 760px) {
-    .work-t__item {
-      grid-template-columns: 90px minmax(0, 1fr);
-      gap: 2rem;
+  @media (min-width: 900px) {
+    .work-t__mosaic {
+      grid-template-columns: minmax(0, 0.88fr) minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      gap: var(--s-5);
     }
-  }
-  .work-t__cat {
-    font-family: var(--f-display);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--c-lime);
-  }
-  .work-t__name {
-    margin-top: 0.4rem;
-    font-size: var(--t-h3);
-  }
-  .work-t__text {
-    margin-top: 0.5rem;
-    color: var(--c-muted);
-    max-width: 62ch;
-    font-size: var(--t-small);
-    line-height: 1.65;
+    :global(.work-t__tall) {
+      grid-row: 1 / span 2;
+      display: flex;
+      flex-direction: column;
+    }
+    :global(.work-t__tall .photo__frame) {
+      flex: 1;
+      aspect-ratio: auto;
+      min-height: 420px;
+    }
   }
 
   /* Why */

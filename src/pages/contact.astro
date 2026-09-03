@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import ContactForm from '../components/ContactForm.astro';
+import { photos } from '../data/photos';
 import { site, telHref, smsHref, defaultSmsBody } from '../data/site';
 ---
 
@@ -10,6 +12,20 @@ import { site, telHref, smsHref, defaultSmsBody } from '../data/site';
 >
   <section class="ct-hero">
     <div class="hazard hazard--lime hazard--thin" aria-hidden="true"></div>
+    <div class="ct-hero__photo" aria-hidden="true">
+      <Image
+        src={photos.excavatorSunset.src}
+        alt=""
+        widths={[720, 1080, 1600]}
+        sizes="100vw"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+        class="ct-hero__img"
+        style={`object-position:${photos.excavatorSunset.focus}`}
+      />
+      <span class="ct-hero__shade"></span>
+    </div>
     <div class="wrap ct-hero__inner">
       <div class="ct-hero__text">
         <p class="label label--orange">Contact</p>
@@ -95,14 +111,53 @@ import { site, telHref, smsHref, defaultSmsBody } from '../data/site';
 <style>
   .ct-hero {
     position: relative;
-    background: linear-gradient(155deg, var(--c-plum-deep) 0%, var(--c-black) 62%);
-    padding-block: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--c-black);
+    padding-block: clamp(3rem, 1.8rem + 5vw, 6rem) clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
     border-bottom: 1px solid var(--c-line);
   }
   .ct-hero .hazard {
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 2;
+  }
+  .ct-hero__photo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .ct-hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+  }
+  .ct-hero__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(12, 12, 14, 0.97) 0%,
+        rgba(12, 12, 14, 0.82) 48%,
+        rgba(36, 14, 63, 0.55) 100%
+      ),
+      linear-gradient(0deg, rgba(12, 12, 14, 0.85) 0%, rgba(12, 12, 14, 0.1) 60%);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .ct-hero__img {
+      animation: ct-settle 8s var(--ease) both;
+    }
+  }
+  @keyframes ct-settle {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: scale(1);
+    }
   }
   .ct-hero__inner {
     display: grid;

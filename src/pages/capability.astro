@@ -4,6 +4,7 @@ import PageIntro from '../components/PageIntro.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site, telHref } from '../data/site';
 import { engagement } from '../data/engagement';
+import { photos } from '../data/photos';
 
 /**
  * Structured so this page can later be exported as a capability statement.
@@ -115,6 +116,7 @@ const assess = [
     lead="Written for contractors, councils and project teams assessing whether RobustWorx is useful on a package of work. Six sections, no padding."
     variant="plum"
     motif="grid"
+    photo={photos.trafficControl}
   >
     <dl class="cap-facts">
       <div>
