@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos } from '../data/photos';
 import { site, telHref } from '../data/site';
 
 const updated = 'August 2026';
@@ -10,9 +12,16 @@ const updated = 'August 2026';
   title="Terms"
   description="Terms of use for the RobustWorx website, and how website content relates to quoted work."
 >
-  <PageIntro eyebrow="Terms" title="Terms of use" variant="lime" motif="grid" />
+  <PageIntro
+    eyebrow="Terms"
+    title="Terms of use"
+    variant="lime"
+    motif="grid"
+    photo={photos.coastalUte}
+  />
 
-  <section class="section legal">
+  <section class="section legal has-bg">
+    <Backdrop photo={photos.trafficControl} side="full" opacity={0.08} />
     <div class="wrap wrap--content prose">
       <p class="legal__updated">Last updated: {updated}</p>
 

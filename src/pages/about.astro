@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
 import { photos } from '../data/photos';
 import { site, telHref } from '../data/site';
 
@@ -47,7 +48,8 @@ const approach = [
     photo={photos.trenchSite}
   />
 
-  <section class="about" aria-labelledby="about-title">
+  <section class="about has-bg" aria-labelledby="about-title">
+    <Backdrop photo={photos.excavatorSunset} side="left" focus="30% 50%" opacity={0.12} />
     <div class="wrap about__inner">
       <div class="about__text">
         <h2 id="about-title" class="sr-only">About RobustWorx</h2>
@@ -99,7 +101,8 @@ const approach = [
     </div>
   </section>
 
-  <section class="section approach" aria-labelledby="approach-title">
+  <section class="section approach has-bg" aria-labelledby="approach-title">
+    <Backdrop photo={photos.trafficControl} side="right" focus="60% 30%" />
     <div class="wrap">
       <div class="approach__head" data-reveal>
         <p class="label">How a job runs</p>
@@ -125,7 +128,8 @@ const approach = [
     </div>
   </section>
 
-  <section class="section section--asphalt place" aria-labelledby="place-title">
+  <section class="section section--asphalt place has-bg" aria-labelledby="place-title">
+    <Backdrop photo={photos.coastalUte} side="right" focus="15% 50%" />
     <div class="wrap wrap--content place__inner">
       <div>
         <p class="label label--orange">Where it operates</p>
@@ -157,7 +161,8 @@ const approach = [
   </section>
 
   <CtaBand
-    variant="lime"
+    variant="photo"
+    photo={photos.excavatorSunset}
     title="Work out whether it fits in one call."
     body="Describe the job. If RobustWorx can cover it you will get a straight answer, and if it cannot, you will get pointed somewhere useful."
     showSms

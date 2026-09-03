@@ -6,6 +6,7 @@ import ServiceCard from '../components/ServiceCard.astro';
 import Silhouette from '../components/Silhouette.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
 import { photos } from '../data/photos';
 import { services } from '../data/services';
 import { equipment } from '../data/equipment';
@@ -56,7 +57,8 @@ const reasons = [
   <Hero />
 
   <!-- How you engage RobustWorx -->
-  <section class="section engage" aria-labelledby="engage-title">
+  <section class="section engage has-bg" aria-labelledby="engage-title">
+    <Backdrop photo={photos.trafficControl} side="right" focus="50% 20%" />
     <div class="wrap">
       <div class="engage__head">
         <div>
@@ -103,7 +105,8 @@ const reasons = [
   </section>
 
   <!-- Services -->
-  <section class="section linework" aria-labelledby="svc-title">
+  <section class="section linework has-bg" aria-labelledby="svc-title">
+    <Backdrop photo={photos.excavatorSunset} side="left" />
     <div class="wrap">
       <SectionHeader
         eyebrow="What we do"
@@ -126,7 +129,8 @@ const reasons = [
   </section>
 
   <!-- Equipment -->
-  <section class="section section--surface eq" aria-labelledby="eq-title">
+  <section class="section section--surface eq has-bg" aria-labelledby="eq-title">
+    <Backdrop photo={photos.coastalUte} side="right" focus="80% 45%" />
     <div class="hazard hazard--thin eq__rule" aria-hidden="true"></div>
     <div class="wrap">
       <div class="eq__head">
@@ -169,7 +173,8 @@ const reasons = [
   </section>
 
   <!-- What we can support -->
-  <section class="section supports" aria-labelledby="sup-title">
+  <section class="section supports has-bg" aria-labelledby="sup-title">
+    <Backdrop photo={photos.trenchSite} side="left" focus="20% 40%" />
     <div class="wrap">
       <SectionHeader
         eyebrow="Typical requests"
@@ -185,7 +190,8 @@ const reasons = [
   </section>
 
   <!-- Field work -->
-  <section class="section section--asphalt work-t" aria-labelledby="work-title">
+  <section class="section section--asphalt work-t has-bg" aria-labelledby="work-title">
+    <Backdrop photo={photos.excavatorSunset} side="full" opacity={0.1} focus="50% 20%" />
     <div class="wrap">
       <SectionHeader
         eyebrow="Work in the field"
@@ -230,7 +236,8 @@ const reasons = [
   </section>
 
   <!-- Why -->
-  <section class="section why" aria-labelledby="why-title">
+  <section class="section why has-bg" aria-labelledby="why-title">
+    <Backdrop photo={photos.trafficControl} side="right" focus="70% 40%" />
     <div class="wrap">
       <h2 id="why-title" class="why__title">Why contractors use a business like this</h2>
       <div class="why__grid" data-reveal-group>
@@ -248,7 +255,8 @@ const reasons = [
   </section>
 
   <!-- Regional -->
-  <section class="section region" aria-labelledby="region-title">
+  <section class="section region has-bg" aria-labelledby="region-title">
+    <Backdrop photo={photos.coastalUte} side="right" focus="10% 50%" />
     <div class="wrap region__inner">
       <div>
         <p class="label">Operating context</p>
@@ -288,7 +296,8 @@ const reasons = [
   </section>
 
   <CtaBand
-    variant="lime"
+    variant="photo"
+    photo={photos.trenchSite}
     title="Tell us what the job needs."
     body="Send the location, dates and what the work involves. If it is easier, call Scott and talk it through."
     showSms

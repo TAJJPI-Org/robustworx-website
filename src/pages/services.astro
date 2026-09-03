@@ -4,11 +4,22 @@ import PageIntro from '../components/PageIntro.astro';
 import Glyph from '../components/Glyph.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
 import { photos, type Photo as PhotoData } from '../data/photos';
 import { services } from '../data/services';
 import { site, telHref } from '../data/site';
 
 /** Supplied photos, matched to the service each one actually shows. */
+/** Low-opacity backdrop behind each service block, rotated so neighbours differ. */
+const serviceBackdrop: Record<string, { photo: PhotoData; focus: string; side: 'left' | 'right' }> =
+  {
+    'traffic-workzone-support': { photo: photos.trafficControl, focus: '60% 30%', side: 'right' },
+    'site-supervision-field-support': { photo: photos.coastalUte, focus: '75% 45%', side: 'right' },
+    'plant-operation': { photo: photos.trenchSite, focus: '20% 45%', side: 'left' },
+    'small-earthworks': { photo: photos.excavatorSunset, focus: '50% 55%', side: 'right' },
+    'grounds-maintenance': { photo: photos.coastalUte, focus: '15% 60%', side: 'left' },
+  };
+
 const servicePhoto: Record<string, { photo: PhotoData; focus: string } | undefined> = {
   'traffic-workzone-support': { photo: photos.coastalUte, focus: '62% 18%' },
   'site-supervision-field-support': { photo: photos.trenchSite, focus: '40% 12%' },
@@ -46,10 +57,15 @@ const servicePhoto: Record<string, { photo: PhotoData; focus: string } | undefin
   {
     services.map((s, i) => (
       <section
-        class={`svc ${i % 2 === 1 ? 'svc--alt' : ''}`}
+        class={`svc has-bg ${i % 2 === 1 ? 'svc--alt' : ''}`}
         id={s.id}
         aria-labelledby={`${s.id}-title`}
       >
+        <Backdrop
+          photo={serviceBackdrop[s.id].photo}
+          focus={serviceBackdrop[s.id].focus}
+          side={serviceBackdrop[s.id].side}
+        />
         <div class="wrap">
           {servicePhoto[s.id] && (
             <Photo

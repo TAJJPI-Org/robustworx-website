@@ -77,6 +77,9 @@ before it is added.
    the frame — no location, client, date or outcome is attached to any of them.
    There is no stock photography. Drawn illustrations remain where no photo
    covers the subject (two fleet categories, the home equipment overview).
+   The same four photos also sit behind every section as low-opacity
+   backdrops, heavily shaded; a pixel-level contrast check confirms all text
+   over them still meets WCAG AA. More photography would reduce repetition.
 
    Two things visible in the photos were raised and have been resolved by the
    client (3 September 2026):

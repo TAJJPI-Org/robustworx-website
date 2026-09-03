@@ -1,12 +1,15 @@
 ---
 import Logo from './Logo.astro';
+import Backdrop from './Backdrop.astro';
+import { photos } from '../data/photos';
 import { site, nav, legalNav, telHref } from '../data/site';
 import { services } from '../data/services';
 
 const year = new Date().getFullYear();
 ---
 
-<footer class="ftr">
+<footer class="ftr has-bg">
+  <Backdrop photo={photos.trenchSite} side="full" opacity={0.08} focus="40% 45%" />
   <div class="hazard hazard--thin" aria-hidden="true"></div>
 
   <div class="ftr__main wrap">

@@ -4,11 +4,21 @@ import PageIntro from '../components/PageIntro.astro';
 import Silhouette from '../components/Silhouette.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
 import { photos, type Photo as PhotoData } from '../data/photos';
 import { equipment } from '../data/equipment';
 import { site, telHref } from '../data/site';
 
 /** Supplied photos for the categories they actually show; the rest keep the drawn silhouette. */
+/** Backdrop behind each band; the photo shows through on the side the copy is not on. */
+const fleetBackdrop: PhotoData[] = [
+  photos.trafficControl,
+  photos.trenchSite,
+  photos.excavatorSunset,
+  photos.coastalUte,
+  photos.trafficControl,
+];
+
 const fleetPhoto: Record<string, PhotoData | undefined> = {
   'compact-excavation': photos.excavatorSunset,
   'workzone-vehicles': photos.coastalUte,
@@ -38,7 +48,11 @@ const fleetPhoto: Record<string, PhotoData | undefined> = {
 
   {
     equipment.map((e, i) => (
-      <section class={`fleet ${i % 2 === 1 ? 'fleet--alt' : ''}`} aria-labelledby={`${e.id}-title`}>
+      <section
+        class={`fleet has-bg ${i % 2 === 1 ? 'fleet--alt' : ''}`}
+        aria-labelledby={`${e.id}-title`}
+      >
+        <Backdrop photo={fleetBackdrop[i]} side={i % 2 === 1 ? 'right' : 'left'} />
         <div class="wrap fleet__inner">
           {fleetPhoto[e.id] ? (
             <div class="fleet__art fleet__art--photo" data-reveal={i % 2 === 1 ? 'right' : 'left'}>
@@ -90,7 +104,8 @@ const fleetPhoto: Record<string, PhotoData | undefined> = {
     ))
   }
 
-  <section class="section section--asphalt specs" aria-labelledby="specs-title">
+  <section class="section section--asphalt specs has-bg" aria-labelledby="specs-title">
+    <Backdrop photo={photos.trenchSite} side="full" opacity={0.12} focus="40% 40%" />
     <div class="wrap wrap--content">
       <div class="specs__panel">
         <p class="label label--orange">Before you plan around it</p>
@@ -115,7 +130,8 @@ const fleetPhoto: Record<string, PhotoData | undefined> = {
   </section>
 
   <CtaBand
-    variant="plum"
+    variant="photo"
+    photo={photos.excavatorSunset}
     title="Need a specific machine or setup?"
     body="Send the dates, the site and what the machine has to do. Scott will confirm availability before you commit to it."
   />

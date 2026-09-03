@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos } from '../data/photos';
 import { site, telHref } from '../data/site';
 
 const updated = 'August 2026';
@@ -10,9 +12,16 @@ const updated = 'August 2026';
   title="Privacy"
   description="How RobustWorx handles personal information collected through this website."
 >
-  <PageIntro eyebrow="Privacy" title="Privacy" variant="lime" motif="grid" />
+  <PageIntro
+    eyebrow="Privacy"
+    title="Privacy"
+    variant="lime"
+    motif="grid"
+    photo={photos.trenchSite}
+  />
 
-  <section class="section legal">
+  <section class="section legal has-bg">
+    <Backdrop photo={photos.excavatorSunset} side="full" opacity={0.08} />
     <div class="wrap wrap--content prose">
       <p class="legal__updated">Last updated: {updated}</p>
 

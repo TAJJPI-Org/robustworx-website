@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos } from '../data/photos';
 import { fieldSituations } from '../data/field';
 import { workRecords, recordImage } from '../data/workRecords';
 import { site, telHref } from '../data/site';
@@ -20,11 +22,13 @@ const records = workRecords;
     lead="What the work actually looks like on the ground. Documented job records and site photos are published here as they are added — everything else on this page describes the kind of field situation RobustWorx is set up for, not a claim about a particular project."
     variant="lime"
     motif="centreline"
+    photo={photos.coastalUte}
   />
 
   {
     records.length > 0 && (
-      <section class="section records" aria-labelledby="records-title">
+      <section class="section records has-bg" aria-labelledby="records-title">
+        <Backdrop photo={photos.trafficControl} side="full" opacity={0.1} focus="50% 20%" />
         <div class="wrap">
           <div class="records__head">
             <div>
@@ -95,7 +99,8 @@ const records = workRecords;
     )
   }
 
-  <section class="section situations" aria-labelledby="sit-title">
+  <section class="section situations has-bg" aria-labelledby="sit-title">
+    <Backdrop photo={photos.excavatorSunset} side="right" focus="70% 50%" />
     <div class="wrap">
       <div class="situations__head">
         <div>
@@ -148,7 +153,8 @@ const records = workRecords;
     </div>
   </section>
 
-  <section class="section section--asphalt evidence" aria-labelledby="ev-title">
+  <section class="section section--asphalt evidence has-bg" aria-labelledby="ev-title">
+    <Backdrop photo={photos.trenchSite} side="full" focus="40% 40%" />
     <div class="wrap wrap--content">
       <div class="evidence__panel">
         <p class="label">Evidence, not marketing</p>
@@ -178,7 +184,8 @@ const records = workRecords;
   </section>
 
   <CtaBand
-    variant="dark"
+    variant="photo"
+    photo={photos.coastalUte}
     title="Got a job that looks like one of these?"
     body="Send the location, the dates and what the work involves. Scott will come back on what it needs and whether RobustWorx can cover it."
     showSms

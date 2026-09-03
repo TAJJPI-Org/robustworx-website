@@ -211,6 +211,13 @@ cover crop, responsive WebP `srcset`, optional tag and caption), or through the
 | `excavator-sunset.jpg`     | Home mosaic; Services 03 banner; Fleet 01; Contact hero; Work record 03 |
 | `scott-coastal-ute.jpg`    | Home mosaic; Services 01 banner; Fleet 02; About owner card; Work 04    |
 
+Every section on the site also carries a low-opacity photo backdrop through
+`src/components/Backdrop.astro` (the parent gets the global `has-bg` class).
+Opacity is capped at 0.2 and a directional shade sits over the image so body
+copy on top still clears WCAG AA; the QA pass checks this against rendered
+pixels rather than declared colours. Photos rotate between neighbouring
+sections so the same image is not behind two adjacent blocks.
+
 To swap or add a photo: drop the original file in `src/assets/photos/`, add an
 entry to `photos.ts` (keep the alt text and caption to what is visible in the
 frame), and reference it from the page. Astro generates the compressed variants

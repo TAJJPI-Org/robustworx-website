@@ -622,3 +622,13 @@ h4 {
     transition-delay: 0.4s;
   }
 }
+
+/* --- Photo backdrops -------------------------------------------------------
+   A section carrying a Backdrop needs to be its own stacking context and to
+   clip the image. `overflow: clip` rather than `hidden` so sticky children
+   (capability index, owner card) keep working. ------------------------- */
+.has-bg {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}

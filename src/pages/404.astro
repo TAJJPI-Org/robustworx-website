@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos } from '../data/photos';
 import { nav, site, telHref } from '../data/site';
 ---
 
@@ -9,6 +11,7 @@ import { nav, site, telHref } from '../data/site';
   noindex
 >
   <section class="nf">
+    <Backdrop photo={photos.trafficControl} side="full" opacity={0.14} focus="50% 30%" />
     <div class="nf__bg" aria-hidden="true">
       <svg viewBox="0 0 400 220" fill="none" preserveAspectRatio="xMidYMid slice">
         <path d="M0 150h400" class="nf__road"></path>

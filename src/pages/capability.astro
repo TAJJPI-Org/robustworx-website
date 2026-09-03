@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import CtaBand from '../components/CtaBand.astro';
+import Backdrop from '../components/Backdrop.astro';
 import { site, telHref } from '../data/site';
 import { engagement } from '../data/engagement';
 import { photos } from '../data/photos';
@@ -138,7 +139,8 @@ const assess = [
     </dl>
   </PageIntro>
 
-  <div class="cap">
+  <div class="cap has-bg">
+    <Backdrop photo={photos.excavatorSunset} side="full" opacity={0.1} focus="50% 40%" />
     <div class="wrap cap__layout">
       <nav class="cap__index" aria-label="Capability sections">
         <p class="cap__index-h">Contents</p>
@@ -218,7 +220,8 @@ const assess = [
   </div>
 
   <CtaBand
-    variant="dark"
+    variant="photo"
+    photo={photos.trenchSite}
     title="Assessing RobustWorx for a package of work?"
     body="Send the scope through, or call Scott and talk it over. If something on this page needs to be confirmed in writing for your procurement process, ask and it will be."
   />
