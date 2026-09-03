@@ -171,9 +171,9 @@ export const crops = {
   },
   roadPlan: {
     src: roadPlan,
-    alt: 'Plan-view drawing of a typical road works layout on a two-lane road: advance warning signs, 40 speed sign, prepare-to-stop sign, traffic controller, cone taper, buffer, coned work area with plant, end-of-works sign and message sign. Illustrative only.',
+    alt: 'Perspective drawing of a traffic control plan on a rural two-lane road with gravel shoulders and guide posts: road work ahead, 80, prepare to stop and 40 signs on the approach, a traffic controller with a stop bat, a cone taper into a buffer, a coned activity space in the left lane with an excavator and ute, then an exit taper, end road work and 100 signs. Zones are labelled advance warning, transition, buffer, activity and termination. Illustrative only.',
     caption:
-      'Typical road works layout, plan view. Illustrative only, not a traffic guidance scheme.',
+      'Traffic control plan on a rural major road, single-lane closure under stop/slow. Illustrative only, not a traffic guidance scheme.',
     service: 'traffic-workzone-support',
     serviceLabel: 'Traffic & workzone support',
     focus: '50% 50%',
