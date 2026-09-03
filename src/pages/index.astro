@@ -1,0 +1,721 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos, crops, type Photo as PhotoData } from '../data/photos';
+import { services } from '../data/services';
+import { equipment } from '../data/equipment';
+import { engagement } from '../data/engagement';
+import { site, telHref } from '../data/site';
+
+/** Real crops from the supplied photos, one per tile — no tile ships without an image. */
+const serviceCrop: Record<string, PhotoData> = {
+  'traffic-workzone-support': { ...photos.trafficControl, focus: '60% 18%' },
+  'site-supervision-field-support': crops.clipboard,
+  'plant-operation': crops.excavator,
+  'small-earthworks': crops.trench,
+  'grounds-maintenance': crops.conesRoad,
+};
+const equipmentCrop: Record<string, PhotoData> = {
+  'compact-excavation': crops.excavator,
+  'workzone-vehicles': crops.ute,
+  'traffic-roadside-equipment': crops.roadPlan,
+};
+
+const supports = [
+  'An extra machine and operator for a works package',
+  'Workzone setup and pack-down around road works',
+  'Service trenching and small excavation',
+  'Access tracks, pads and site preparation',
+  'A person on the ground for the duration of a job',
+  'Material and gear shifted around site',
+  'Reinstatement after works are finished',
+  'Vegetation control around access and infrastructure',
+  'Site and yard clean-up between works',
+  'Regional jobs that are awkward to service from the city',
+];
+
+const reasons = [
+  {
+    no: '01',
+    title: 'Direct contact',
+    body: 'You discuss the requirement with Scott, who does the work. No call centre, no account manager relaying it back to site.',
+  },
+  {
+    no: '02',
+    title: 'Practical scope assessment',
+    body: 'Send the location, timing and what the work involves and the job gets assessed on what it actually needs — not on a rate card written before anyone looked at it.',
+  },
+  {
+    no: '03',
+    title: 'Field-focused capability',
+    body: 'RobustWorx is built around equipment and site support rather than office-heavy project delivery. The overhead stays off your job.',
+  },
+  {
+    no: '04',
+    title: 'Regional operating context',
+    body: 'Travel distance, site access, ground conditions and the fact that the nearest supplier is not around the corner are part of how the work is planned.',
+  },
+];
+---
+
+<BaseLayout
+  title="RobustWorx — Field support, plant and civil work in regional South Australia"
+  description="RobustWorx supports civil, traffic, plant and maintenance work across regional South Australia. Traffic and workzone support, plant operation, small earthworks, site support and grounds maintenance. Call Scott on 0458 958 995."
+>
+  <Hero />
+
+  <!-- How you engage RobustWorx -->
+  <section class="section engage has-bg" aria-labelledby="engage-title">
+    <Backdrop photo={photos.trafficControl} side="right" focus="50% 20%" />
+    <div class="wrap">
+      <div class="engage__head">
+        <div>
+          <p class="label label--orange">Two ways to use it</p>
+          <h2 id="engage-title" class="engage__title">Hire the capability, or hand over the job</h2>
+        </div>
+        <p class="engage__lead">
+          Most enquiries are one of these. Knowing which one yours is makes the first phone call
+          about two minutes long.
+        </p>
+      </div>
+
+      <div class="engage__grid" data-reveal-group>
+        {
+          engagement.map((m) => (
+            <article class={`mode mode--${m.accent}`}>
+              <div class="mode__top">
+                <span class="mode__key" aria-hidden="true">
+                  {m.key}
+                </span>
+                <h3 class="mode__title">{m.title}</h3>
+              </div>
+              <p class="mode__pitch">{m.pitch}</p>
+              <h4 class="mode__sub">Suits</h4>
+              <ul class="mode__list">
+                {m.suits.map((x) => (
+                  <li>{x}</li>
+                ))}
+              </ul>
+              <p class="mode__send">{m.send}</p>
+              <a class="btn btn--block mode__cta" href="/contact">
+                Send job details
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <p class="engage__foot">
+        Not sure which one it is? Plenty of jobs start as one and turn into the other.
+        <a href={telHref()}>Call Scott</a> and describe it.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section linework has-bg" aria-labelledby="svc-title">
+    <Backdrop photo={photos.excavatorSunset} side="left" />
+    <div class="wrap">
+      <SectionHeader
+        eyebrow="What we do"
+        title="Five things RobustWorx gets called for"
+        lead="Practical field categories, not a service menu written to fill a page. Each one links through to what it covers and what to send so the job can be assessed."
+        align="split"
+      />
+      <div class="svc-grid" data-reveal-group>
+        {
+          services.map((s, i) => (
+            <ServiceCard service={s} feature={i === 0} photo={serviceCrop[s.id]} />
+          ))
+        }
+      </div>
+      <p class="svc-more">
+        <a class="link-arrow" href="/services">
+          See all services in detail
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"
+            ><path d="M0 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2"></path></svg
+          >
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Equipment -->
+  <section class="section section--surface eq has-bg" aria-labelledby="eq-title">
+    <Backdrop photo={photos.coastalUte} side="right" focus="80% 45%" />
+    <div class="hazard hazard--thin eq__rule" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="eq__head">
+        <div>
+          <p class="label label--orange">On the ground</p>
+          <h2 id="eq-title" class="eq__title">The gear that turns up</h2>
+        </div>
+        <p class="eq__lead">
+          RobustWorx works by category rather than by catalogue. Machinery, vehicles, roadside
+          equipment and field gear are described by what they are used for — call Scott to confirm
+          what can be put on your job for your dates.
+        </p>
+      </div>
+
+      <ul class="eq__list" data-reveal-group>
+        {
+          equipment.slice(0, 3).map((e) => (
+            <li class="eq__item">
+              <Photo
+                photo={equipmentCrop[e.id]}
+                ratio="16 / 10"
+                class="eq__art"
+                sizes="(min-width: 900px) 31vw, 100vw"
+              />
+              <div class="eq__body">
+                <span class="eq__no">{e.no}</span>
+                <h3 class="eq__name">{e.title}</h3>
+                <p class="eq__text">{e.blurb}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="eq__foot">
+        <a class="btn btn--ghost" href="/fleet">View fleet &amp; equipment</a>
+        <p class="eq__note">
+          Need a specific machine or setup? <a href={telHref()}>Call Scott</a> to confirm availability
+          before you plan around it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we can support -->
+  <section class="section supports has-bg" aria-labelledby="sup-title">
+    <Backdrop photo={photos.trenchSite} side="left" focus="20% 40%" />
+    <div class="wrap">
+      <SectionHeader
+        eyebrow="Typical requests"
+        title="What RobustWorx can support"
+        accent="orange"
+        lead="If the job looks like one of these, it is worth a call. If it does not, it is still worth a call — the answer is either yes, no, or here is who does it."
+        align="split"
+      />
+      <ul class="supports__list">
+        {supports.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Field work -->
+  <section class="section section--asphalt work-t has-bg" aria-labelledby="work-title">
+    <Backdrop photo={photos.excavatorSunset} side="full" opacity={0.1} focus="50% 20%" />
+    <div class="wrap">
+      <SectionHeader
+        eyebrow="Work in the field"
+        title="What the work actually looks like"
+        lead="RobustWorx people, plant and vehicles on the job. Each photo is captioned by what it shows and nothing more — job records are published on the Work page as they are documented."
+        align="split"
+      />
+      <div class="work-t__mosaic" data-reveal-group>
+        <Photo
+          photo={photos.trafficControl}
+          ratio="3 / 4"
+          focus="56% 30%"
+          tag="Traffic & workzone"
+          caption
+          class="work-t__tall"
+          sizes="(min-width: 900px) 44vw, 100vw"
+        />
+        <Photo
+          photo={photos.excavatorSunset}
+          ratio="16 / 10"
+          tag="Plant operation"
+          caption
+          sizes="(min-width: 900px) 52vw, 100vw"
+        />
+        <Photo
+          photo={photos.coastalUte}
+          ratio="16 / 10"
+          tag="Workzone vehicles"
+          caption
+          sizes="(min-width: 900px) 52vw, 100vw"
+        />
+      </div>
+      <p class="mt-6">
+        <a class="link-arrow" href="/work">
+          See work in the field
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"
+            ><path d="M0 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2"></path></svg
+          >
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Why -->
+  <section class="section why has-bg" aria-labelledby="why-title">
+    <Backdrop photo={photos.trafficControl} side="right" focus="70% 40%" />
+    <div class="wrap">
+      <h2 id="why-title" class="why__title">Why contractors use a business like this</h2>
+      <div class="why__grid" data-reveal-group>
+        {
+          reasons.map((r) => (
+            <article class="why__item">
+              <span class="why__no">{r.no}</span>
+              <h3 class="why__name">{r.title}</h3>
+              <p class="why__text">{r.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Regional -->
+  <section class="section region has-bg" aria-labelledby="region-title">
+    <Backdrop photo={photos.coastalUte} side="right" focus="10% 50%" />
+    <div class="wrap region__inner">
+      <div>
+        <p class="label">Operating context</p>
+        <h2 id="region-title" class="region__title">Regional work has its own problems</h2>
+        <div class="region__text stack">
+          <p>
+            A job two hours from the depot is not the same job as one twenty minutes away. Getting
+            plant to site costs a day at each end. Ground conditions change between properties. A
+            part that is an hour away in the city is a half-day round trip here.
+          </p>
+          <p>
+            RobustWorx is based in regional South Australia and plans work around that. It is the
+            reason a local operator often makes more sense on a regional package than mobilising a
+            crew out from town for a few days of work.
+          </p>
+        </div>
+        <div class="cluster mt-6">
+          <a class="btn btn--orange" href="/capability">View capability</a>
+          <a class="btn btn--ghost" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+        </div>
+      </div>
+      <div class="region__art" data-reveal="right">
+        <Photo
+          photo={crops.conesRoad}
+          ratio="4 / 3"
+          tag="Regional SA"
+          caption
+          sizes="(min-width: 920px) 45vw, 100vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    variant="photo"
+    photo={photos.trenchSite}
+    title="Tell us what the job needs."
+    body="Send the location, dates and what the work involves. If it is easier, call Scott and talk it through."
+    showSms
+  />
+</BaseLayout>
+
+<style>
+  /* Engagement modes */
+  .engage {
+    border-top: 1px solid var(--c-line);
+    background: var(--c-asphalt);
+  }
+  .engage__head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  }
+  @media (min-width: 900px) {
+    .engage__head {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 3rem;
+      align-items: end;
+    }
+  }
+  .engage__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+  }
+  .engage__lead {
+    color: var(--c-muted);
+    max-width: 46ch;
+  }
+
+  .engage__grid {
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 860px) {
+    .engage__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .mode {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.35rem, 1rem + 1.6vw, 2.25rem);
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    border-top: 5px solid var(--mode-accent);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+  }
+  .mode--lime {
+    --mode-accent: var(--c-lime);
+  }
+  .mode--orange {
+    --mode-accent: var(--c-orange);
+  }
+
+  .mode__top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .mode__key {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    background: var(--mode-accent);
+    color: var(--c-black);
+    font-family: var(--f-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .mode__title {
+    font-size: clamp(1.4rem, 1.1rem + 1.1vw, 1.95rem);
+  }
+  .mode__pitch {
+    margin-top: 1.1rem;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: #d5d5cf;
+  }
+  .mode__sub {
+    margin-top: 1.6rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--c-line);
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mode-accent);
+  }
+  .mode__list {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    flex: 1;
+    align-content: start;
+  }
+  .mode__list li {
+    display: flex;
+    gap: 0.7rem;
+    font-size: var(--t-small);
+    line-height: 1.55;
+    color: #c6c6c1;
+  }
+  .mode__list li::before {
+    content: '';
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-top: 0.42em;
+    background: var(--mode-accent);
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 58% 100%, 0 100%);
+  }
+  .mode__send {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--c-line);
+    font-family: var(--f-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--c-light);
+  }
+  .mode__cta {
+    margin-top: 1rem;
+  }
+  .mode--orange .mode__cta {
+    --btn-bg: var(--c-orange);
+    --btn-bd: var(--c-orange);
+    --btn-fg: #170c02;
+  }
+  .mode--orange .mode__cta:hover {
+    --btn-bg: #ff8038;
+    --btn-bd: #ff8038;
+  }
+
+  .engage__foot {
+    margin-top: 1.75rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+  }
+  .engage__foot a {
+    color: var(--c-lime);
+    font-weight: 600;
+  }
+
+  /* Services */
+  .svc-grid {
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 640px) {
+    .svc-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 900px) {
+    .svc-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .svc-more {
+    margin-top: 1.75rem;
+  }
+
+  /* Equipment */
+  .eq {
+    position: relative;
+  }
+  .eq__rule {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .eq__head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(2rem, 1.2rem + 2.5vw, 3.25rem);
+  }
+  .eq__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+  }
+  .eq__lead {
+    color: var(--c-muted);
+    max-width: 52ch;
+  }
+  @media (min-width: 900px) {
+    .eq__head {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 3rem;
+      align-items: end;
+    }
+  }
+
+  .eq__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 800px) {
+    .eq__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .eq__item {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-black);
+    border: 1px solid var(--c-line);
+  }
+  :global(.eq__art .photo__frame) {
+    clip-path: none;
+  }
+  .eq__body {
+    padding: 1.25rem;
+    border-top: 1px solid var(--c-line);
+  }
+  .eq__no {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--c-orange);
+  }
+  .eq__name {
+    margin-top: 0.35rem;
+    font-size: var(--t-h3);
+  }
+  .eq__text {
+    margin-top: 0.5rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+  }
+  .eq__foot {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.75rem;
+  }
+  .eq__note {
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    max-width: 44ch;
+  }
+  .eq__note a {
+    color: var(--c-lime);
+  }
+
+  /* Supports */
+  .supports__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 2px solid var(--c-line);
+  }
+  @media (min-width: 780px) {
+    .supports__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(2rem, 1rem + 3vw, 4rem);
+    }
+  }
+  .supports__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--c-line);
+    line-height: 1.45;
+  }
+  .supports__list li::before {
+    content: '';
+    flex: none;
+    width: 14px;
+    height: 14px;
+    margin-top: 0.34em;
+    background: var(--c-orange);
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 60% 100%, 0 100%);
+  }
+
+  /* Work teaser — photo mosaic */
+  .work-t__mosaic {
+    display: grid;
+    gap: var(--s-4);
+  }
+  @media (min-width: 900px) {
+    .work-t__mosaic {
+      grid-template-columns: minmax(0, 0.88fr) minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      gap: var(--s-5);
+    }
+    :global(.work-t__tall) {
+      grid-row: 1 / span 2;
+      display: flex;
+      flex-direction: column;
+    }
+    :global(.work-t__tall .photo__frame) {
+      flex: 1;
+      aspect-ratio: auto;
+      min-height: 420px;
+    }
+  }
+
+  /* Why */
+  .why {
+    background: linear-gradient(180deg, var(--c-black) 0%, var(--c-black) 100%), var(--c-black);
+    border-top: 1px solid var(--c-line);
+  }
+  .why__title {
+    font-size: var(--t-h2);
+    max-width: 18ch;
+    margin-bottom: clamp(2rem, 1.2rem + 2vw, 3rem);
+  }
+  .why__grid {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--c-line);
+  }
+  @media (min-width: 700px) {
+    .why__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1100px) {
+    .why__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .why__item {
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  @media (min-width: 700px) {
+    .why__item {
+      padding: 1.9rem clamp(1rem, 0.4rem + 1.6vw, 2rem) 2rem 0;
+    }
+    .why__item + .why__item {
+      border-left: 1px solid var(--c-line);
+      padding-left: clamp(1rem, 0.4rem + 1.6vw, 2rem);
+    }
+  }
+  @media (min-width: 700px) and (max-width: 1099px) {
+    .why__item:nth-child(odd) {
+      border-left: none;
+      padding-left: 0;
+    }
+  }
+  .why__no {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--c-orange);
+  }
+  .why__name {
+    margin-top: 0.6rem;
+    font-size: 1.5rem;
+  }
+  .why__text {
+    margin-top: 0.6rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.65;
+  }
+
+  /* Region */
+  .region {
+    background: linear-gradient(150deg, var(--c-plum-deep) 0%, var(--c-black) 58%);
+    border-top: 1px solid var(--c-line);
+  }
+  .region__inner {
+    display: grid;
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 920px) {
+    .region__inner {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+  }
+  .region__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+    max-width: 16ch;
+  }
+  .region__text {
+    margin-top: 1.25rem;
+    color: #cec9d6;
+    max-width: 56ch;
+  }
+</style>

@@ -1,0 +1,76 @@
+---
+interface Props {
+  name: 'workzone' | 'site' | 'plant' | 'earth' | 'grounds';
+  size?: number;
+  class?: string;
+}
+const { name, size = 44, class: className = '' } = Astro.props;
+---
+
+<svg
+  class={`glyph ${className}`}
+  width={size}
+  height={size}
+  viewBox="0 0 48 48"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="square"
+  stroke-linejoin="miter"
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    name === 'workzone' && (
+      <>
+        <path d="M18 40 25 8l7 32" />
+        <path d="M20.4 29h9.2M19 35.5h12" />
+        <path d="M6 40h36" />
+        <path d="M8 14h8v8H8z" />
+      </>
+    )
+  }
+  {
+    name === 'site' && (
+      <>
+        <path d="M12 42V6" />
+        <path d="M12 8h22l-5 6 5 6H12" />
+        <path d="M6 42h36" />
+        <path d="M26 42v-9h10v9" />
+      </>
+    )
+  }
+  {
+    name === 'plant' && (
+      <>
+        <path d="M4 42h40" />
+        <path d="M8 36h20v-8H8z" />
+        <path d="M28 30l8-14 6 3" />
+        <path d="M36 16l-4 12 8 3" />
+        <path d="M40 31l-3 6h8z" />
+      </>
+    )
+  }
+  {
+    name === 'earth' && (
+      <>
+        <path d="M4 16h13l4 8h6l4-8h13" />
+        <path d="M17 16v20M31 16v20" />
+        <path d="M4 42h40" />
+        <path d="M21 24v12M27 24v12" />
+        <path d="M4 8h40" />
+      </>
+    )
+  }
+  {
+    name === 'grounds' && (
+      <>
+        <path d="M4 40h40" />
+        <path d="M24 40V16" />
+        <path d="M24 24c0-7-5-11-12-12 0 8 5 12 12 12z" />
+        <path d="M24 30c0-6 4-10 11-11 0 7-4 11-11 11z" />
+        <path d="M8 40l3-6M40 40l-3-6" />
+      </>
+    )
+  }
+</svg>

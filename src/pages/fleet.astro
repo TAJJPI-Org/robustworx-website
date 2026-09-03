@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos, crops, type Photo as PhotoData } from '../data/photos';
+import { equipment } from '../data/equipment';
+import { site, telHref } from '../data/site';
+
+/** Backdrop behind each band; the photo shows through on the side the copy is not on. */
+const fleetBackdrop: PhotoData[] = [
+  photos.trafficControl,
+  photos.trenchSite,
+  photos.excavatorSunset,
+  photos.coastalUte,
+  photos.trafficControl,
+];
+
+/** Supplied photos and crops, one per category — every band carries a real image. */
+const fleetPhoto: Record<string, PhotoData> = {
+  'compact-excavation': photos.excavatorSunset,
+  'workzone-vehicles': photos.coastalUte,
+  'traffic-roadside-equipment': crops.roadPlan,
+  'transport-site-support': crops.tipper,
+  'field-tools': crops.clipboard,
+};
+---
+
+<BaseLayout
+  title="Fleet & Equipment — plant, vehicles and field gear"
+  description="RobustWorx equipment by category: compact excavation plant, workzone support vehicles, traffic and roadside equipment, transport and site support gear, and field tools. Call Scott to confirm availability."
+>
+  <PageIntro
+    eyebrow="Fleet & equipment"
+    title="Equipment described by what it does"
+    lead="Plant, vehicles and field gear grouped by how they get used on a job. Availability changes week to week — confirm the specific machine or setup with Scott before you plan around it."
+    variant="orange"
+    motif="chevron"
+    photo={photos.trenchSite}
+  >
+    <div class="cluster mt-6">
+      <a class="btn btn--orange" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+      <a class="btn btn--ghost" href="/contact">Send job details</a>
+    </div>
+  </PageIntro>
+
+  <div class="hazard" aria-hidden="true"></div>
+
+  {
+    equipment.map((e, i) => (
+      <section
+        class={`fleet has-bg ${i % 2 === 1 ? 'fleet--alt' : ''}`}
+        aria-labelledby={`${e.id}-title`}
+      >
+        <Backdrop photo={fleetBackdrop[i]} side={i % 2 === 1 ? 'right' : 'left'} />
+        <div class="wrap fleet__inner">
+          <div class="fleet__art" data-reveal={i % 2 === 1 ? 'right' : 'left'}>
+            <Photo
+              photo={fleetPhoto[e.id]}
+              ratio={e.id === 'traffic-roadside-equipment' ? '16 / 10' : '4 / 3'}
+              tag={e.no}
+              caption
+              sizes="(min-width: 900px) 52vw, 100vw"
+            />
+          </div>
+
+          <div class="fleet__body">
+            <h2 id={`${e.id}-title`} class="fleet__title">
+              {e.title}
+            </h2>
+            <p class="fleet__blurb">{e.blurb}</p>
+
+            <div class="fleet__cols">
+              <div>
+                <h3 class="fleet__sub">Used for</h3>
+                <ul class="fleet__list">
+                  {e.useFor.map((u) => (
+                    <li>{u}</li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 class="fleet__sub fleet__sub--ask">Confirm with Scott</h3>
+                <ul class="fleet__list fleet__list--ask">
+                  {e.confirm.map((c) => (
+                    <li>{c}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section section--asphalt specs has-bg" aria-labelledby="specs-title">
+    <Backdrop photo={photos.trenchSite} side="full" opacity={0.12} focus="40% 40%" />
+    <div class="wrap wrap--content">
+      <div class="specs__panel">
+        <p class="label label--orange">Before you plan around it</p>
+        <h2 id="specs-title" class="specs__title">No catalogue, on purpose</h2>
+        <div class="specs__text stack">
+          <p>
+            Machine models, weights, capacities and attachment lists are not published here. A
+            published spec sheet goes stale, and a job planned around the wrong number costs
+            everyone a day.
+          </p>
+          <p>
+            Tell Scott what the machine has to do, where it has to do it and when you need it. He
+            will confirm what can actually be put on the job for your dates.
+          </p>
+        </div>
+        <div class="cluster mt-6">
+          <a class="btn" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+          <a class="btn btn--ghost" href="/contact">Send job details</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    variant="photo"
+    photo={photos.excavatorSunset}
+    title="Need a specific machine or setup?"
+    body="Send the dates, the site and what the machine has to do. Scott will confirm availability before you commit to it."
+  />
+</BaseLayout>
+
+<style>
+  .fleet {
+    padding-block: clamp(2.75rem, 1.8rem + 4vw, 5rem);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .fleet--alt {
+    background: var(--c-asphalt);
+  }
+  .fleet__inner {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 3.5rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .fleet__inner {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+    .fleet--alt .fleet__art {
+      order: 2;
+    }
+  }
+
+  .fleet__art {
+    position: relative;
+  }
+
+  .fleet__title {
+    font-size: var(--t-h2);
+    max-width: 16ch;
+  }
+  .fleet__blurb {
+    margin-top: 1rem;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: #d5d5cf;
+    max-width: 50ch;
+  }
+  .fleet__cols {
+    margin-top: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    display: grid;
+    gap: 1.75rem;
+  }
+  @media (min-width: 560px) {
+    .fleet__cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 2rem;
+    }
+  }
+  .fleet__sub {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+    padding-bottom: 0.65rem;
+    margin-bottom: 0.85rem;
+    border-bottom: 2px solid var(--c-line);
+  }
+  .fleet__sub--ask {
+    color: var(--c-orange);
+  }
+  .fleet__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .fleet__list li {
+    display: flex;
+    gap: 0.65rem;
+    font-size: var(--t-small);
+    line-height: 1.55;
+    color: #c6c6c1;
+  }
+  .fleet__list li::before {
+    content: '';
+    flex: none;
+    width: 9px;
+    height: 9px;
+    margin-top: 0.42em;
+    background: var(--c-lime);
+  }
+  .fleet__list--ask li::before {
+    background: transparent;
+    border: 2px solid var(--c-orange);
+  }
+
+  .specs__panel {
+    border: 1px solid var(--c-line);
+    border-left: 5px solid var(--c-orange);
+    background: var(--c-surface);
+    padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+  }
+  .specs__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+  }
+  .specs__text {
+    margin-top: 1.15rem;
+    color: var(--c-muted);
+    max-width: 60ch;
+  }
+</style>

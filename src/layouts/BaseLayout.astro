@@ -1,0 +1,114 @@
+---
+import '@fontsource/barlow/latin-400.css';
+import '@fontsource/barlow/latin-500.css';
+import '@fontsource/barlow/latin-600.css';
+import '@fontsource/barlow-condensed/latin-600.css';
+import '@fontsource/barlow-condensed/latin-700.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Omit from sitemap / discourage indexing (used on 404). */
+  noindex?: boolean;
+  bodyClass?: string;
+}
+
+const { title, description, noindex = false, bodyClass = '' } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site).href;
+const ogImage = new URL('/og-robustworx.jpg', Astro.site).href;
+const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+
+/**
+ * Schema.org. Only verified facts: name, phone, broad area served, URL.
+ * No address, coordinates, opening hours, ratings or reviews — not verified.
+ */
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${Astro.site}#business`,
+  name: site.name,
+  description: site.description,
+  url: Astro.site?.href,
+  telephone: site.phoneDisplay,
+  areaServed: { '@type': 'AdministrativeArea', name: 'South Australia' },
+  founder: { '@type': 'Person', name: site.contactName },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'sales',
+    name: site.contactName,
+    telephone: site.phoneDisplay,
+    areaServed: 'AU',
+    availableLanguage: 'English',
+  },
+};
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_AU" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <meta name="theme-color" content="#0c0c0e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      // Scroll reveal. Styles only apply under html.js and outside reduced
+      // motion (see global.css), so content is never hidden without this.
+      const targets = document.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-group]');
+      if (targets.length && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 },
+        );
+        targets.forEach((t) => io.observe(t));
+      } else {
+        targets.forEach((t) => t.classList.add('is-in'));
+      }
+    </script>
+  </body>
+</html>

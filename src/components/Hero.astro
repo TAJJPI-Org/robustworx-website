@@ -1,0 +1,381 @@
+---
+import { Image } from 'astro:assets';
+import { site, telHref } from '../data/site';
+import { photos } from '../data/photos';
+
+/**
+ * Home hero. Left: proposition and the two actions. Right: supplied RobustWorx
+ * photograph (Scott on a trenching site) cut on the diagonal, with survey
+ * contour linework behind the type. The photo is the LCP element, so it is
+ * loaded eagerly at high priority.
+ */
+const hero = photos.trenchSite;
+
+// Topographic contour lines behind the copy.
+const contours = [0, 1, 2, 3, 4, 5].map(
+  (i) =>
+    `M-40 ${168 - i * 24}C120 ${142 - i * 22} 250 ${196 - i * 20} 400 ${172 - i * 23}S680 ${128 - i * 18} 840 ${156 - i * 22}`,
+);
+---
+
+<section class="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <svg viewBox="0 0 800 620" preserveAspectRatio="xMinYMin slice" class="hero__svg">
+      <g class="hero__contours">{contours.map((d) => <path d={d} />)}</g>
+    </svg>
+    <span class="hero__grain"></span>
+  </div>
+
+  <div class="hero__photo">
+    <Image
+      src={hero.src}
+      alt={hero.alt}
+      widths={[640, 960, 1280, 1600]}
+      sizes="(min-width: 1000px) 60vw, 100vw"
+      loading="eager"
+      decoding="sync"
+      fetchpriority="high"
+      class="hero__img"
+      style="object-position:66% 40%"
+    />
+    <span class="hero__shade" aria-hidden="true"></span>
+    <p class="hero__cap">
+      <span class="hero__cap-tag">On site</span>
+      {hero.caption}
+    </p>
+  </div>
+
+  <div class="wrap hero__inner">
+    <p class="label hero__label">{site.region}</p>
+
+    <h1 class="hero__title">
+      Practical capability <span class="hero__title-hi">where the job is.</span>
+    </h1>
+
+    <p class="hero__lead">
+      RobustWorx supports civil, traffic, plant and maintenance work across regional South
+      Australia. Extra plant, an operator, workzone support or someone on the ground — send the job
+      details and we'll work out what it needs.
+    </p>
+
+    <div class="hero__actions">
+      <a class="btn" href="/contact">Send job details</a>
+      <a class="btn btn--ghost hero__call" href={telHref()}>
+        Call Scott — {site.phoneDisplay}
+      </a>
+    </div>
+
+    <p class="hero__owner">
+      <strong>{site.contactName}</strong> owns and operates RobustWorx. He scopes the job, does the work
+      and answers the phone — <a href={telHref()}>{site.phoneDisplay}</a>.
+    </p>
+  </div>
+
+  <div class="hero__foot">
+    <div class="wrap">
+      <ul class="hero__strip">
+        <li>Traffic &amp; workzone support</li>
+        <li>Plant operation</li>
+        <li>Small earthworks</li>
+        <li>Site &amp; field support</li>
+        <li>Grounds &amp; maintenance</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--c-black);
+    border-bottom: 1px solid var(--c-line);
+    display: grid;
+    grid-template-columns: 100%;
+  }
+
+  /* Backdrop linework */
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .hero__svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+  }
+  .hero__contours path {
+    fill: none;
+    stroke: #ffffff;
+    stroke-opacity: 0.07;
+    stroke-width: 1.5;
+  }
+  .hero__grain {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(255, 255, 255, 0.045) 1px,
+      transparent 0
+    );
+    background-size: 4px 4px;
+    mix-blend-mode: overlay;
+  }
+
+  /* Photo */
+  .hero__photo {
+    position: relative;
+    order: 2;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--c-surface-2);
+  }
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-origin: 40% 50%;
+  }
+  .hero__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(12, 12, 14, 0.55) 0%, rgba(12, 12, 14, 0) 32%),
+      linear-gradient(0deg, rgba(12, 12, 14, 0.75) 0%, rgba(12, 12, 14, 0) 45%);
+    pointer-events: none;
+  }
+  .hero__cap {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 0.8rem;
+    width: fit-content;
+    max-width: 52ch;
+    padding: 0.55rem 0.8rem 0.55rem 0.55rem;
+    background: rgba(12, 12, 14, 0.86);
+    backdrop-filter: blur(6px);
+    font-size: var(--t-small);
+    line-height: 1.45;
+    color: #e2e2dc;
+  }
+  .hero__cap-tag {
+    flex: none;
+    padding: 0.35rem 0.6rem;
+    background: var(--c-lime);
+    color: var(--c-black);
+    font-family: var(--f-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+    text-shadow: none;
+  }
+
+  /* Copy */
+  .hero__inner {
+    position: relative;
+    order: 1;
+    padding-block: clamp(2.75rem, 1.5rem + 5vw, 6rem) clamp(2.25rem, 1.5rem + 3vw, 3.5rem);
+  }
+  .hero__title {
+    margin-top: 1.15rem;
+    font-size: var(--t-hero);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+  }
+  .hero__title-hi {
+    display: block;
+    color: var(--c-lime);
+  }
+  .hero__lead {
+    margin-top: 1.4rem;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: #d5d5cf;
+    max-width: 56ch;
+  }
+
+  .hero__actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .hero__actions .btn {
+    flex: 1 1 260px;
+  }
+  @media (min-width: 620px) {
+    .hero__actions .btn {
+      flex: 0 0 auto;
+      min-width: 240px;
+    }
+  }
+
+  .hero__owner {
+    position: relative;
+    margin-top: 1.9rem;
+    padding: 1.4rem 0 0 1.6rem;
+    border-top: 1px solid var(--c-line);
+    max-width: 60ch;
+    font-size: var(--t-small);
+    line-height: 1.6;
+    color: var(--c-muted);
+  }
+  .hero__owner::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.65rem;
+    width: 12px;
+    height: 12px;
+    background: var(--c-orange);
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 58% 100%, 0 100%);
+  }
+  .hero__owner strong {
+    color: var(--c-light);
+    font-weight: 600;
+  }
+  .hero__owner a {
+    color: var(--c-lime);
+    font-weight: 600;
+    white-space: nowrap;
+    text-underline-offset: 3px;
+  }
+
+  /* Service strip */
+  .hero__foot {
+    order: 3;
+    position: relative;
+    border-top: 1px solid var(--c-line);
+    background: rgba(12, 12, 14, 0.85);
+  }
+  .hero__strip {
+    padding-block: 1.05rem;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .hero__strip li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--f-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+  }
+  .hero__strip li::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    flex: none;
+    background: var(--c-orange);
+  }
+
+  /* Desktop: split, photo bleeds to the right edge on a diagonal */
+  @media (min-width: 1000px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: 1fr auto;
+      min-height: min(calc(100svh - var(--header-h)), 860px);
+    }
+    .hero__inner {
+      grid-row: 1;
+      order: 0;
+      align-self: center;
+      width: 100%;
+      padding-right: calc(46% + 1rem);
+      padding-block: clamp(3.5rem, 2rem + 5vw, 6.5rem);
+    }
+    .hero__photo {
+      position: absolute;
+      inset: 0 0 auto auto;
+      order: 0;
+      width: 54%;
+      height: calc(100% - 0px);
+      aspect-ratio: auto;
+      clip-path: polygon(11% 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .hero__shade {
+      background:
+        linear-gradient(90deg, rgba(12, 12, 14, 0.7) 0%, rgba(12, 12, 14, 0) 38%),
+        linear-gradient(0deg, rgba(12, 12, 14, 0.8) 0%, rgba(12, 12, 14, 0) 42%);
+    }
+    .hero__cap {
+      left: calc(11% + 1.5rem);
+      right: var(--gutter);
+      bottom: 4.9rem; /* clears the service strip row */
+    }
+    .hero__foot {
+      grid-row: 2;
+      order: 0;
+      z-index: 1;
+    }
+    .hero__lead {
+      max-width: 50ch;
+    }
+    .hero__title {
+      max-width: 14ch;
+    }
+  }
+  @media (min-width: 1360px) {
+    .hero__inner {
+      padding-right: calc(48% + 1rem);
+    }
+  }
+
+  /* Motion: photo settles in, copy steps up. Off under reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__img {
+      animation: hero-settle 9s var(--ease) both;
+    }
+    .hero__label,
+    .hero__title,
+    .hero__lead,
+    .hero__actions,
+    .hero__owner {
+      animation: hero-rise 0.7s var(--ease) both;
+    }
+    .hero__title {
+      animation-delay: 0.08s;
+    }
+    .hero__lead {
+      animation-delay: 0.16s;
+    }
+    .hero__actions {
+      animation-delay: 0.24s;
+    }
+    .hero__owner {
+      animation-delay: 0.32s;
+    }
+  }
+  @keyframes hero-settle {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

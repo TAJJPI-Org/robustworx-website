@@ -1,0 +1,197 @@
+---
+import { Image } from 'astro:assets';
+import { site, telHref, smsHref, defaultSmsBody } from '../data/site';
+import type { Photo } from '../data/photos';
+
+interface Props {
+  title?: string;
+  body?: string;
+  variant?: 'dark' | 'lime' | 'plum' | 'photo';
+  /** Show the "text the job" action as well as call + form. */
+  showSms?: boolean;
+  /** Required for variant="photo": the supplied photo shown behind the band. */
+  photo?: Photo;
+}
+const {
+  title = 'Tell us what the job needs.',
+  body = 'Send the location, timing and what the work involves. If it is easier, call Scott and talk it through.',
+  variant = 'dark',
+  showSms = false,
+  photo,
+} = Astro.props;
+---
+
+<section class={`cta cta--${variant}`} aria-labelledby="cta-title">
+  {
+    variant === 'photo' && photo && (
+      <div class="cta__photo" aria-hidden="true">
+        <Image
+          src={photo.src}
+          alt=""
+          widths={[720, 1080, 1600]}
+          sizes="100vw"
+          loading="lazy"
+          decoding="async"
+          class="cta__img"
+          style={`object-position:${photo.focus}`}
+        />
+        <span class="cta__shade" />
+      </div>
+    )
+  }
+  <div class="wrap cta__inner">
+    <div class="cta__text">
+      <h2 id="cta-title" class="cta__title">{title}</h2>
+      <p class="cta__body">{body}</p>
+    </div>
+    <div class="cta__actions">
+      <a class="btn cta__primary" href="/contact">Send job details</a>
+      <a class="btn btn--ghost cta__secondary" href={telHref()}>
+        Call Scott — {site.phoneDisplay}
+      </a>
+      {
+        showSms && (
+          <a class="cta__sms" href={smsHref(defaultSmsBody)}>
+            Or text the job to Scott
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    border-top: 1px solid var(--c-line);
+    padding-block: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
+    background: var(--c-asphalt);
+  }
+  .cta__inner {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+  }
+  .cta__title {
+    font-size: var(--t-h2);
+    max-width: 16ch;
+  }
+  .cta__body {
+    margin-top: 0.9rem;
+    color: var(--c-muted);
+    max-width: 48ch;
+  }
+  .cta__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: stretch;
+  }
+  .cta__sms {
+    margin-top: 0.2rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    text-underline-offset: 3px;
+    padding-block: 0.65rem;
+  }
+
+  /* Photo block — supplied photo behind a dark plate, copy stays on black. */
+  .cta--photo {
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--c-black);
+    padding-block: clamp(3.5rem, 2rem + 6vw, 7.5rem);
+  }
+  .cta__photo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .cta__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+  }
+  .cta__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(12, 12, 14, 0.96) 0%,
+        rgba(12, 12, 14, 0.82) 55%,
+        rgba(12, 12, 14, 0.55) 100%
+      ),
+      linear-gradient(0deg, rgba(12, 12, 14, 0.5) 0%, rgba(12, 12, 14, 0) 60%);
+  }
+  @media (max-width: 899px) {
+    .cta__shade {
+      background: rgba(12, 12, 14, 0.86);
+    }
+  }
+  .cta--photo .cta__body {
+    color: #d5d5cf;
+  }
+  .cta--photo .cta__sms {
+    color: #d5d5cf;
+  }
+
+  /* Lime block — used where the CTA should stop the page dead. */
+  .cta--lime {
+    background: var(--c-lime);
+    color: var(--c-black);
+    border-top: none;
+  }
+  .cta--lime .cta__body {
+    color: #2a3300;
+  }
+  .cta--lime .cta__primary {
+    --btn-bg: var(--c-black);
+    --btn-fg: var(--c-light);
+    --btn-bd: var(--c-black);
+  }
+  .cta--lime .cta__primary:hover {
+    --btn-bg: #26262c;
+    --btn-bd: #26262c;
+  }
+  .cta--lime .cta__secondary {
+    --btn-fg: var(--c-black);
+    --btn-bd: rgba(0, 0, 0, 0.45);
+  }
+  .cta--lime .cta__secondary:hover {
+    --btn-fg: var(--c-black);
+    --btn-bd: var(--c-black);
+  }
+  .cta--lime .cta__sms {
+    color: #2a3300;
+  }
+  .cta--lime :global(.btn:focus-visible) {
+    outline-color: var(--c-black);
+  }
+
+  .cta--plum {
+    background: linear-gradient(
+      120deg,
+      var(--c-plum) 0%,
+      var(--c-plum-deep) 60%,
+      var(--c-black) 100%
+    );
+    border-top: none;
+  }
+  .cta--plum .cta__body {
+    color: #cfc3e0;
+  }
+
+  @media (min-width: 860px) {
+    .cta__inner {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      align-items: center;
+    }
+    .cta__actions {
+      align-items: flex-end;
+    }
+    .cta__actions .btn {
+      min-width: 300px;
+    }
+  }
+</style>

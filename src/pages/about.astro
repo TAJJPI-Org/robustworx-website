@@ -1,0 +1,343 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos, crops } from '../data/photos';
+import { site, telHref } from '../data/site';
+
+const approach = [
+  {
+    no: '01',
+    title: 'Understand the job',
+    body: 'What the work actually is, where it is, when it needs to happen and what the finished result has to look like.',
+  },
+  {
+    no: '02',
+    title: 'Establish what support is required',
+    body: 'Plant, an operator, a vehicle, gear, a person on the ground — or a combination. It is usually not exactly what the first phone call described.',
+  },
+  {
+    no: '03',
+    title: 'Confirm capability',
+    body: 'A straight answer on whether RobustWorx can cover it for those dates. If it cannot, you hear that early rather than the week before.',
+  },
+  {
+    no: '04',
+    title: 'Turn up prepared',
+    body: 'Gear sorted, access worked out and the scope understood before the truck leaves. Regional travel is too expensive to sort out on arrival.',
+  },
+  {
+    no: '05',
+    title: 'Communicate directly',
+    body: 'You deal with Scott. Changes on site get raised as they happen, not discovered at the end of the job.',
+  },
+];
+---
+
+<BaseLayout
+  title="About RobustWorx — Scott Mumford, regional South Australia"
+  description="RobustWorx is a regional South Australian field-services business run by Scott Mumford, focused on practical support across civil, traffic, plant and maintenance work."
+>
+  <PageIntro
+    eyebrow="About"
+    title="A field business, run by the person doing the work"
+    variant="orange"
+    motif="centreline"
+    photo={photos.trenchSite}
+  />
+
+  <section class="about has-bg" aria-labelledby="about-title">
+    <Backdrop photo={photos.excavatorSunset} side="left" focus="30% 50%" opacity={0.12} />
+    <div class="wrap about__inner">
+      <div class="about__text">
+        <h2 id="about-title" class="sr-only">About RobustWorx</h2>
+        <p class="about__lede">
+          RobustWorx is a regional South Australian field-services business focused on practical
+          support across civil, traffic, plant and maintenance work.
+        </p>
+        <div class="about__prose stack">
+          <p>
+            The work is straightforward: contractors, councils, project teams and local customers
+            need something done on the ground — an extra machine, a workzone set up, a trench dug,
+            an access track formed, a site tidied up, or someone on site for the duration of a job.
+            RobustWorx covers that.
+          </p>
+          <p>
+            It is deliberately not a large organisation. There is no project delivery division, no
+            account management layer and no proposal team. What there is instead is equipment, field
+            capability and a person who answers the phone and does the work.
+          </p>
+          <p>
+            That suits some jobs and not others. A large civil program with a full compliance
+            framework needs a different kind of business. A regional works package that needs
+            another machine for four days, or a site that needs someone practical on it, does not.
+          </p>
+        </div>
+      </div>
+
+      <aside class="owner" aria-label="Contact details">
+        <div class="owner__card" data-reveal="right">
+          <Photo
+            photo={photos.coastalUte}
+            ratio="4 / 3"
+            focus="74% 42%"
+            tag="Owner"
+            class="owner__photo"
+            sizes="(min-width: 940px) 30vw, 100vw"
+          />
+          <p class="owner__label">Owner &amp; operator</p>
+          <p class="owner__name">{site.contactName}</p>
+          <p class="owner__biz">{site.name}</p>
+          <a class="owner__phone" href={telHref()}>{site.phoneDisplay}</a>
+          <p class="owner__region">{site.region}</p>
+          <div class="owner__actions">
+            <a class="btn btn--block" href={telHref()}>Call Scott</a>
+            <a class="btn btn--ghost btn--block" href="/contact">Send job details</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section approach has-bg" aria-labelledby="approach-title">
+    <Backdrop photo={photos.trafficControl} side="right" focus="60% 30%" />
+    <div class="wrap">
+      <div class="approach__head" data-reveal>
+        <p class="label">How a job runs</p>
+        <h2 id="approach-title" class="approach__title">Five steps, in this order</h2>
+        <p class="approach__lead">
+          Not a philosophy. This is the sequence a job actually goes through, and the reason most of
+          the questions get asked before anyone mobilises.
+        </p>
+      </div>
+      <ol class="approach__list" data-reveal-group>
+        {
+          approach.map((a) => (
+            <li class="approach__item">
+              <span class="approach__no">{a.no}</span>
+              <div>
+                <h3 class="approach__name">{a.title}</h3>
+                <p class="approach__text">{a.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--asphalt place has-bg" aria-labelledby="place-title">
+    <Backdrop photo={photos.coastalUte} side="right" focus="15% 50%" />
+    <div class="wrap wrap--content place__inner">
+      <div>
+        <p class="label label--orange">Where it operates</p>
+        <h2 id="place-title" class="place__title">Based in regional South Australia</h2>
+        <div class="place__text stack">
+          <p>
+            RobustWorx works out of regional South Australia. Distance is part of every job here, so
+            travel, access and what is available locally get factored in from the first conversation
+            rather than discovered halfway through.
+          </p>
+          <p>
+            If you are not sure whether your site is within reach, ask. It is a two-minute phone
+            call and the answer is either yes or no.
+          </p>
+        </div>
+        <a class="btn btn--orange mt-6" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+      </div>
+      <div class="place__art" data-reveal="right">
+        <Photo
+          photo={crops.ute}
+          ratio="4 / 3"
+          tag="On the road"
+          caption
+          sizes="(min-width: 880px) 40vw, 100vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    variant="photo"
+    photo={photos.excavatorSunset}
+    title="Work out whether it fits in one call."
+    body="Describe the job. If RobustWorx can cover it you will get a straight answer, and if it cannot, you will get pointed somewhere useful."
+    showSms
+  />
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: clamp(2.5rem, 1.6rem + 4vw, 4.5rem);
+  }
+  .about__inner {
+    display: grid;
+    gap: clamp(2rem, 1.2rem + 3vw, 3.5rem);
+    align-items: start;
+  }
+  @media (min-width: 940px) {
+    .about__inner {
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+      gap: 4rem;
+    }
+  }
+  .about__lede {
+    font-family: var(--f-display);
+    font-size: clamp(1.5rem, 1.1rem + 1.9vw, 2.4rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    color: var(--c-light);
+    max-width: 24ch;
+  }
+  .about__prose {
+    margin-top: 1.75rem;
+    color: #c9c9c4;
+    max-width: 62ch;
+    font-size: var(--t-lead);
+    line-height: 1.6;
+  }
+
+  .owner__card {
+    --pad: clamp(1.25rem, 1rem + 1.2vw, 1.9rem);
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    border-top: 5px solid var(--c-orange);
+    padding: var(--pad);
+  }
+  :global(.owner__photo) {
+    margin: calc(-1 * var(--pad)) calc(-1 * var(--pad)) 1.25rem;
+    border-bottom: 1px solid var(--c-line);
+  }
+  :global(.owner__photo .photo__frame) {
+    clip-path: none;
+  }
+  @media (min-width: 940px) {
+    .owner__card {
+      position: sticky;
+      top: calc(var(--header-h) + 1.75rem);
+    }
+  }
+  .owner__label {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+  }
+  .owner__name {
+    margin-top: 0.75rem;
+    font-family: var(--f-display);
+    font-size: clamp(1.9rem, 1.4rem + 1.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .owner__biz {
+    margin-top: 0.25rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+  }
+  .owner__phone {
+    display: inline-block;
+    margin-top: 0.85rem;
+    font-family: var(--f-display);
+    font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2rem);
+    font-weight: 700;
+    color: var(--c-lime);
+    text-decoration: none;
+    line-height: 1.2;
+    padding-block: 0.45rem;
+  }
+  .owner__phone:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .owner__region {
+    color: var(--c-muted);
+    font-size: var(--t-small);
+  }
+  .owner__actions {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.35rem;
+  }
+
+  .approach {
+    border-top: 1px solid var(--c-line);
+  }
+  .approach__head {
+    margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  }
+  .approach__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+  }
+  .approach__lead {
+    margin-top: 1rem;
+    color: var(--c-muted);
+    max-width: 58ch;
+  }
+  .approach__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--c-line);
+  }
+  .approach__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.1rem;
+    align-items: start;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  @media (min-width: 760px) {
+    .approach__item {
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: baseline;
+    }
+  }
+  .approach__no {
+    font-family: var(--f-display);
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+    font-weight: 700;
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--c-orange);
+  }
+  .approach__name {
+    font-size: var(--t-h3);
+  }
+  .approach__text {
+    margin-top: 0.5rem;
+    color: var(--c-muted);
+    max-width: 66ch;
+    line-height: 1.6;
+  }
+
+  .place__inner {
+    display: grid;
+    gap: clamp(2rem, 1rem + 3vw, 3.5rem);
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .place__inner {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    }
+  }
+  .place__title {
+    margin-top: 0.9rem;
+    font-size: var(--t-h2);
+    max-width: 15ch;
+  }
+  .place__text {
+    margin-top: 1.15rem;
+    color: var(--c-muted);
+    max-width: 56ch;
+  }
+</style>
