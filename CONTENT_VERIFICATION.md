@@ -78,18 +78,16 @@ before it is added.
    There is no stock photography. Drawn illustrations remain where no photo
    covers the subject (two fleet categories, the home equipment overview).
 
-   Two things visible in the photos need a decision before launch:
+   Two things visible in the photos were raised and have been resolved by the
+   client (3 September 2026):
 
    - **The ute door in `scott-coastal-ute.jpg` shows the number 1300 726 995.**
-     The verified contact number for this build is 0458 958 995 and that is the
-     only number the site publishes. If 1300 726 995 is a live business line,
-     add it to `src/data/site.ts` and it will appear alongside the mobile; if it
-     is not, consider whether that photo should be cropped or replaced so the
-     site and the vehicle do not disagree.
-   - **The message sign reads "TRAFFIC MANAGEMENT".** The site continues to
-     describe the service as traffic and workzone _support_ and does not claim
-     licensed traffic management (see item 6). Confirm the licensing position
-     before the wording is changed.
+     Confirmed: the number to publish is 0458 958 995, which is the only number
+     the site carries. The photo stays as supplied; the 1300 number is not added
+     to the site.
+   - **The message sign reads "TRAFFIC MANAGEMENT".** Confirmed fine to show as
+     photographed. Site copy is unchanged and still describes the service as
+     traffic and workzone _support_ without a licensing claim (see item 6).
 
 2. **No logo file supplied.** The RobustWorx logo was not provided with this
    build. `src/components/Logo.astro` renders a neutral typographic wordmark as
