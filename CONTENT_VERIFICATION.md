@@ -78,7 +78,10 @@ before it is added.
    There is no stock photography and no generated imagery. Where a tile needs
    an image of a specific piece of equipment, it uses a crop cut from one of
    the four photos (`src/assets/photos/crops/`), so the drawn illustrations
-   have been retired.
+   have been retired. The one drawing that remains is the plan-view road
+   works layout on the traffic and roadside equipment tile. It is a generic
+   schematic, labelled "illustrative only, not a traffic guidance scheme",
+   and it does not represent a certified plan or a licensed capability.
    The same four photos also sit behind every section as low-opacity
    backdrops, heavily shaded; a pixel-level contrast check confirms all text
    over them still meets WCAG AA. More photography would reduce repetition.

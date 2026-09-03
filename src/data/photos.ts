@@ -13,6 +13,9 @@ import cropCones from '../assets/photos/crops/crop-cones.jpg';
 import cropClipboard from '../assets/photos/crops/crop-clipboard.jpg';
 import cropTrench from '../assets/photos/crops/crop-trench.jpg';
 import cropCrew from '../assets/photos/crops/crop-crew.jpg';
+import cropRoadworks from '../assets/photos/crops/crop-roadworks.jpg';
+import cropRoadworksSigns from '../assets/photos/crops/crop-roadworks-signs.jpg';
+import roadPlan from '../assets/photos/crops/road-plan.png';
 
 /**
  * Supplied RobustWorx photography.
@@ -148,6 +151,31 @@ export const crops = {
     caption: 'Open service trench.',
     service: 'small-earthworks',
     serviceLabel: 'Small earthworks',
+    focus: '50% 50%',
+  },
+  roadworks: {
+    src: cropRoadworks,
+    alt: 'A coned lane closure on a sealed road with a SLOW sign, a stop/slow bat and queued traffic.',
+    caption: 'Coned lane closure with signs and queued traffic.',
+    service: 'traffic-workzone-support',
+    serviceLabel: 'Traffic & workzone support',
+    focus: '50% 50%',
+  },
+  roadworksSigns: {
+    src: cropRoadworksSigns,
+    alt: 'STOP and SLOW signs, cones and a stop/slow bat at a road works setup with traffic approaching.',
+    caption: 'Road works setup with cones, signs and stop/slow bat.',
+    service: 'traffic-workzone-support',
+    serviceLabel: 'Traffic & workzone support',
+    focus: '50% 40%',
+  },
+  roadPlan: {
+    src: roadPlan,
+    alt: 'Plan-view drawing of a typical road works layout on a two-lane road: advance warning signs, 40 speed sign, prepare-to-stop sign, traffic controller, cone taper, buffer, coned work area with plant, end-of-works sign and message sign. Illustrative only.',
+    caption:
+      'Typical road works layout, plan view. Illustrative only, not a traffic guidance scheme.',
+    service: 'traffic-workzone-support',
+    serviceLabel: 'Traffic & workzone support',
     focus: '50% 50%',
   },
   crew: {

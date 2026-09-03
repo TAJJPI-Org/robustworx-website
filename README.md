@@ -213,12 +213,14 @@ cover crop, responsive WebP `srcset`, optional tag and caption), or through the
 
 Ten equipment and detail crops cut from those four photos live in
 `src/assets/photos/crops/` and are registered as `crops` in the same file
-(excavator, tipper, ute, message sign, cones, stop bat, clipboard, trench,
-crew). They give every tile a real RobustWorx image: the home service cards and
+(excavator, tipper, ute, message sign, cones, stop bat, road works setups,
+clipboard, trench, crew). They give every tile a real RobustWorx image: the home service cards and
 equipment tiles, the two fleet categories the full photos do not cover, the six
 field situations on the Work page, and the regional panels on Home and About.
-No tile on the site ships without a photograph, and nothing is stock or
-generated. The crops were cut with sharp from the originals; re-cut them from
+The traffic and roadside equipment tile and Fleet band use a drawn plan-view
+road works layout (`road-plan.svg`, rendered to `road-plan.png`), labelled
+illustrative only. No tile on the site ships without an image, and nothing is
+stock or generated photography. The crops were cut with sharp from the originals; re-cut them from
 `src/assets/photos/` if a source photo is replaced.
 
 Every section on the site also carries a low-opacity photo backdrop through

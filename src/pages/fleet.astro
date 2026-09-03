@@ -21,7 +21,7 @@ const fleetBackdrop: PhotoData[] = [
 const fleetPhoto: Record<string, PhotoData> = {
   'compact-excavation': photos.excavatorSunset,
   'workzone-vehicles': photos.coastalUte,
-  'traffic-roadside-equipment': photos.trafficControl,
+  'traffic-roadside-equipment': crops.roadPlan,
   'transport-site-support': crops.tipper,
   'field-tools': crops.clipboard,
 };
@@ -58,7 +58,7 @@ const fleetPhoto: Record<string, PhotoData> = {
           <div class="fleet__art" data-reveal={i % 2 === 1 ? 'right' : 'left'}>
             <Photo
               photo={fleetPhoto[e.id]}
-              ratio="4 / 3"
+              ratio={e.id === 'traffic-roadside-equipment' ? '16 / 10' : '4 / 3'}
               tag={e.no}
               caption
               sizes="(min-width: 900px) 52vw, 100vw"
