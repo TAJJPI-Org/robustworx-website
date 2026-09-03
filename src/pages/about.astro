@@ -4,7 +4,7 @@ import PageIntro from '../components/PageIntro.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
 import Backdrop from '../components/Backdrop.astro';
-import { photos } from '../data/photos';
+import { photos, crops } from '../data/photos';
 import { site, telHref } from '../data/site';
 
 const approach = [
@@ -147,15 +147,14 @@ const approach = [
         </div>
         <a class="btn btn--orange mt-6" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
       </div>
-      <div class="place__art" aria-hidden="true">
-        <svg viewBox="0 0 300 300" fill="none">
-          <circle cx="150" cy="150" r="132" class="place__ring"></circle>
-          <circle cx="150" cy="150" r="92" class="place__ring"></circle>
-          <circle cx="150" cy="150" r="52" class="place__ring"></circle>
-          <path d="M150 8v284M8 150h284" class="place__cross"></path>
-          <circle cx="150" cy="150" r="9" class="place__dot"></circle>
-          <path d="M20 236c56-24 84 12 138-16s90-18 122 6" class="place__ridge"></path>
-        </svg>
+      <div class="place__art" data-reveal="right">
+        <Photo
+          photo={crops.ute}
+          ratio="4 / 3"
+          tag="On the road"
+          caption
+          sizes="(min-width: 880px) 40vw, 100vw"
+        />
       </div>
     </div>
   </section>
@@ -340,27 +339,5 @@ const approach = [
     margin-top: 1.15rem;
     color: var(--c-muted);
     max-width: 56ch;
-  }
-  .place__art svg {
-    width: 100%;
-    max-width: 340px;
-    height: auto;
-    margin-inline: auto;
-  }
-  .place__ring {
-    stroke: var(--c-line-strong);
-    stroke-width: 1.5;
-    stroke-dasharray: 6 8;
-  }
-  .place__cross {
-    stroke: var(--c-line);
-    stroke-width: 1.5;
-  }
-  .place__dot {
-    fill: var(--c-orange);
-  }
-  .place__ridge {
-    stroke: rgba(255, 255, 255, 0.1);
-    stroke-width: 2;
   }
 </style>

@@ -4,12 +4,22 @@ import PageIntro from '../components/PageIntro.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
 import Backdrop from '../components/Backdrop.astro';
-import { photos } from '../data/photos';
+import { photos, crops, type Photo as PhotoData } from '../data/photos';
 import { fieldSituations } from '../data/field';
 import { workRecords, recordImage } from '../data/workRecords';
 import { site, telHref } from '../data/site';
 
 const records = workRecords;
+
+/** One real crop per field situation, matched to the service it describes. */
+const situationCrop: PhotoData[] = [
+  crops.vms,
+  crops.stopBat,
+  crops.trench,
+  crops.tipper,
+  crops.conesRoad,
+  crops.crew,
+];
 ---
 
 <BaseLayout
@@ -115,24 +125,15 @@ const records = workRecords;
 
       <ol class="situations__list">
         {
-          fieldSituations.map((f) => (
+          fieldSituations.map((f, i) => (
             <li class="sit">
-              <div class="sit__plate" aria-hidden="true">
-                <span class="sit__no">{f.no}</span>
-                <svg
-                  viewBox="0 0 240 116"
-                  class="sit__marks"
-                  fill="none"
-                  preserveAspectRatio="none"
-                >
-                  <path d="M0 84h240" class="sit__marks-edge" />
-                  <path d="M0 100h240" class="sit__marks-dash" />
-                  <path
-                    d="M20 0v62M56 0v62M92 0v62M128 0v62M164 0v62M200 0v62"
-                    class="sit__marks-fine"
-                  />
-                </svg>
-              </div>
+              <Photo
+                photo={situationCrop[i]}
+                ratio="16 / 9"
+                tag={f.no}
+                class="sit__photo"
+                sizes="(min-width: 1100px) 31vw, (min-width: 700px) 48vw, 100vw"
+              />
               <div class="sit__body">
                 <a class="sit__cat" href={`/services#${f.service}`}>
                   {f.serviceLabel}
@@ -347,45 +348,9 @@ const records = workRecords;
     border: 1px solid var(--c-line);
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
   }
-  .sit__plate {
-    position: relative;
-    height: 116px;
-    background: linear-gradient(160deg, #101014 0%, #08080a 100%);
+  :global(.sit__photo .photo__frame) {
+    clip-path: none;
     border-bottom: 1px solid var(--c-line);
-    overflow: hidden;
-  }
-  .sit__no {
-    position: absolute;
-    left: clamp(1rem, 0.6rem + 1vw, 1.5rem);
-    top: 50%;
-    transform: translateY(-58%);
-    z-index: 1;
-    font-family: var(--f-display);
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 0.8;
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--c-lime);
-  }
-  .sit__marks {
-    position: absolute;
-    inset: 0 0 0 auto;
-    width: min(62%, 300px);
-    height: 100%;
-  }
-  .sit__marks-edge {
-    stroke: var(--c-line-strong);
-    stroke-width: 2;
-  }
-  .sit__marks-dash {
-    stroke: var(--c-orange);
-    stroke-width: 3;
-    stroke-dasharray: 20 16;
-    opacity: 0.75;
-  }
-  .sit__marks-fine {
-    stroke: rgba(255, 255, 255, 0.07);
-    stroke-width: 2;
   }
 
   .sit__body {

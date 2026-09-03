@@ -1,18 +1,28 @@
 ---
 import Glyph from './Glyph.astro';
+import Photo from './Photo.astro';
 import type { Service } from '../data/services';
+import type { Photo as PhotoData } from '../data/photos';
 
 interface Props {
   service: Service;
   feature?: boolean;
+  /** Supplied photo (or crop) shown across the top of the card. */
+  photo: PhotoData;
 }
-const { service, feature = false } = Astro.props;
+const { service, feature = false, photo } = Astro.props;
 ---
 
 <article class={`sc ${feature ? 'sc--feature' : ''}`}>
   <a class="sc__link" href={`/services#${service.id}`}>
     <span class="sr-only">{service.title}</span>
   </a>
+  <Photo
+    photo={photo}
+    ratio={feature ? '21 / 9' : '16 / 9'}
+    class="sc__photo"
+    sizes={feature ? '(min-width: 900px) 62vw, 100vw' : '(min-width: 900px) 31vw, 100vw'}
+  />
   <div class="sc__top">
     <span class="sc__no">{service.no}</span>
     <Glyph name={service.glyph} size={feature ? 56 : 44} class="sc__glyph" />
@@ -87,6 +97,13 @@ const { service, feature = false } = Astro.props;
     font-weight: 700;
     letter-spacing: 0.16em;
     color: var(--c-orange);
+  }
+  .sc :global(.sc__photo) {
+    margin: calc(-1 * clamp(1.25rem, 1rem + 1vw, 1.9rem));
+    margin-bottom: 0.25rem;
+  }
+  .sc :global(.sc__photo .photo__frame) {
+    clip-path: none;
   }
   .sc__glyph {
     color: var(--c-line-strong);

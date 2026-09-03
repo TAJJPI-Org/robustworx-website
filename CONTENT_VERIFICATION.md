@@ -75,8 +75,10 @@ before it is added.
    a message sign on a coastal road). They are used across the site and on the
    Work page as field records. Captions and alt text describe only what is in
    the frame — no location, client, date or outcome is attached to any of them.
-   There is no stock photography. Drawn illustrations remain where no photo
-   covers the subject (two fleet categories, the home equipment overview).
+   There is no stock photography and no generated imagery. Where a tile needs
+   an image of a specific piece of equipment, it uses a crop cut from one of
+   the four photos (`src/assets/photos/crops/`), so the drawn illustrations
+   have been retired.
    The same four photos also sit behind every section as low-opacity
    backdrops, heavily shaded; a pixel-level contrast check confirms all text
    over them still meets WCAG AA. More photography would reduce repetition.

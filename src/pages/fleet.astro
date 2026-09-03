@@ -1,15 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
-import Silhouette from '../components/Silhouette.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
 import Backdrop from '../components/Backdrop.astro';
-import { photos, type Photo as PhotoData } from '../data/photos';
+import { photos, crops, type Photo as PhotoData } from '../data/photos';
 import { equipment } from '../data/equipment';
 import { site, telHref } from '../data/site';
 
-/** Supplied photos for the categories they actually show; the rest keep the drawn silhouette. */
 /** Backdrop behind each band; the photo shows through on the side the copy is not on. */
 const fleetBackdrop: PhotoData[] = [
   photos.trafficControl,
@@ -19,10 +17,13 @@ const fleetBackdrop: PhotoData[] = [
   photos.trafficControl,
 ];
 
-const fleetPhoto: Record<string, PhotoData | undefined> = {
+/** Supplied photos and crops, one per category — every band carries a real image. */
+const fleetPhoto: Record<string, PhotoData> = {
   'compact-excavation': photos.excavatorSunset,
   'workzone-vehicles': photos.coastalUte,
   'traffic-roadside-equipment': photos.trafficControl,
+  'transport-site-support': crops.tipper,
+  'field-tools': crops.clipboard,
 };
 ---
 
@@ -54,25 +55,15 @@ const fleetPhoto: Record<string, PhotoData | undefined> = {
       >
         <Backdrop photo={fleetBackdrop[i]} side={i % 2 === 1 ? 'right' : 'left'} />
         <div class="wrap fleet__inner">
-          {fleetPhoto[e.id] ? (
-            <div class="fleet__art fleet__art--photo" data-reveal={i % 2 === 1 ? 'right' : 'left'}>
-              <Photo
-                photo={fleetPhoto[e.id]!}
-                ratio="4 / 3"
-                tag={e.no}
-                caption
-                sizes="(min-width: 900px) 52vw, 100vw"
-              />
-            </div>
-          ) : (
-            <div class="fleet__art" data-reveal={i % 2 === 1 ? 'right' : 'left'}>
-              <span class="fleet__no" aria-hidden="true">
-                {e.no}
-              </span>
-              <Silhouette name={e.glyph} />
-              <span class="fleet__ground" aria-hidden="true" />
-            </div>
-          )}
+          <div class="fleet__art" data-reveal={i % 2 === 1 ? 'right' : 'left'}>
+            <Photo
+              photo={fleetPhoto[e.id]}
+              ratio="4 / 3"
+              tag={e.no}
+              caption
+              sizes="(min-width: 900px) 52vw, 100vw"
+            />
+          </div>
 
           <div class="fleet__body">
             <h2 id={`${e.id}-title`} class="fleet__title">
@@ -161,45 +152,6 @@ const fleetPhoto: Record<string, PhotoData | undefined> = {
 
   .fleet__art {
     position: relative;
-    padding: clamp(1.5rem, 1rem + 2vw, 2.75rem) clamp(1rem, 0.6rem + 2vw, 2.5rem) 0;
-    background:
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(160deg, #101014 0%, #08080a 100%);
-    background-size:
-      54px 54px,
-      54px 54px,
-      auto;
-    border: 1px solid var(--c-line);
-    overflow: hidden;
-  }
-  .fleet__art--photo {
-    padding: 0;
-    border: none;
-    background: none;
-    overflow: visible;
-  }
-  .fleet__no {
-    position: absolute;
-    top: clamp(0.5rem, 0.2rem + 1vw, 1rem);
-    left: clamp(0.75rem, 0.4rem + 1vw, 1.25rem);
-    font-family: var(--f-display);
-    font-size: clamp(3rem, 2rem + 4vw, 5.5rem);
-    font-weight: 700;
-    line-height: 0.8;
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.09);
-  }
-  .fleet__ground {
-    display: block;
-    height: 10px;
-    margin: 0 -3rem;
-    background-image: repeating-linear-gradient(
-      -45deg,
-      var(--c-orange) 0 12px,
-      transparent 12px 24px
-    );
-    opacity: 0.5;
   }
 
   .fleet__title {

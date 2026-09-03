@@ -3,15 +3,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import ServiceCard from '../components/ServiceCard.astro';
-import Silhouette from '../components/Silhouette.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Photo from '../components/Photo.astro';
 import Backdrop from '../components/Backdrop.astro';
-import { photos } from '../data/photos';
+import { photos, crops, type Photo as PhotoData } from '../data/photos';
 import { services } from '../data/services';
 import { equipment } from '../data/equipment';
 import { engagement } from '../data/engagement';
 import { site, telHref } from '../data/site';
+
+/** Real crops from the supplied photos, one per tile — no tile ships without an image. */
+const serviceCrop: Record<string, PhotoData> = {
+  'traffic-workzone-support': crops.stopBat,
+  'site-supervision-field-support': crops.clipboard,
+  'plant-operation': crops.excavator,
+  'small-earthworks': crops.trench,
+  'grounds-maintenance': crops.conesRoad,
+};
+const equipmentCrop: Record<string, PhotoData> = {
+  'compact-excavation': crops.excavator,
+  'workzone-vehicles': crops.ute,
+  'traffic-roadside-equipment': crops.vms,
+};
 
 const supports = [
   'An extra machine and operator for a works package',
@@ -115,7 +128,11 @@ const reasons = [
         align="split"
       />
       <div class="svc-grid" data-reveal-group>
-        {services.map((s, i) => <ServiceCard service={s} feature={i === 0} />)}
+        {
+          services.map((s, i) => (
+            <ServiceCard service={s} feature={i === 0} photo={serviceCrop[s.id]} />
+          ))
+        }
       </div>
       <p class="svc-more">
         <a class="link-arrow" href="/services">
@@ -149,9 +166,12 @@ const reasons = [
         {
           equipment.slice(0, 3).map((e) => (
             <li class="eq__item">
-              <div class="eq__art">
-                <Silhouette name={e.glyph} />
-              </div>
+              <Photo
+                photo={equipmentCrop[e.id]}
+                ratio="16 / 10"
+                class="eq__art"
+                sizes="(min-width: 900px) 31vw, 100vw"
+              />
               <div class="eq__body">
                 <span class="eq__no">{e.no}</span>
                 <h3 class="eq__name">{e.title}</h3>
@@ -278,19 +298,14 @@ const reasons = [
           <a class="btn btn--ghost" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
         </div>
       </div>
-      <div class="region__art" aria-hidden="true" data-reveal="right">
-        <svg viewBox="0 0 400 320" fill="none">
-          <path d="M0 232h400" class="region__horizon"></path>
-          <path d="M0 232c46-30 78-8 118-36s70-44 116-22 74 62 166 34" class="region__ridge"></path>
-          <path d="M0 268c60-14 112 10 172-6s118-24 228 2" class="region__ridge2"></path>
-          {
-            [0, 1, 2, 3, 4, 5].map((i) => (
-              <path d={`M${-20 + i * 74} 320 L${168 + i * 12} 232`} class="region__field" />
-            ))
-          }
-          <path d="M0 300h400" class="region__road"></path>
-          <path d="M0 300h400" class="region__roadline"></path>
-        </svg>
+      <div class="region__art" data-reveal="right">
+        <Photo
+          photo={crops.conesRoad}
+          ratio="4 / 3"
+          tag="Regional SA"
+          caption
+          sizes="(min-width: 920px) 45vw, 100vw"
+        />
       </div>
     </div>
   </section>
@@ -520,9 +535,8 @@ const reasons = [
     background: var(--c-black);
     border: 1px solid var(--c-line);
   }
-  .eq__art {
-    padding: 1.5rem 1.25rem 0;
-    background: linear-gradient(180deg, #0a0a0c 0%, var(--c-black) 100%);
+  :global(.eq__art .photo__frame) {
+    clip-path: none;
   }
   .eq__body {
     padding: 1.25rem;
@@ -703,35 +717,5 @@ const reasons = [
     margin-top: 1.25rem;
     color: #cec9d6;
     max-width: 56ch;
-  }
-  .region__art svg {
-    width: 100%;
-    height: auto;
-  }
-  .region__horizon {
-    stroke: var(--c-line-strong);
-    stroke-width: 1.5;
-  }
-  .region__ridge {
-    stroke: rgba(255, 255, 255, 0.16);
-    stroke-width: 2;
-  }
-  .region__ridge2 {
-    stroke: rgba(255, 255, 255, 0.08);
-    stroke-width: 2;
-  }
-  .region__field {
-    stroke: rgba(255, 255, 255, 0.06);
-    stroke-width: 1.5;
-  }
-  .region__road {
-    stroke: var(--c-line-strong);
-    stroke-width: 22;
-  }
-  .region__roadline {
-    stroke: var(--c-lime);
-    stroke-width: 2.5;
-    stroke-dasharray: 22 20;
-    opacity: 0.6;
   }
 </style>

@@ -3,6 +3,16 @@ import trenchSite from '../assets/photos/scott-trench-site.jpg';
 import trafficControl from '../assets/photos/traffic-control-stop.jpg';
 import excavatorSunset from '../assets/photos/excavator-sunset.jpg';
 import coastalUte from '../assets/photos/scott-coastal-ute.jpg';
+import cropExcavator from '../assets/photos/crops/crop-excavator.jpg';
+import cropTipper from '../assets/photos/crops/crop-tipper.jpg';
+import cropUte from '../assets/photos/crops/crop-ute.jpg';
+import cropVms from '../assets/photos/crops/crop-vms.jpg';
+import cropConesRoad from '../assets/photos/crops/crop-cones-road.jpg';
+import cropStopBat from '../assets/photos/crops/crop-stop-bat.jpg';
+import cropCones from '../assets/photos/crops/crop-cones.jpg';
+import cropClipboard from '../assets/photos/crops/crop-clipboard.jpg';
+import cropTrench from '../assets/photos/crops/crop-trench.jpg';
+import cropCrew from '../assets/photos/crops/crop-crew.jpg';
 
 /**
  * Supplied RobustWorx photography.
@@ -61,3 +71,93 @@ export const photos = {
 } as const satisfies Record<string, Photo>;
 
 export type PhotoKey = keyof typeof photos;
+
+/**
+ * Equipment and detail crops cut from the four supplied photos
+ * (src/assets/photos/crops/, generated with sharp — see README). They give
+ * every tile a real RobustWorx image without any stock or generated imagery.
+ */
+export const crops = {
+  excavator: {
+    src: cropExcavator,
+    alt: 'RobustWorx-branded excavator with its boom raised at sunset.',
+    caption: 'RobustWorx excavator.',
+    service: 'plant-operation',
+    serviceLabel: 'Plant operation',
+    focus: '50% 50%',
+  },
+  tipper: {
+    src: cropTipper,
+    alt: 'A RobustWorx tipper truck being loaded with spoil by an excavator bucket.',
+    caption: 'RobustWorx tipper being loaded.',
+    service: 'plant-operation',
+    serviceLabel: 'Plant operation',
+    focus: '50% 50%',
+  },
+  ute: {
+    src: cropUte,
+    alt: 'RobustWorx tray-back ute parked on a coastal road.',
+    caption: 'RobustWorx ute.',
+    service: 'traffic-workzone-support',
+    serviceLabel: 'Traffic & workzone support',
+    focus: '50% 50%',
+  },
+  vms: {
+    src: cropVms,
+    alt: 'A trailer-mounted variable message sign beside the RobustWorx ute, with Scott in the foreground.',
+    caption: 'Variable message sign and ute.',
+    service: 'traffic-workzone-support',
+    serviceLabel: 'Traffic & workzone support',
+    focus: '50% 50%',
+  },
+  conesRoad: {
+    src: cropConesRoad,
+    alt: 'Traffic cones set out on a coastal road with the sea behind.',
+    caption: 'Cones set out on a coastal road.',
+    service: 'traffic-workzone-support',
+    serviceLabel: 'Traffic & workzone support',
+    focus: '50% 50%',
+  },
+  stopBat: {
+    src: cropStopBat,
+    alt: 'A traffic controller in a RobustWorx helmet holding a stop bat on a sealed road.',
+    caption: 'Stop bat at a coned work area.',
+    service: 'traffic-workzone-support',
+    serviceLabel: 'Traffic & workzone support',
+    focus: '50% 50%',
+  },
+  cones: {
+    src: cropCones,
+    alt: 'A traffic cone and stop/slow bat pole on a sealed road.',
+    caption: 'Cone and bat pole on the road.',
+    service: 'traffic-workzone-support',
+    serviceLabel: 'Traffic & workzone support',
+    focus: '50% 50%',
+  },
+  clipboard: {
+    src: cropClipboard,
+    alt: 'Scott holding a clipboard and pen on site in RobustWorx hi-vis.',
+    caption: 'Job paperwork on site.',
+    service: 'site-supervision-field-support',
+    serviceLabel: 'Site supervision & field support',
+    focus: '50% 50%',
+  },
+  trench: {
+    src: cropTrench,
+    alt: 'An open service trench with an excavator and tipper truck working behind it.',
+    caption: 'Open service trench.',
+    service: 'small-earthworks',
+    serviceLabel: 'Small earthworks',
+    focus: '50% 50%',
+  },
+  crew: {
+    src: cropCrew,
+    alt: 'A worker in hi-vis standing in a trench in front of an excavator.',
+    caption: 'Crew working in the trench.',
+    service: 'site-supervision-field-support',
+    serviceLabel: 'Site supervision & field support',
+    focus: '50% 50%',
+  },
+} as const satisfies Record<string, Photo>;
+
+export type CropKey = keyof typeof crops;
