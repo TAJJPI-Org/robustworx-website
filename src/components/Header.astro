@@ -1,0 +1,306 @@
+---
+import Logo from './Logo.astro';
+import { nav, site, telHref } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => path === href || path.startsWith(href + '/');
+---
+
+<div class="topbar" aria-hidden="true"></div>
+
+<header class="hdr" data-hdr>
+  <div class="hdr__inner wrap">
+    <a class="hdr__brand" href="/" aria-label={`${site.name} — home`}>
+      <Logo height={32} />
+    </a>
+
+    <nav class="hdr__nav" aria-label="Primary">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="hdr__actions">
+      <a
+        class="btn btn--sm hdr__call"
+        href={telHref()}
+        aria-label={`Call Scott on ${site.phoneDisplay}`}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24 11.4 11.4 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .58 3.6 1 1 0 0 1-.25 1z"
+          ></path>
+        </svg>
+        <span class="hdr__call-label" aria-hidden="true">Call Scott</span>
+        <span class="hdr__call-no" aria-hidden="true">{site.phoneDisplay}</span>
+      </a>
+
+      <button
+        class="hdr__burger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-burger
+      >
+        <span class="sr-only">Menu</span>
+        <span class="hdr__burger-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobnav" id="mobile-nav" data-mobnav hidden>
+    <nav class="wrap" aria-label="Mobile">
+      <ul>
+        <li>
+          <a href="/" aria-current={path === '/' ? 'page' : undefined}>Home</a>
+        </li>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mobnav__cta">
+        <a class="btn btn--block" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+        <a class="btn btn--ghost btn--block" href="/contact">Send Job Details</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .topbar {
+    height: 4px;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--c-orange) 0 12px,
+      var(--c-black) 12px 24px
+    );
+  }
+
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(12, 12, 14, 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .hdr__inner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: var(--header-h);
+  }
+  .hdr__brand {
+    display: flex;
+    align-items: center;
+    flex: none;
+    text-decoration: none;
+    padding-block: 0.5rem;
+  }
+
+  .hdr__nav {
+    display: none;
+    margin-left: auto;
+  }
+  .hdr__nav ul {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 0.1rem + 1.1vw, 1.4rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .hdr__nav a {
+    display: block;
+    padding: 0.55rem 0.15rem;
+    font-family: var(--f-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #d5d5d0;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s var(--ease);
+  }
+  .hdr__nav a:hover {
+    color: var(--c-lime);
+  }
+  .hdr__nav a[aria-current='page'] {
+    color: var(--c-light);
+    border-bottom-color: var(--c-orange);
+  }
+
+  .hdr__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-left: auto;
+  }
+  .hdr__nav + .hdr__actions {
+    margin-left: 0;
+  }
+  /* Narrowest phones: the call action is the icon only, still 44px+ and named. */
+  .hdr__call {
+    padding-inline: 0.85rem;
+  }
+  .hdr__call-label,
+  .hdr__call-no {
+    display: none;
+  }
+
+  .hdr__burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    background: transparent;
+    border: 2px solid var(--c-line-strong);
+    color: var(--c-light);
+  }
+  .hdr__burger-bars {
+    display: grid;
+    gap: 4px;
+    width: 20px;
+  }
+  .hdr__burger-bars i {
+    display: block;
+    height: 2px;
+    background: currentColor;
+    transition:
+      transform 0.2s var(--ease),
+      opacity 0.2s var(--ease);
+  }
+  .hdr__burger[aria-expanded='true'] {
+    border-color: var(--c-lime);
+    color: var(--c-lime);
+  }
+  .hdr__burger[aria-expanded='true'] i:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .hdr__burger[aria-expanded='true'] i:nth-child(2) {
+    opacity: 0;
+  }
+  .hdr__burger[aria-expanded='true'] i:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .mobnav {
+    border-top: 1px solid var(--c-line);
+    background: var(--c-surface);
+    max-height: calc(100dvh - var(--header-h) - 4px);
+    overflow-y: auto;
+  }
+  .mobnav[hidden] {
+    display: none;
+  }
+  .mobnav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0 0;
+  }
+  .mobnav li + li {
+    border-top: 1px solid var(--c-line);
+  }
+  .mobnav li a {
+    display: block;
+    padding: 0.95rem 0;
+    font-family: var(--f-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--c-light);
+    text-decoration: none;
+  }
+  .mobnav li a[aria-current='page'] {
+    color: var(--c-lime);
+  }
+  .mobnav__cta {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1.1rem 0 1.5rem;
+  }
+
+  @media (min-width: 400px) {
+    .hdr__inner {
+      gap: var(--s-4);
+    }
+    .hdr__call {
+      padding-inline: 1.05rem;
+    }
+    .hdr__call-label {
+      display: inline;
+    }
+  }
+  @media (min-width: 640px) {
+    .hdr__call-label {
+      display: none;
+    }
+    .hdr__call-no {
+      display: inline;
+    }
+  }
+  @media (min-width: 1060px) {
+    .hdr__nav {
+      display: block;
+    }
+    .hdr__burger {
+      display: none;
+    }
+    .hdr__call-label {
+      display: inline;
+    }
+    .hdr__call-label::after {
+      content: ' —';
+    }
+  }
+</style>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const panel = document.querySelector<HTMLElement>('[data-mobnav]');
+
+  if (burger && panel) {
+    const setOpen = (open: boolean) => {
+      burger.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    burger.addEventListener('click', () => {
+      setOpen(burger.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        burger.focus();
+      }
+    });
+
+    panel.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    const mq = window.matchMedia('(min-width: 1060px)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>

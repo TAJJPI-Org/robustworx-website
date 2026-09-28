@@ -1,0 +1,392 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Glyph from '../components/Glyph.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Photo from '../components/Photo.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos, type Photo as PhotoData } from '../data/photos';
+import { services } from '../data/services';
+import { site, telHref } from '../data/site';
+
+/** Supplied photos, matched to the service each one actually shows. */
+/** Low-opacity backdrop behind each service block, rotated so neighbours differ. */
+const serviceBackdrop: Record<string, { photo: PhotoData; focus: string; side: 'left' | 'right' }> =
+  {
+    'traffic-workzone-support': { photo: photos.trafficControl, focus: '60% 30%', side: 'right' },
+    'site-supervision-field-support': { photo: photos.coastalUte, focus: '75% 45%', side: 'right' },
+    'plant-operation': { photo: photos.trenchSite, focus: '20% 45%', side: 'left' },
+    'small-earthworks': { photo: photos.excavatorSunset, focus: '50% 55%', side: 'right' },
+    'grounds-maintenance': { photo: photos.coastalUte, focus: '15% 60%', side: 'left' },
+  };
+
+const servicePhoto: Record<string, { photo: PhotoData; focus: string } | undefined> = {
+  'traffic-workzone-support': { photo: photos.coastalUte, focus: '62% 18%' },
+  'site-supervision-field-support': { photo: photos.trenchSite, focus: '40% 12%' },
+  'plant-operation': { photo: photos.excavatorSunset, focus: '50% 45%' },
+};
+---
+
+<BaseLayout
+  title="Services — traffic, plant, earthworks and field support"
+  description="RobustWorx services across regional South Australia: traffic and workzone support, site supervision and field support, plant operation, small earthworks, and grounds and maintenance. What each covers and what to send."
+>
+  <PageIntro
+    eyebrow="Services"
+    title="What RobustWorx can pick up on your job"
+    lead="Five service areas, described by what actually happens on the ground. Each one lists where it tends to be useful, what it covers and what to send so the job can be assessed properly."
+    variant="lime"
+    motif="grid"
+  >
+    <nav class="svc-jump" aria-label="Services on this page">
+      <ul>
+        {
+          services.map((s) => (
+            <li>
+              <a href={`#${s.id}`}>
+                <span>{s.no}</span>
+                {s.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </PageIntro>
+
+  {
+    services.map((s, i) => (
+      <section
+        class={`svc has-bg ${i % 2 === 1 ? 'svc--alt' : ''}`}
+        id={s.id}
+        aria-labelledby={`${s.id}-title`}
+      >
+        <Backdrop
+          photo={serviceBackdrop[s.id].photo}
+          focus={serviceBackdrop[s.id].focus}
+          side={serviceBackdrop[s.id].side}
+        />
+        <div class="wrap">
+          {servicePhoto[s.id] && (
+            <Photo
+              photo={servicePhoto[s.id]!.photo}
+              focus={servicePhoto[s.id]!.focus}
+              ratio="2 / 1"
+              tag={s.no}
+              caption
+              class="svc__photo"
+              sizes="(min-width: 1360px) 1300px, 100vw"
+            />
+          )}
+          <div class="svc__head">
+            <div class="svc__marker" aria-hidden="true">
+              <span class="svc__no">{s.no}</span>
+              <Glyph name={s.glyph} size={52} />
+            </div>
+            <div>
+              <h2 id={`${s.id}-title`} class="svc__title">
+                {s.title}
+              </h2>
+              <p class="svc__summary">{s.summary}</p>
+            </div>
+          </div>
+
+          <div class="svc__cols">
+            <div class="svc__col">
+              <h3 class="svc__sub">Where it is useful</h3>
+              <ul class="svc__list">
+                {s.context.map((c) => (
+                  <li>{c}</li>
+                ))}
+              </ul>
+            </div>
+            <div class="svc__col">
+              <h3 class="svc__sub">What it covers</h3>
+              <ul class="svc__list svc__list--check">
+                {s.activities.map((a) => (
+                  <li>{a}</li>
+                ))}
+              </ul>
+            </div>
+            <div class="svc__send">
+              <h3 class="svc__sub svc__sub--send">Send this with your enquiry</h3>
+              <ul class="spec">
+                {s.send.map((x) => (
+                  <li>{x}</li>
+                ))}
+              </ul>
+              <div class="svc__actions">
+                <a class="btn btn--block" href={`/contact?service=${s.id}`}>
+                  Discuss this job
+                </a>
+                <a class="btn btn--ghost btn--block" href={telHref()}>
+                  Call Scott — {site.phoneDisplay}
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {s.note && (
+            <p class="svc__note">
+              <span aria-hidden="true">!</span>
+              {s.note}
+            </p>
+          )}
+        </div>
+      </section>
+    ))
+  }
+
+  <CtaBand
+    variant="photo"
+    photo={photos.trafficControl}
+    title="Not sure which one it is?"
+    body="Most jobs cross two or three of these. Describe the work and Scott will tell you what it needs — or who else to call if it is outside what RobustWorx does."
+    showSms
+  />
+</BaseLayout>
+
+<style>
+  /* Jump nav */
+  .svc-jump {
+    margin-top: 2rem;
+  }
+  .svc-jump ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .svc-jump a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 44px;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--c-line-strong);
+    background: var(--c-surface);
+    color: #d5d5d0;
+    font-family: var(--f-display);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      color 0.15s var(--ease),
+      border-color 0.15s var(--ease);
+  }
+  .svc-jump a span {
+    color: var(--c-orange);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+  }
+  .svc-jump a:hover {
+    color: var(--c-lime);
+    border-color: var(--c-lime);
+  }
+
+  /* Service block */
+  .svc {
+    padding-block: clamp(3rem, 2rem + 4vw, 5.5rem);
+    border-top: 1px solid var(--c-line);
+    scroll-margin-top: calc(var(--header-h) + 8px);
+  }
+  .svc--alt {
+    background: var(--c-asphalt);
+  }
+
+  :global(.svc__photo) {
+    margin-bottom: clamp(1.75rem, 1.2rem + 2.5vw, 3.25rem);
+  }
+  @media (max-width: 699px) {
+    :global(.svc__photo .photo__frame) {
+      aspect-ratio: 16 / 10;
+    }
+  }
+  .svc__head {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  }
+  @media (min-width: 760px) {
+    .svc__head {
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 2rem;
+      align-items: start;
+    }
+  }
+  .svc__marker {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--c-line-strong);
+  }
+  @media (min-width: 760px) {
+    .svc__marker {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.1rem;
+      padding-top: 0.35rem;
+    }
+  }
+  .svc__no {
+    font-family: var(--f-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--c-orange);
+  }
+  .svc__title {
+    font-size: var(--t-h2);
+    max-width: 18ch;
+  }
+  .svc__summary {
+    margin-top: 1rem;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: #d5d5cf;
+    max-width: 62ch;
+  }
+
+  .svc__cols {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+  @media (min-width: 700px) {
+    .svc__cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1060px) {
+    .svc__cols {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.95fr);
+    }
+  }
+
+  .svc__sub {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--c-line);
+    margin-bottom: 1rem;
+  }
+  .svc__sub--send {
+    color: var(--c-black);
+    border-bottom-color: rgba(0, 0, 0, 0.25);
+  }
+
+  .svc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .svc__list li {
+    display: flex;
+    gap: 0.7rem;
+    font-size: var(--t-small);
+    line-height: 1.55;
+    color: #cbcbc6;
+  }
+  .svc__list li::before {
+    content: '';
+    flex: none;
+    width: 10px;
+    height: 2px;
+    margin-top: 0.72em;
+    background: var(--c-line-strong);
+  }
+  .svc__list--check li::before {
+    width: 11px;
+    height: 11px;
+    margin-top: 0.36em;
+    background: var(--c-orange);
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 58% 100%, 0 100%);
+  }
+
+  /* Intake panel — the commercially important bit */
+  .svc__send {
+    background: var(--c-lime);
+    color: var(--c-black);
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%);
+    align-self: start;
+  }
+  @media (min-width: 700px) and (max-width: 1059px) {
+    .svc__send {
+      grid-column: span 2;
+    }
+  }
+  .svc__send :global(.spec) {
+    border-top-color: rgba(0, 0, 0, 0.2);
+  }
+  .svc__send :global(.spec li) {
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    color: #16200a;
+  }
+  .svc__send :global(.spec li::before) {
+    background: var(--c-black);
+  }
+  .svc__actions {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+  .svc__actions :global(.btn) {
+    --btn-bg: var(--c-black);
+    --btn-fg: var(--c-light);
+    --btn-bd: var(--c-black);
+  }
+  .svc__actions :global(.btn:hover) {
+    --btn-bg: #26262c;
+    --btn-bd: #26262c;
+  }
+  .svc__actions :global(.btn--ghost) {
+    --btn-bg: transparent;
+    --btn-fg: var(--c-black);
+    --btn-bd: rgba(0, 0, 0, 0.4);
+  }
+  .svc__actions :global(.btn--ghost:hover) {
+    --btn-bg: transparent;
+    --btn-fg: var(--c-black);
+    --btn-bd: var(--c-black);
+  }
+  .svc__actions :global(.btn:focus-visible) {
+    outline-color: var(--c-black);
+  }
+
+  .svc__note {
+    display: flex;
+    gap: 0.85rem;
+    margin-top: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    padding: 1rem 1.15rem;
+    border-left: 4px solid var(--c-orange);
+    background: rgba(255, 106, 19, 0.07);
+    color: #ded9d2;
+    font-size: var(--t-small);
+    line-height: 1.6;
+    max-width: 82ch;
+  }
+  .svc__note span {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    background: var(--c-orange);
+    color: var(--c-black);
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1;
+  }
+</style>

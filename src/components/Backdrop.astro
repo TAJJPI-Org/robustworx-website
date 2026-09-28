@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import type { Photo } from '../data/photos';
+
+/**
+ * Low-opacity photo backdrop for a section. The parent needs the global
+ * `has-bg` class (relative, isolated, clipped). Opacity is capped so body
+ * copy over it still clears WCAG AA — see CONTENT_VERIFICATION.md and the
+ * contrast check in the QA notes. `side` is where the photo shows through
+ * most; the shade is heavier on the opposite side, where the copy sits.
+ */
+interface Props {
+  photo: Photo;
+  focus?: string;
+  /** 0–0.2. Default 0.16. */
+  opacity?: number;
+  side?: 'left' | 'right' | 'full';
+}
+const { photo, focus, opacity = 0.16, side = 'right' } = Astro.props;
+---
+
+<div
+  class="bd"
+  data-side={side}
+  aria-hidden="true"
+  style={`--bd-o:${Math.min(opacity, 0.2)};--bd-focus:${focus ?? photo.focus}`}
+>
+  <Image
+    src={photo.src}
+    alt=""
+    widths={[720, 1080, 1600]}
+    sizes="100vw"
+    loading="lazy"
+    decoding="async"
+    class="bd__img"
+  />
+  <span class="bd__shade"></span>
+</div>
+
+<style>
+  .bd {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .bd__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--bd-focus, 50% 50%);
+    opacity: var(--bd-o);
+    filter: saturate(0.85);
+  }
+  .bd__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(12, 12, 14, 0.7) 0%, rgba(12, 12, 14, 0.15) 100%);
+  }
+  .bd[data-side='left'] .bd__shade {
+    background: linear-gradient(270deg, rgba(12, 12, 14, 0.7) 0%, rgba(12, 12, 14, 0.15) 100%);
+  }
+  .bd[data-side='full'] .bd__shade {
+    background: rgba(12, 12, 14, 0.35);
+  }
+  @media (max-width: 899px) {
+    .bd__shade,
+    .bd[data-side='left'] .bd__shade {
+      background: rgba(12, 12, 14, 0.4);
+    }
+  }
+</style>

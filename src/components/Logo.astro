@@ -1,0 +1,82 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+  /** Rendered height in px. Width scales. */
+  height?: number;
+  class?: string;
+}
+const { height = 34, class: className = '' } = Astro.props;
+
+/**
+ * The authoritative RobustWorx logo drops in at public/brand/robustworx-logo.svg
+ * (or .png). If that file exists it is used verbatim and nothing here is drawn.
+ * Until then a neutral typographic wordmark stands in — it is NOT a redrawing
+ * of the RobustWorx mark. See CONTENT_VERIFICATION.md.
+ */
+const candidates = ['robustworx-logo.svg', 'robustworx-logo.png', 'robustworx-logo.webp'];
+const found = candidates.find((f) => fs.existsSync(path.join(process.cwd(), 'public/brand', f)));
+---
+
+{
+  found ? (
+    <img
+      src={`/brand/${found}`}
+      alt="RobustWorx"
+      height={height}
+      style={`height:${height}px;width:auto`}
+      class={`rw-logo ${className}`}
+      decoding="async"
+    />
+  ) : (
+    <span class={`rw-wordmark ${className}`} style={`--h:${height}px`} aria-label="RobustWorx">
+      <svg class="rw-wordmark__mark" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+        <path d="M0 0h44v44H0z" fill="#17171A" />
+        <path d="M6 25.5 15.5 35 38 8.5l-5.5-4.5L15 26l-4.5-5.2z" fill="#C6F000" />
+        <path d="M6 38h32v4H6z" fill="#FF6A13" />
+        <path d="M6 4h10v10H6z" fill="#7B2FD1" />
+      </svg>
+      <span class="rw-wordmark__text" aria-hidden="true">
+        <b>ROBUST</b>
+        <i>WORX</i>
+      </span>
+    </span>
+  )
+}
+
+<style>
+  .rw-logo {
+    display: block;
+  }
+  .rw-wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--h) * 0.24);
+    height: var(--h);
+    line-height: 1;
+  }
+  .rw-wordmark__mark {
+    height: var(--h);
+    width: var(--h);
+    flex: none;
+  }
+  .rw-wordmark__text {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: calc(var(--h) * 0.82);
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: inline-flex;
+  }
+  .rw-wordmark__text b {
+    color: var(--c-light);
+    font-weight: 700;
+  }
+  .rw-wordmark__text i {
+    color: var(--c-lime);
+    font-style: normal;
+    font-weight: 700;
+  }
+</style>

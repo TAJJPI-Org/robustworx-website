@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos } from '../data/photos';
+import { nav, site, telHref } from '../data/site';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="That page does not exist on the RobustWorx website. Head back to the home page or call Scott on 0458 958 995."
+  noindex
+>
+  <section class="nf">
+    <Backdrop photo={photos.trafficControl} side="full" opacity={0.14} focus="50% 30%" />
+    <div class="nf__bg" aria-hidden="true">
+      <svg viewBox="0 0 400 220" fill="none" preserveAspectRatio="xMidYMid slice">
+        <path d="M0 150h400" class="nf__road"></path>
+        <path d="M0 150h400" class="nf__line"></path>
+        <path d="M150 150V70l50-30 50 30v80" class="nf__barrier"></path>
+        <path d="M150 96h100" class="nf__barrier"></path>
+      </svg>
+    </div>
+    <div class="wrap nf__inner">
+      <p class="nf__code">404</p>
+      <h1 class="nf__title">Road closed</h1>
+      <p class="nf__text">
+        That page is not here. It may have moved, or the link may be wrong. Everything on the site
+        is listed below.
+      </p>
+
+      <nav class="nf__nav" aria-label="All pages">
+        <ul>
+          <li><a href="/">Home</a></li>
+          {
+            nav.map((item) => (
+              <li>
+                <a href={item.href}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="cluster nf__actions">
+        <a class="btn" href="/">Back to home</a>
+        <a class="btn btn--ghost" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 2rem + 7vw, 8rem);
+    background: var(--c-black);
+  }
+  .nf__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.5;
+  }
+  .nf__bg svg {
+    width: 100%;
+    height: 100%;
+  }
+  .nf__road {
+    stroke: #1e1e23;
+    stroke-width: 60;
+  }
+  .nf__line {
+    stroke: var(--c-lime);
+    stroke-width: 3;
+    stroke-dasharray: 26 22;
+    opacity: 0.4;
+  }
+  .nf__barrier {
+    stroke: var(--c-orange);
+    stroke-width: 3;
+    opacity: 0.35;
+  }
+
+  .nf__code {
+    font-family: var(--f-display);
+    font-size: clamp(4rem, 2rem + 10vw, 9rem);
+    font-weight: 700;
+    line-height: 0.82;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--c-orange);
+    letter-spacing: -0.02em;
+  }
+  .nf__title {
+    margin-top: 1rem;
+    font-size: var(--t-h1);
+  }
+  .nf__text {
+    margin-top: 1.1rem;
+    font-size: var(--t-lead);
+    color: var(--c-muted);
+    max-width: 48ch;
+  }
+  .nf__nav {
+    margin-top: 2.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--c-line);
+    max-width: 640px;
+  }
+  .nf__nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+  }
+  .nf__nav a {
+    display: inline-block;
+    padding: 0.5rem 0;
+    font-family: var(--f-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #d0d0cb;
+    text-decoration: none;
+  }
+  .nf__nav a:hover {
+    color: var(--c-lime);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .nf__actions {
+    margin-top: 2.25rem;
+  }
+</style>

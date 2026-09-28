@@ -1,0 +1,502 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { site, telHref } from '../data/site';
+import { engagement } from '../data/engagement';
+import { photos } from '../data/photos';
+
+/**
+ * Structured so this page can later be exported as a capability statement.
+ * Nothing here asserts accreditation, insurance, licensing, scale or history —
+ * see CONTENT_VERIFICATION.md.
+ */
+const sections = [
+  {
+    id: 'field-capability',
+    letter: 'A',
+    title: 'Field capability',
+    intro:
+      'RobustWorx is a field operation. The value sits in turning up with the right gear, understanding what the works package needs and getting on with it.',
+    points: [
+      'Practical support across civil, traffic, plant and maintenance work',
+      'Work carried out on the ground rather than coordinated from an office',
+      'Scope confirmed before mobilisation so the day is not spent working it out on site',
+      'Direct reporting back on what was done and what is outstanding',
+    ],
+  },
+  {
+    id: 'plant-equipment',
+    letter: 'B',
+    title: 'Plant & equipment',
+    intro:
+      'Machinery, vehicles and field gear suited to small-to-medium works packages and regional access conditions.',
+    points: [
+      'Compact excavation plant for trenching, preparation and reinstatement',
+      'Vehicles set up to carry gear and work off the back of a ute',
+      'Transport and support equipment for shifting materials around site',
+      'Field tools for maintenance, vegetation and clean-up tasks',
+    ],
+    note: 'Specific machines, capacities and attachments are confirmed by phone rather than published. Availability changes.',
+  },
+  {
+    id: 'workzone-support',
+    letter: 'C',
+    title: 'Workzone support',
+    intro:
+      'Practical support around road and workzone activity where a crew needs extra plant, a vehicle or additional hands on the ground.',
+    points: [
+      'Workzone mobilisation, setup and pack-down support',
+      'Handling and positioning cones, signs and roadside equipment',
+      'Working to the arrangements and approvals put in place by the responsible party',
+      'Retrieval and clearing of the work area at the end of the job',
+    ],
+    note: 'Traffic management responsibilities, plans and approvals for your job must be confirmed directly before engaging RobustWorx.',
+  },
+  {
+    id: 'site-support',
+    letter: 'D',
+    title: 'Site support',
+    intro:
+      'A practical presence on site for the duration of a works package — running the day, holding the interface and dealing with what comes up.',
+    points: [
+      'Site presence and day-to-day coordination on the ground',
+      'Interface between site, subcontractors and the project team',
+      'Sequencing and problem-solving as conditions change',
+      'A clear account back to the project of what actually happened',
+    ],
+    note: 'Practical field supervision and coordination. Not an engineering or statutory appointment.',
+  },
+  {
+    id: 'regional-context',
+    letter: 'E',
+    title: 'Regional operating context',
+    intro:
+      'Regional work carries costs a city-based schedule does not price in. RobustWorx is based in regional South Australia and plans work around those conditions.',
+    points: [
+      'Travel and mobilisation treated as part of the job, not an afterthought',
+      'Site access, ground conditions and property constraints considered up front',
+      'Local operator on a regional package instead of mobilising a crew from town',
+      'Realistic timing given distance, weather and what is available nearby',
+    ],
+  },
+  {
+    id: 'how-to-engage',
+    letter: 'F',
+    title: 'How to engage RobustWorx',
+    intro:
+      'Two routes, depending on whether you are hiring capability into your crew or handing over a scope. Either way, send enough information for the job to be assessed and you will get a straight answer on whether it can be covered.',
+    points: [
+      '1. Send the job — location, dates, scope, site requirements and a contact',
+      '2. Scott reviews it and comes back on capability, timing and what is required',
+      '3. Anything unclear is confirmed by phone before it is committed to',
+      '4. Work is carried out and reported back on completion',
+    ],
+  },
+];
+
+const assess = [
+  { k: 'Location', v: 'Address, pin or nearest town, plus how to get onto site' },
+  { k: 'Dates', v: 'Start date, duration, and any date the work has to be finished by' },
+  { k: 'Scope', v: 'What the work involves and what the finished result needs to be' },
+  { k: 'Plant', v: 'What equipment is required, and whether you supply any of it' },
+  { k: 'Conditions', v: 'Ground type, access constraints, services, stock, site hazards' },
+  { k: 'Requirements', v: 'Inductions, procedures and documentation that apply on your site' },
+  { k: 'Contact', v: 'Who is on site and who makes the call on the day' },
+];
+---
+
+<BaseLayout
+  title="Capability — field support for contractors, councils and project teams"
+  description="RobustWorx capability for civil contractors, councils and project teams in regional South Australia: field capability, plant and equipment, workzone support, site support, regional operating context and how to engage."
+>
+  <PageIntro
+    eyebrow="Capability"
+    title="Capability summary"
+    lead="Written for contractors, councils and project teams assessing whether RobustWorx is useful on a package of work. Six sections, no padding."
+    variant="plum"
+    motif="grid"
+    photo={photos.trafficControl}
+  >
+    <dl class="cap-facts">
+      <div>
+        <dt>Business</dt>
+        <dd>{site.name}</dd>
+      </div>
+      <div>
+        <dt>Contact</dt>
+        <dd>{site.contactName}</dd>
+      </div>
+      <div>
+        <dt>Phone</dt>
+        <dd><a href={telHref()}>{site.phoneDisplay}</a></dd>
+      </div>
+      <div>
+        <dt>Base</dt>
+        <dd>{site.region}</dd>
+      </div>
+    </dl>
+  </PageIntro>
+
+  <div class="cap has-bg">
+    <Backdrop photo={photos.excavatorSunset} side="full" opacity={0.1} focus="50% 40%" />
+    <div class="wrap cap__layout">
+      <nav class="cap__index" aria-label="Capability sections">
+        <p class="cap__index-h">Contents</p>
+        <ol>
+          {
+            sections.map((s) => (
+              <li>
+                <a href={`#${s.id}`}>
+                  <span>{s.letter}</span>
+                  {s.title}
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <div class="cap__body">
+        {
+          sections.map((s) => (
+            <section class="cap__sec" id={s.id} aria-labelledby={`${s.id}-title`}>
+              <div class="cap__sec-head">
+                <span class="cap__letter" aria-hidden="true">
+                  {s.letter}
+                </span>
+                <h2 id={`${s.id}-title`} class="cap__sec-title">
+                  {s.title}
+                </h2>
+              </div>
+              <p class="cap__intro">{s.intro}</p>
+              <ul class="cap__points">
+                {s.points.map((p) => (
+                  <li>{p}</li>
+                ))}
+              </ul>
+              {s.note && <p class="cap__note">{s.note}</p>}
+
+              {s.id === 'how-to-engage' && (
+                <div class="cap__modes">
+                  {engagement.map((m) => (
+                    <div class={`cap__mode cap__mode--${m.accent}`}>
+                      <p class="cap__mode-key">Route {m.key}</p>
+                      <h3 class="cap__mode-title">{m.title}</h3>
+                      <p class="cap__mode-pitch">{m.pitch}</p>
+                      <p class="cap__mode-send">{m.send}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+          ))
+        }
+
+        <section class="cap__assess" aria-labelledby="assess-title">
+          <h2 id="assess-title" class="cap__assess-title">What is needed to assess a job</h2>
+          <p class="cap__assess-lead">
+            The more of this that comes through with the enquiry, the faster you get a real answer.
+            Anything you do not have yet, say so — it is better than a guess.
+          </p>
+          <dl class="cap__assess-list">
+            {
+              assess.map((a) => (
+                <div>
+                  <dt>{a.k}</dt>
+                  <dd>{a.v}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <div class="cluster mt-6">
+            <a class="btn" href="/contact">Send job details</a>
+            <a class="btn btn--ghost" href={telHref()}>Call Scott — {site.phoneDisplay}</a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <CtaBand
+    variant="photo"
+    photo={photos.trenchSite}
+    title="Assessing RobustWorx for a package of work?"
+    body="Send the scope through, or call Scott and talk it over. If something on this page needs to be confirmed in writing for your procurement process, ask and it will be."
+  />
+</BaseLayout>
+
+<style>
+  .cap-facts {
+    margin-top: 2rem;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--c-line-strong);
+    max-width: 720px;
+  }
+  @media (min-width: 620px) {
+    .cap-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 2.5rem;
+    }
+  }
+  .cap-facts div {
+    display: flex;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--c-line-strong);
+  }
+  .cap-facts dt {
+    flex: none;
+    width: 90px;
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #b9a8d0;
+    padding-top: 0.25em;
+  }
+  .cap-facts dd {
+    margin: 0;
+    font-weight: 500;
+  }
+  .cap-facts a {
+    color: var(--c-lime);
+    text-underline-offset: 3px;
+  }
+
+  .cap {
+    padding-block: clamp(2.5rem, 1.6rem + 4vw, 5rem);
+  }
+  .cap__layout {
+    display: grid;
+    gap: clamp(2rem, 1rem + 3vw, 3.5rem);
+  }
+  @media (min-width: 1000px) {
+    .cap__layout {
+      grid-template-columns: 250px minmax(0, 1fr);
+      gap: 4rem;
+    }
+  }
+
+  .cap__index {
+    align-self: start;
+  }
+  @media (min-width: 1000px) {
+    .cap__index {
+      position: sticky;
+      top: calc(var(--header-h) + 1.75rem);
+    }
+  }
+  .cap__index-h {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--c-lime);
+    padding-bottom: 0.7rem;
+    border-bottom: 2px solid var(--c-line);
+    margin-bottom: 0.35rem;
+  }
+  .cap__index ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .cap__index li {
+    border-bottom: 1px solid var(--c-line);
+  }
+  .cap__index a {
+    display: flex;
+    gap: 0.85rem;
+    align-items: baseline;
+    min-height: 44px;
+    padding: 0.7rem 0;
+    color: #cbcbc6;
+    text-decoration: none;
+    font-size: var(--t-small);
+    font-weight: 500;
+  }
+  .cap__index a span {
+    font-family: var(--f-display);
+    font-weight: 700;
+    color: var(--c-orange);
+    width: 1ch;
+  }
+  .cap__index a:hover {
+    color: var(--c-lime);
+  }
+
+  .cap__sec {
+    padding-block: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+    border-top: 1px solid var(--c-line);
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+  }
+  .cap__sec:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+  .cap__sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .cap__letter {
+    font-family: var(--f-display);
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--c-purple);
+    flex: none;
+  }
+  .cap__sec-title {
+    font-size: var(--t-h2);
+  }
+  .cap__intro {
+    margin-top: 1rem;
+    font-size: var(--t-lead);
+    line-height: 1.5;
+    color: #d5d5cf;
+    max-width: 66ch;
+  }
+  .cap__points {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--c-line);
+    max-width: 76ch;
+  }
+  .cap__points li {
+    display: flex;
+    gap: 0.85rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--c-line);
+    color: #c8c8c3;
+    font-size: var(--t-small);
+    line-height: 1.55;
+  }
+  .cap__points li::before {
+    content: '';
+    flex: none;
+    width: 11px;
+    height: 11px;
+    margin-top: 0.4em;
+    background: var(--c-lime);
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 58% 100%, 0 100%);
+  }
+  .cap__note {
+    margin-top: 1.15rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--c-orange);
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+    max-width: 72ch;
+  }
+
+  .cap__modes {
+    display: grid;
+    gap: var(--s-4);
+    margin-top: 1.75rem;
+  }
+  @media (min-width: 720px) {
+    .cap__modes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .cap__mode {
+    padding: 1.25rem 1.4rem;
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    border-left: 4px solid var(--mode-accent);
+  }
+  .cap__mode--lime {
+    --mode-accent: var(--c-lime);
+  }
+  .cap__mode--orange {
+    --mode-accent: var(--c-orange);
+  }
+  .cap__mode-key {
+    font-family: var(--f-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mode-accent);
+  }
+  .cap__mode-title {
+    margin-top: 0.5rem;
+    font-size: 1.35rem;
+  }
+  .cap__mode-pitch {
+    margin-top: 0.6rem;
+    color: var(--c-muted);
+    font-size: var(--t-small);
+    line-height: 1.6;
+  }
+  .cap__mode-send {
+    margin-top: 0.9rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--c-line);
+    font-family: var(--f-display);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--c-light);
+  }
+
+  .cap__assess {
+    margin-top: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+    padding: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
+    background: var(--c-surface);
+    border: 1px solid var(--c-line);
+    border-top: 5px solid var(--c-lime);
+  }
+  .cap__assess-title {
+    font-size: var(--t-h2);
+  }
+  .cap__assess-lead {
+    margin-top: 0.9rem;
+    color: var(--c-muted);
+    max-width: 60ch;
+  }
+  .cap__assess-list {
+    margin-top: 1.75rem;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--c-line);
+  }
+  .cap__assess-list div {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  @media (min-width: 640px) {
+    .cap__assess-list div {
+      grid-template-columns: 150px minmax(0, 1fr);
+      gap: 1.25rem;
+      align-items: baseline;
+    }
+  }
+  .cap__assess-list dt {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-orange);
+  }
+  .cap__assess-list dd {
+    margin: 0;
+    color: #c8c8c3;
+    font-size: var(--t-small);
+    line-height: 1.55;
+  }
+</style>

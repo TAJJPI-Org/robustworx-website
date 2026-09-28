@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Backdrop from '../components/Backdrop.astro';
+import { photos } from '../data/photos';
+import { site, telHref } from '../data/site';
+
+const updated = 'August 2026';
+---
+
+<BaseLayout
+  title="Terms"
+  description="Terms of use for the RobustWorx website, and how website content relates to quoted work."
+>
+  <PageIntro
+    eyebrow="Terms"
+    title="Terms of use"
+    variant="lime"
+    motif="grid"
+    photo={photos.coastalUte}
+  />
+
+  <section class="section legal has-bg">
+    <Backdrop photo={photos.trafficControl} side="full" opacity={0.08} />
+    <div class="wrap wrap--content prose">
+      <p class="legal__updated">Last updated: {updated}</p>
+
+      <p class="lead">
+        These terms cover the use of this website. They do not cover work carried out by RobustWorx
+        — that is dealt with in the quote or agreement for the job itself.
+      </p>
+
+      <h2>Website content</h2>
+      <p>
+        The information on this website describes the kinds of work {site.name} can support. It is general
+        information, not advice for a specific job, and it is not an offer to carry out work. Whether
+        a particular job can be covered depends on the site, the scope, the timing and what is available,
+        and is confirmed directly with {site.contactName}.
+      </p>
+
+      <h2>Quotes and pricing</h2>
+      <p>
+        No pricing is published on this website. Any price for work is given separately, applies to
+        the scope described in that quote, and is subject to the conditions set out in it.
+      </p>
+
+      <h2>Availability of equipment</h2>
+      <p>
+        Equipment on this site is described by category rather than by specification, and
+        availability changes. Confirm the specific machine, setup and dates with {site.contactName}
+        before planning work around them.
+      </p>
+
+      <h2>Enquiries sent through this site</h2>
+      <p>
+        The job enquiry form prepares a message on your device for you to send. Sending an enquiry
+        does not create an agreement, book work or reserve equipment. Work is only booked once it is
+        confirmed directly.
+      </p>
+
+      <h2>Links to other websites</h2>
+      <p>
+        Where this website links to another website, that site is not controlled by RobustWorx and
+        RobustWorx is not responsible for its content.
+      </p>
+
+      <h2>Intellectual property</h2>
+      <p>
+        The {site.name} name, logo, site design, text and images on this website belong to RobustWorx
+        unless stated otherwise, and may not be reproduced without permission.
+      </p>
+
+      <h2>Accuracy</h2>
+      <p>
+        This website is kept accurate as far as practicable, but it is not guaranteed to be complete
+        or current at every moment. If something here matters to a decision you are making, confirm
+        it with {site.contactName} on <a href={telHref()}>{site.phoneDisplay}</a> before you rely on it.
+      </p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by the laws of South Australia.</p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about these terms: {site.contactName}, {site.name} —
+        <a href={telHref()}>{site.phoneDisplay}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal__updated {
+    font-family: var(--f-display);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-orange);
+    margin-bottom: 1.75rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .legal :global(p) {
+    color: #c8c8c3;
+  }
+  .legal :global(.lead) {
+    color: #d8d8d2;
+  }
+</style>
